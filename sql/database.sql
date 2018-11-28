@@ -16,13 +16,13 @@ create table if not exists category (
 
 create table if not exists person (
     id integer primary key,
-    first_name        text,
-    last_name         text,
-    lunchtime         integer,
-    reception_morning integer,
-    reception_evening integer,
-    pickup_round_id   integer,
-    team_id           integer,
+    first_name           text,
+    last_name            text,
+    is_lunchtime         integer not null check (is_lunchtime in (0, 1)), 
+    is_reception_morning integer not null check (is_reception_morning in (0, 1)), 
+    is_reception_evening integer not null check (is_reception_evening in (0, 1)), 
+    pickup_round_id      integer,
+    team_id              integer,
     foreign key(pickup_round_id) references pickup_round(id),
     foreign key(team_id)         references team(id) 
 );
