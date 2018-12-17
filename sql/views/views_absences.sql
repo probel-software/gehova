@@ -1,15 +1,3 @@
-drop view if exists absence_today_v;
-create view absence_today_v as 
-    select a.date_start                       as date_start
-         , a.date_end                         as date_end
-         , p.first_name || ' ' || p.last_name as person_name
-         , t.name                             as team
-    from absence a
-    inner join person p on a.person_id = p.id
-    inner join team t   on p.team_id = t.id
-    where date('now') > date_start 
-      and date('now') < date_end;
--------------------------------------------------------------------------------
 drop view if exists all_absence_v;
 create view all_absence_v as 
     select a.date_start                       as date_start

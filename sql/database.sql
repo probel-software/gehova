@@ -4,7 +4,7 @@ create table if not exists pickup_round (
 );
 -------------------------------------------------------------------------------
 create table if not exists team (
-    id integer primary key,
+    id   integer primary key,
     name text
 );
 -------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ create table if not exists category (
 );
 -------------------------------------------------------------------------------
 create table if not exists person (
-    id integer primary key,
+    id                   integer primary key,
     first_name           text,
     last_name            text,
     is_lunchtime         integer not null check (is_lunchtime in (0, 1)), 
@@ -40,4 +40,10 @@ create table if not exists person_category (
     category_id integer,
     foreign key(person_id)   references person(id),
     foreign key(category_id) references category(id)
+);
+-------------------------------------------------------------------------------
+create table if not exists settings (
+    id      integer primary key,
+    "key"   text,
+    "value" text
 );

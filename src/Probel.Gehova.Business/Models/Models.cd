@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Probel.Gehova.Core.Models.PersonModel">
+    <Position X="3.75" Y="1" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAgAAAAACAAAAAAEAIAEQAAAAAAAAg=</HashCode>
+      <FileName>Models\PersonModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Team" />
+      <Property Name="Pickup" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Probel.Gehova.Core.Models.PersonCategoryModel">
+    <Position X="6.25" Y="3" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAQAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\PersonCategoryModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="People" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Probel.Gehova.Core.Models.TeamModel">
+    <Position X="4" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\TeamModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Probel.Gehova.Core.Models.PickupModel">
+    <Position X="1.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\PickupModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
