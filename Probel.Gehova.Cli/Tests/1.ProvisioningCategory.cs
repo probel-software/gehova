@@ -6,7 +6,7 @@ using System;
 
 namespace Probel.Gehova.Cli.Tests
 {
-    public sealed class TestCategory : ITestCase
+    public sealed class ProvisioningCategory : ITestCase
     {
         #region Fields
 
@@ -38,7 +38,7 @@ namespace Probel.Gehova.Cli.Tests
             Output.WriteTitle("Get categories");
             DisplayCategories();
 
-            var cat = new PersonCategoryModel() { Display = Guid.NewGuid().ToString(), Key = "zz" };
+            var cat = new CategoryModel() { Display = Guid.NewGuid().ToString(), Key = "zz" };
             Output.WriteTitle("Add new category");
             _service.Create(cat);
             DisplayCategories();

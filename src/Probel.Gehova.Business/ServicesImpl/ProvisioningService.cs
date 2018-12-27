@@ -11,21 +11,21 @@ namespace Probel.Gehova.Business.ServicesImpl
     {
         #region Methods
 
-        public void Create(TeamModel team) => InTransation(c =>
+        public void Create(TeamDisplayModel team) => InTransaction(c =>
         {
             var sql = @"insert into team (name) values (@Name);";
             c.Execute(sql, new { team.Name });
             team.Id = GetLastId(c);
         });
 
-        public void Create(PersonCategoryModel category) => InTransation(c =>
+        public void Create(CategoryModel category) => InTransaction(c =>
         {
             var sql = @"insert into category (display, key) values (@Display, @Key);";
             c.Execute(sql, new { category.Display, category.Key });
             category.Id = GetLastId(c);
         });
 
-        public void Create(PickupRoundModel pickup) => InTransation(c =>
+        public void Create(PickupRoundDisplayModel pickup) => InTransaction(c =>
         {
             var sql = @"insert into pickup_round (name) values (@Name);";
             c.Execute(sql, new { pickup.Name });
@@ -55,7 +55,7 @@ namespace Probel.Gehova.Business.ServicesImpl
                 .Execute();
         }
 
-        public IEnumerable<PersonCategoryModel> GetCategories()
+        public IEnumerable<CategoryModel> GetCategories()
         {
             using (var c = NewConnection())
             {
@@ -65,12 +65,12 @@ namespace Probel.Gehova.Business.ServicesImpl
                          , display  as Display
                     from category";
 
-                var result = c.Query<PersonCategoryModel>(sql);
+                var result = c.Query<CategoryModel>(sql);
                 return result;
             }
         }
 
-        public PersonCategoryModel GetCategory(long id)
+        public CategoryModel GetCategory(long id)
         {
             using (var c = NewConnection())
             {
@@ -81,12 +81,12 @@ namespace Probel.Gehova.Business.ServicesImpl
                     from category
                    where id = @id";
 
-                var result = c.Query<PersonCategoryModel>(sql, new { id });
+                var result = c.Query<CategoryModel>(sql, new { id });
                 return result.FirstOrDefault();
             }
         }
 
-        public IEnumerable<PersonDisplayModel> GetPeople()
+        public IEnumerable<PersonFullDisplayModel> GetPeople()
         {
             using (var c = NewConnection())
             {
@@ -101,12 +101,12 @@ namespace Probel.Gehova.Business.ServicesImpl
                          , is_lunchtime         as IsLunchTime
                     from everyone_v";
 
-                var result = c.Query<PersonDisplayModel>(sql);
+                var result = c.Query<PersonFullDisplayModel>(sql);
                 return result;
             }
         }
 
-        public PickupRoundModel GetPickupRound(long id)
+        public PickupRoundDisplayModel GetPickupRound(long id)
         {
             using (var c = NewConnection())
             {
@@ -116,12 +116,12 @@ namespace Probel.Gehova.Business.ServicesImpl
                     from pickup_round
                    where id = @id";
 
-                var result = c.Query<PickupRoundModel>(sql, new { id });
+                var result = c.Query<PickupRoundDisplayModel>(sql, new { id });
                 return result.FirstOrDefault();
             }
         }
 
-        public IEnumerable<PickupRoundModel> GetPickupRounds()
+        public IEnumerable<PickupRoundDisplayModel> GetPickupRounds()
         {
             using (var c = NewConnection())
             {
@@ -130,12 +130,12 @@ namespace Probel.Gehova.Business.ServicesImpl
                          , name as Name
                     from pickup_round";
 
-                var result = c.Query<PickupRoundModel>(sql);
+                var result = c.Query<PickupRoundDisplayModel>(sql);
                 return result;
             }
         }
 
-        public TeamModel GetTeam(long id)
+        public TeamDisplayModel GetTeam(long id)
         {
             using (var c = NewConnection())
             {
@@ -145,12 +145,12 @@ namespace Probel.Gehova.Business.ServicesImpl
                     from team
                    where id = @id";
 
-                var result = c.Query<TeamModel>(sql, new { id });
+                var result = c.Query<TeamDisplayModel>(sql, new { id });
                 return result.FirstOrDefault();
             }
         }
 
-        public IEnumerable<TeamModel> GetTeams()
+        public IEnumerable<TeamDisplayModel> GetTeams()
         {
             using (var c = NewConnection())
             {
@@ -159,12 +159,12 @@ namespace Probel.Gehova.Business.ServicesImpl
                          , name  as Name
                     from team";
 
-                var result = c.Query<TeamModel>(sql);
+                var result = c.Query<TeamDisplayModel>(sql);
                 return result;
             }
         }
 
-        public void Remove(TeamModel team)
+        public void Remove(TeamDisplayModel team)
         {
             using (var c = NewConnection())
             {
@@ -175,7 +175,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
-        public void Remove(PersonCategoryModel category)
+        public void Remove(CategoryModel category)
         {
             using (var c = NewConnection())
             {
@@ -186,7 +186,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
-        public void Remove(PickupRoundModel pickup)
+        public void Remove(PickupRoundDisplayModel pickup)
         {
             using (var c = NewConnection())
             {
@@ -197,7 +197,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
-        public void Remove(PersonModel person) => InTransation(c =>
+        public void Remove(PersonModel person) => InTransaction(c =>
         {
             var sql = @"
                     delete from person_category
@@ -210,7 +210,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             c.Execute(sql, new { person.Id });
         });
 
-        public void Update(TeamModel team)
+        public void Update(TeamDisplayModel team)
         {
             using (var c = NewConnection())
             {
@@ -222,20 +222,21 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
-        public void Update(PersonCategoryModel category)
+        public void Update(CategoryModel category)
         {
             using (var c = NewConnection())
             {
                 var sql = @"
                     update category
-                       set display = @Display,
-                           key     = @Key
+                    set 
+                        display = @Display,
+                        key     = @Key
                      where id = @Id";
                 c.Execute(sql, new { category.Id, category.Display, category.Key });
             }
         }
 
-        public void Update(PickupRoundModel pickup)
+        public void Update(PickupRoundDisplayModel pickup)
         {
             using (var c = NewConnection())
             {
@@ -247,7 +248,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
-        public void Update(PersonModel person) => InTransation(c =>
+        public void Update(PersonModel person) => InTransaction(c =>
         {
             if (person?.Team?.Id == null) { throw new KeyNotFoundException($"The person with id '{person.Id}' cannot be updated as (s)he has not Team."); }
             else if (person?.PickupRound?.Id == null) { throw new KeyNotFoundException($"The person with id '{person.Id}' cannot be updated as (s)he has not pickup round."); }

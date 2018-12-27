@@ -1,6 +1,6 @@
 ﻿namespace Probel.Gehova.Business.Models
 {
-    public class PersonCategoryModel : BaseModel
+    public class CategoryModel : BaseModel
     {
         #region Properties
 

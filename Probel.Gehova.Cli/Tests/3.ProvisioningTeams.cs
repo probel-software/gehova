@@ -6,7 +6,7 @@ using System;
 
 namespace Probel.Gehova.Cli.Tests
 {
-    public sealed class TestTeams : ITestCase
+    public sealed class ProvisioningTeams : ITestCase
     {
         #region Fields
 
@@ -17,7 +17,7 @@ namespace Probel.Gehova.Cli.Tests
         #region Properties
 
         public int Order => 3;
-        public string Title => "Teams";
+        public string Title => "Teams (ProvisioningService)";
 
         #endregion Properties
 
@@ -38,7 +38,7 @@ namespace Probel.Gehova.Cli.Tests
             Output.WriteTitle("Get teams");
             DisplayTeams();
 
-            var team = new TeamModel() { Name = Guid.NewGuid().ToString() };
+            var team = new TeamDisplayModel() { Name = Guid.NewGuid().ToString() };
             Output.WriteTitle("Add new team");
             _service.Create(team);
             DisplayTeams();

@@ -6,7 +6,7 @@ using System;
 
 namespace Probel.Gehova.Cli.Tests
 {
-    public sealed class TestPickupRounds : ITestCase
+    public sealed class ProvisioningPickupRounds : ITestCase
     {
         #region Fields
 
@@ -38,7 +38,7 @@ namespace Probel.Gehova.Cli.Tests
             Output.WriteTitle("Get pickup rounds");
             DisplayCategories();
 
-            var pickup = new PickupRoundModel() { Name = Guid.NewGuid().ToString() };
+            var pickup = new PickupRoundDisplayModel() { Name = Guid.NewGuid().ToString() };
             Output.WriteTitle("Add new  pickup round");
             _service.Create(pickup);
             DisplayCategories();

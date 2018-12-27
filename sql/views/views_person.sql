@@ -4,6 +4,7 @@ create view everyone_v as
          , p.first_name as first_name
          , p.last_name  as last_name
          , t.name       as team
+         , t.id         as team_id
          , p.is_lunchtime
          , p.is_reception_morning
          , p.is_reception_evening

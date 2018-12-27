@@ -29,7 +29,7 @@ insert into person(id, first_name, last_name, is_lunchtime, is_reception_morning
 insert into person(id, first_name, last_name, is_lunchtime, is_reception_morning, is_reception_evening, pickup_round_id, team_id) values (2, 'Durant' , 'Luc'      , 0, 1, 1, 0, 1);
 insert into person(id, first_name, last_name, is_lunchtime, is_reception_morning, is_reception_evening, pickup_round_id, team_id) values (3, 'Clause' , 'Zorg'     , 0, 1, 0, 1, 1);
 insert into person(id, first_name, last_name, is_lunchtime, is_reception_morning, is_reception_evening, pickup_round_id, team_id) values (4, 'Laurent', 'Vandeput' , 0, 1, 1, 1, 1);
-insert into person(id, first_name, last_name, is_lunchtime, is_reception_morning, is_reception_evening, pickup_round_id, team_id) values (5, 'Bros'   , 'Mario'    , 0, 1, 0, 1, 1);
+insert into person(id, first_name, last_name, is_lunchtime, is_reception_morning, is_reception_evening, pickup_round_id, team_id) values (5, 'Mario'  , 'Bross'    , 0, 1, 0, 1, 1);
 insert into person(id, first_name, last_name, is_lunchtime, is_reception_morning, is_reception_evening, pickup_round_id, team_id) values (6, 'Luke'   , 'Skywalker', 0, 1, 1, 0, 1);
 --------------------------------------
 -- ABSENCE

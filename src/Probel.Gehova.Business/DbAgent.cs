@@ -23,7 +23,7 @@ namespace Probel.Gehova.Business
             return lastId;
         }
 
-        protected void InTransation(Action<IDbConnection> action)
+        protected TResult InTransaction<TResult>(Func<IDbConnection, TResult> func)
         {
             using (var c = NewConnection())
             {
@@ -31,12 +31,19 @@ namespace Probel.Gehova.Business
                 Log.Trace("Start transaction");
                 using (var t = c.BeginTransaction())
                 {
-                    action(c);
+                    var result = func(c);
                     Log.Trace("Commiting transaction...");
                     t.Commit();
+                    return result;
                 }
             }
         }
+
+        protected void InTransaction(Action<IDbConnection> action) => InTransaction(c =>
+        {
+            action(c);
+            return 0;
+        });
 
         protected IDbConnection NewConnection()
         {

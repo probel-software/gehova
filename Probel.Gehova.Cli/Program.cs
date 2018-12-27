@@ -2,44 +2,12 @@
 using NLog.Config;
 using NLog.Targets;
 using Probel.Gehova.Cli.Helpers;
-using Probel.Gehova.Cli.Tests;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Probel.Gehova.Cli
 {
     internal class Program
     {
         #region Methods
-
-        private static IEnumerable<ITestCase> GetTestCases()
-        {
-            var testCases = (from t in typeof(ITestCase).Assembly.GetTypes()
-                             where typeof(ITestCase).IsAssignableFrom(t)
-                             && t.IsInterface == false
-                             select t);
-
-            var instances = new List<ITestCase>();
-            foreach (var testCase in testCases)
-            {
-                if (Activator.CreateInstance(testCase) is ITestCase instance) { instances.Add(instance); }
-            }
-
-            return instances.OrderBy(e=>e.Order);
-        }
-
-        private static void Main(string[] args)
-        {
-            ConfigureLog();
-            foreach (var testCase in GetTestCases())
-            {
-                Output.WriteBigTitle(testCase.Title);
-                testCase.Execute();
-            }
-
-            Pause();
-        }
 
         private static void ConfigureLog()
         {
@@ -52,11 +20,17 @@ namespace Probel.Gehova.Cli
             LogManager.Configuration = config;
         }
 
-        private static void Pause()
+
+        private static void Main(string[] args)
         {
-            Console.WriteLine();
-            Console.WriteLine("Press <ENTER> to sontinue...");
-            Console.ReadLine();
+            ConfigureLog();
+
+            Output.WriteLine("Clearing data...");
+            TestCaseManager.ResetData();
+            Output.WriteLine("Executing Test case(s)");
+            TestCaseManager.ExecuteLast();
+
+            Output.Pause();
         }
 
         #endregion Methods

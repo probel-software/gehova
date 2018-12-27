@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Probel.Gehova.Cli.Tests
 {
-    public class TestPeopleUpdate : ITestCase
+    public class ProvisioningPeopleUpdate : ITestCase
     {
         #region Fields
 
@@ -42,7 +42,7 @@ namespace Probel.Gehova.Cli.Tests
                 IsReceptionEvening = false,
                 IsReceptionMorning = false,
                 PickupRound = pickupRound,
-                Categories = new List<PersonCategoryModel> { category1 },
+                Categories = new List<CategoryModel> { category1 },
                 Team = team
             };
             _service.Create(person);
@@ -59,7 +59,7 @@ namespace Probel.Gehova.Cli.Tests
             person.IsReceptionEvening = true;
             person.IsReceptionMorning = true;
             person.Team = team2;
-            person.Categories = new List<PersonCategoryModel> { category2 };
+            person.Categories = new List<CategoryModel> { category2 };
 
             _service.Update(person);
             DisplayPeople();

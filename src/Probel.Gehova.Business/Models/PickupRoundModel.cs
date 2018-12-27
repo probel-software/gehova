@@ -1,11 +1,9 @@
-﻿namespace Probel.Gehova.Business.Models
+﻿using System.Collections.Generic;
+
+namespace Probel.Gehova.Business.Models
 {
-    public class PickupRoundModel : BaseModel
+    public class PickupRoundModel : PickupRoundDisplayModel
     {
-        #region Properties
-
-        public string Name { get; set; }
-
-        #endregion Properties
+        public IList<PersonDisplayModel> People { get; set; }
     }
 }

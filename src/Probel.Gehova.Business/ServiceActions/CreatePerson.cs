@@ -18,16 +18,16 @@ namespace Probel.Gehova.Business.ServiceActions
 
         #region Methods
 
-        private IEnumerable<PersonCategoryModel> GetCategories(IDbConnection c)
+        private IEnumerable<CategoryModel> GetCategories(IDbConnection c)
         {
             var list = GetCategoriesOfPerson(c);
-            if (list == null) { list = new List<PersonCategoryModel>(); }
+            if (list == null) { list = new List<CategoryModel>(); }
 
             Log.Trace(list?.Dump());
             return list;
         }
 
-        private IEnumerable<PersonCategoryModel> GetCategoriesOfPerson(IDbConnection c)
+        private IEnumerable<CategoryModel> GetCategoriesOfPerson(IDbConnection c)
         {
             var sql = @"
                 select id
@@ -35,13 +35,13 @@ namespace Probel.Gehova.Business.ServiceActions
                      , display
                  from category 
                  where id  in @ids";
-            var result = c.Query<PersonCategoryModel>(sql, new { ids = Context.Categories.Select(i => i.Id) });
+            var result = c.Query<CategoryModel>(sql, new { ids = Context.Categories.Select(i => i.Id) });
 
             Log.Trace(result?.Dump());
             return result;
         }
 
-        private PickupRoundModel GetPickupRound(IDbConnection c)
+        private PickupRoundDisplayModel GetPickupRound(IDbConnection c)
         {
             if (Context?.PickupRound?.Id == null) { return null; }
             else
@@ -51,14 +51,14 @@ namespace Probel.Gehova.Business.ServiceActions
                      , name as name
                 from pickup_round
                 where id = @id";
-                var result = c.Query<PickupRoundModel>(sql, new { id = Context.PickupRound.Id })
+                var result = c.Query<PickupRoundDisplayModel>(sql, new { id = Context.PickupRound.Id })
                               .FirstOrDefault();
                 Log.Trace(result?.Dump());
                 return result;
             }
         }
 
-        private TeamModel GetTeam(IDbConnection c)
+        private TeamDisplayModel GetTeam(IDbConnection c)
         {
             if (Context?.Team?.Id == null) { return null; }
             else
@@ -68,7 +68,7 @@ namespace Probel.Gehova.Business.ServiceActions
                      , name as name
                 from team
                 where id = @id";
-                var result = c.Query<TeamModel>(sql, new { id = Context.Team.Id })
+                var result = c.Query<TeamDisplayModel>(sql, new { id = Context.Team.Id })
                               .FirstOrDefault();
                 Log.Trace(result?.Dump());
                 return result;
@@ -80,7 +80,7 @@ namespace Probel.Gehova.Business.ServiceActions
             if (Context == null) { throw new NotSupportedException($"The context is not configured. Please set the property Context."); }
             else
             {
-                InTransation(c =>
+                InTransaction(c =>
                 {
                     var categories = GetCategories(c);
                     var pickupRound = GetPickupRound(c);

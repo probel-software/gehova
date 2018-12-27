@@ -7,43 +7,43 @@ namespace Probel.Gehova.Business.Services
     {
         #region Methods
 
-        void Create(TeamModel team);
+        void Create(TeamDisplayModel team);
 
-        void Create(PersonCategoryModel category);
+        void Create(CategoryModel category);
 
-        void Create(PickupRoundModel pickup);
+        void Create(PickupRoundDisplayModel pickup);
 
         void Create(PersonModel person);
 
-        IEnumerable<PersonCategoryModel> GetCategories();
+        IEnumerable<CategoryModel> GetCategories();
 
-        PersonCategoryModel GetCategory(long id);
+        CategoryModel GetCategory(long id);
 
-        IEnumerable<PersonDisplayModel> GetPeople();
+        IEnumerable<PersonFullDisplayModel> GetPeople();
 
-        PickupRoundModel GetPickupRound(long id);
+        PickupRoundDisplayModel GetPickupRound(long id);
 
-        IEnumerable<PickupRoundModel> GetPickupRounds();
+        IEnumerable<PickupRoundDisplayModel> GetPickupRounds();
 
-        TeamModel GetTeam(long id);
+        TeamDisplayModel GetTeam(long id);
 
-        IEnumerable<TeamModel> GetTeams();
+        IEnumerable<TeamDisplayModel> GetTeams();
 
-        void Remove(TeamModel team);
+        void Remove(TeamDisplayModel team);
 
-        void Remove(PersonCategoryModel category);
+        void Remove(CategoryModel category);
 
-        void Remove(PickupRoundModel pickup);
+        void Remove(PickupRoundDisplayModel pickup);
 
         void Remove(PersonModel person);
 
         void Update(PersonModel person);
 
-        void Update(TeamModel team);
+        void Update(TeamDisplayModel team);
 
-        void Update(PersonCategoryModel category);
+        void Update(CategoryModel category);
 
-        void Update(PickupRoundModel pickup);
+        void Update(PickupRoundDisplayModel pickup);
 
         #endregion Methods
     }
