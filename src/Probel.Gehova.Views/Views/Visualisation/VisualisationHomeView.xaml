@@ -1,0 +1,24 @@
+﻿<Page
+    x:Class="Probel.Gehova.Views.Views.Visualisation.VisualisationHomeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Probel.Gehova.Views.Views.Visualisation"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+
+    <Grid>
+        <Pivot x:Uid="Pivot_User">
+            <PivotItem x:Uid="PivotItem_ReceptionMorning">
+                <TextBlock Text="all emails go here." />
+            </PivotItem>
+            <PivotItem x:Uid="PivotItem_LunchTime">
+                <TextBlock Text="unread emails go here." />
+            </PivotItem>
+            <PivotItem x:Uid="PivotItem_ReceptionEvening">
+                <TextBlock Text="flagged emails go here." />
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</Page>

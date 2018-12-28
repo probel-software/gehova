@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Probel.Gehova.Business\Probel.Gehova.Business.csproj" />
+    <ProjectReference Include="..\Probel.Gehova.Business\Probel.Gehova.Business.csproj" />
   </ItemGroup>
 
 </Project>

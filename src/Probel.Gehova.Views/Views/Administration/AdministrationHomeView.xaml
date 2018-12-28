@@ -1,0 +1,25 @@
+﻿<Page
+    x:Class="Probel.Gehova.Views.Views.Administration.AdministrationHomeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Probel.Gehova.Views.Views.Administration"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+
+    <Grid>
+        <Pivot x:Uid="Pivot_Admin">
+            <PivotItem x:Uid="PivotItem_Person">
+                <GridView />
+            </PivotItem>
+            <PivotItem x:Uid="PivotItem_PickupRound">
+                <GridView />
+            </PivotItem>
+            <PivotItem x:Uid="PivotItem_Teams">
+                <GridView />
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</Page>
