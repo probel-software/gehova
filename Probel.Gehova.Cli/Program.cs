@@ -15,11 +15,10 @@ namespace Probel.Gehova.Cli
 
             var logconsole = new ColoredConsoleTarget("logconsole");
 
-            config.AddRule(LogLevel.Warn, LogLevel.Fatal, logconsole);
+            config.AddRule(LogLevel.Trace, LogLevel.Fatal, logconsole);
 
             LogManager.Configuration = config;
         }
-
 
         private static void Main(string[] args)
         {
@@ -29,6 +28,7 @@ namespace Probel.Gehova.Cli
             TestCaseManager.ResetData();
             Output.WriteLine("Executing Test case(s)");
             TestCaseManager.ExecuteLast();
+            //TestCaseManager.ExecuteAll();
 
             Output.Pause();
         }

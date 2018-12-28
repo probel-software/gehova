@@ -6,6 +6,11 @@ delete from pickup_round;
 delete from person;
 delete from absence;
 delete from person_category;
+delete from settings;
+--------------------------------------
+-- SETTIGNS
+--------------------------------------
+insert into settings ("key", "value") values('week_date','2018-12-12');
 --------------------------------------
 -- TEAM
 --------------------------------------
@@ -27,10 +32,10 @@ insert into pickup_round(id, name) values (4, 'RD');
 --------------------------------------
 insert into person(id, first_name, last_name, is_lunchtime, is_reception_morning, is_reception_evening, pickup_round_id, team_id) values (1, 'Robert' , 'Dupont'   , 0, 1, 0, 1, 1);
 insert into person(id, first_name, last_name, is_lunchtime, is_reception_morning, is_reception_evening, pickup_round_id, team_id) values (2, 'Durant' , 'Luc'      , 0, 1, 1, 0, 1);
-insert into person(id, first_name, last_name, is_lunchtime, is_reception_morning, is_reception_evening, pickup_round_id, team_id) values (3, 'Clause' , 'Zorg'     , 0, 1, 0, 1, 1);
-insert into person(id, first_name, last_name, is_lunchtime, is_reception_morning, is_reception_evening, pickup_round_id, team_id) values (4, 'Laurent', 'Vandeput' , 0, 1, 1, 1, 1);
-insert into person(id, first_name, last_name, is_lunchtime, is_reception_morning, is_reception_evening, pickup_round_id, team_id) values (5, 'Mario'  , 'Bross'    , 0, 1, 0, 1, 1);
-insert into person(id, first_name, last_name, is_lunchtime, is_reception_morning, is_reception_evening, pickup_round_id, team_id) values (6, 'Luke'   , 'Skywalker', 0, 1, 1, 0, 1);
+insert into person(id, first_name, last_name, is_lunchtime, is_reception_morning, is_reception_evening, pickup_round_id, team_id) values (3, 'Clause' , 'Zorg'     , 0, 1, 0, 1, 2);
+insert into person(id, first_name, last_name, is_lunchtime, is_reception_morning, is_reception_evening, pickup_round_id, team_id) values (4, 'Laurent', 'Vandeput' , 0, 1, 1, 1, 2);
+insert into person(id, first_name, last_name, is_lunchtime, is_reception_morning, is_reception_evening, pickup_round_id, team_id) values (5, 'Mario'  , 'Bross'    , 0, 1, 0, 1, 3);
+insert into person(id, first_name, last_name, is_lunchtime, is_reception_morning, is_reception_evening, pickup_round_id, team_id) values (6, 'Luke'   , 'Skywalker', 0, 1, 1, 0, 3);
 --------------------------------------
 -- ABSENCE
 --------------------------------------

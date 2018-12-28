@@ -1,0 +1,38 @@
+﻿using Probel.Gehova.Business.Services;
+using Probel.Gehova.Business.ServicesImpl;
+using Probel.Gehova.Cli.Helpers;
+using System;
+
+namespace Probel.Gehova.Cli.Tests
+{
+    public class VisualisationDates : ITestCase
+    {
+        #region Fields
+
+        private readonly IVisualisationService _service = new VisualisationService();
+
+        #endregion Fields
+
+        #region Properties
+
+        public int Order => 9;
+        public string Title => "Visualisation of dates and weeks";
+
+        #endregion Properties
+
+        #region Methods
+
+        public void Execute()
+        {
+            var current = _service.GetSelectedWeek();
+            Output.Write(current);
+
+            _service.SetSelectedWeek(DateTime.Today);
+
+            current = _service.GetSelectedWeek();
+            Output.Write(current);
+        }
+
+        #endregion Methods
+    }
+}

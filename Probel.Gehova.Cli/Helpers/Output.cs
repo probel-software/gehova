@@ -32,6 +32,18 @@ namespace Probel.Gehova.Cli.Helpers
             Console.ReadLine();
         }
 
+        internal static void Write(IEnumerable<WeekDay> rm)
+        {
+            if (rm.Count() == 0) { Console.WriteLine("Nothing to display."); }
+            else
+            {
+                foreach (var i in rm)
+                {
+                    Console.WriteLine($"{i.Day, 9} | {i.Team, 10} | {i.FirstName+ " " +i.LastName, 20}");
+                }
+            }
+        }
+
         public static void Write(TeamDisplayModel model)
         {
             Console.ForegroundColor = ConsoleColor.DarkBlue;
@@ -41,6 +53,8 @@ namespace Probel.Gehova.Cli.Helpers
             if (model == null) { Console.WriteLine("NULL"); }
             else { Console.WriteLine($"[{model.Id}] {model.Name}"); }
         }
+
+        public static void Write(DateTime dateTime) => Console.WriteLine($"Date and time: {dateTime.ToString()}");
 
         public static void Write(TeamModel model)
         {

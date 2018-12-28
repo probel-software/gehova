@@ -4,7 +4,6 @@
     {
         #region Properties
 
-        public string Category { get; set; }
         public bool IsLunchTime { get; set; }
         public bool IsReceptionEvening { get; set; }
         public bool IsReceptionMorning { get; set; }

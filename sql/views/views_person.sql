@@ -19,7 +19,8 @@ create view everyone_v as
 /********************************************************************/
 drop view if exists people_v;
 create view people_v as    
-    select first_name || ' ' || last_name as person_name
+    select first_name 
+         , last_name 
          , team
          , is_lunchtime
          , is_reception_morning
