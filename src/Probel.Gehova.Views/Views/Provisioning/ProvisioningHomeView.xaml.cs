@@ -10,7 +10,7 @@ namespace Probel.Gehova.Views.Views.Provisioning
 
         public ProvisioningHomeView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         #endregion Constructors

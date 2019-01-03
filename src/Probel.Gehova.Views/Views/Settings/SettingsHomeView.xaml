@@ -1,0 +1,158 @@
+﻿<Page
+    x:Class="Probel.Gehova.Views.Views.Administration.SettingsHomeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Probel.Gehova.Views.Settings"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+
+    <Grid>
+        <Pivot x:Uid="Pivot_Admin">
+            <PivotItem x:Uid="PivotItem_Person">
+                <c:MasterDetailsView
+                    x:Name="MasterDetailPeople"
+                    x:Uid="MasterDetailPeople"
+                    CompactModeThresholdWidth="720"
+                    ItemsSource="{Binding People, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                    <c:MasterDetailsView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,8">
+                                <TextBlock FontSize="14" FontWeight="Bold">
+                                    <Run Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Run Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </TextBlock>
+                                <TextBlock Text="{Binding CategoryDisplay}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </c:MasterDetailsView.ItemTemplate>
+                    <c:MasterDetailsView.DetailsTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="50">
+                                <TextBlock
+                                    x:Uid="TbPerson"
+                                    Margin="5,10,0,0"
+                                    FontSize="18"
+                                    FontWeight="Bold" />
+                                <Border
+                                    Height="2"
+                                    Margin="5"
+                                    Background="Gray" />
+                                <TextBox
+                                    x:Uid="TbPersonEditorFirstName"
+                                    Margin="5"
+                                    Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                <TextBox
+                                    x:Uid="TbPersonEditorLastName"
+                                    Margin="5"
+                                    Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                <TextBlock
+                                    x:Uid="TbCategory"
+                                    Margin="5,10,0,0"
+                                    FontSize="18"
+                                    FontWeight="Bold" />
+                                <Border
+                                    Height="2"
+                                    Margin="5"
+                                    Background="Gray" />
+                                <c:DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Categories}">
+                                    <c:DataGrid.Columns>
+                                        <c:DataGridCheckBoxColumn Width="35" Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                        <c:DataGridTextColumn
+                                            x:Uid="Column_Category"
+                                            Width="*"
+                                            Binding="{Binding Name}"
+                                            IsReadOnly="True" />
+                                    </c:DataGrid.Columns>
+                                </c:DataGrid>
+                            </StackPanel>
+                        </DataTemplate>
+                    </c:MasterDetailsView.DetailsTemplate>
+                    <c:MasterDetailsView.NoSelectionContentTemplate>
+                        <DataTemplate>
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <SymbolIcon RenderTransformOrigin=".5,.5" Symbol="ContactInfo">
+                                    <SymbolIcon.RenderTransform>
+                                        <CompositeTransform ScaleX="2" ScaleY="2" />
+                                    </SymbolIcon.RenderTransform>
+                                </SymbolIcon>
+                                <TextBlock
+                                    Margin="0,12"
+                                    FontSize="24"
+                                    Text="{Binding}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </c:MasterDetailsView.NoSelectionContentTemplate>
+                    <c:MasterDetailsView.MasterCommandBar>
+                        <CommandBar>
+                            <AppBarButton
+                                x:Uid="ButtonAdd"
+                                Command="{Binding CreatePersonCommand}"
+                                CommandParameter="{Binding ElementName=MasterDetailPeople, Path=SelectedItem}"
+                                Icon="Add" />
+                            <AppBarButton
+                                x:Uid="ButtonRefresh"
+                                Command="{Binding RefreshCommand}"
+                                Icon="Refresh" />
+                        </CommandBar>
+                    </c:MasterDetailsView.MasterCommandBar>
+                    <c:MasterDetailsView.DetailsCommandBar>
+                        <CommandBar>
+                            <AppBarButton
+                                x:Uid="ButtonSave"
+                                Command="{Binding UpdatePersonCommand}"
+                                CommandParameter="{Binding ElementName=MasterDetailPeople, Path=SelectedItem}"
+                                Icon="Save" />
+                            <AppBarButton
+                                x:Uid="ButtonRemove"
+                                Command="{Binding RemovePersonCommand}"
+                                CommandParameter="{Binding ElementName=MasterDetailPeople, Path=SelectedItem}"
+                                Icon="Remove" />
+                        </CommandBar>
+                    </c:MasterDetailsView.DetailsCommandBar>
+                </c:MasterDetailsView>
+            </PivotItem>
+            <PivotItem x:Uid="PivotItem_PickupRound">
+                <c:DataGrid
+                    x:Name="DgPickupRounds"
+                    Margin="12"
+                    AutoGenerateColumns="False"
+                    CellEditEnded="DgPickupRounds_CellEditEnded"
+                    ItemsSource="{Binding PickupRounds}">
+                    <c:DataGrid.Columns>
+                        <c:DataGridTextColumn
+                            x:Uid="Column_PickupRound"
+                            Width="*"
+                            Binding="{Binding Name}" />
+                    </c:DataGrid.Columns>
+                </c:DataGrid>
+            </PivotItem>
+            <PivotItem x:Uid="PivotItem_Teams">
+                <c:DataGrid
+                    x:Name="DgTeams"
+                    Margin="12"
+                    AutoGenerateColumns="False"
+                    CellEditEnded="DgTeams_CellEditEnded"
+                    ItemsSource="{Binding Teams}">
+                    <c:DataGrid.Columns>
+                        <c:DataGridTextColumn
+                            x:Uid="Column_Team"
+                            Width="*"
+                            Binding="{Binding Name}" />
+                    </c:DataGrid.Columns>
+                </c:DataGrid>
+            </PivotItem>
+        </Pivot>
+        <c:InAppNotification
+            x:Name="InAppNotification"
+            AnimationDuration="00:00:00.1000000"
+            Content="{Binding Message}"
+            HorizontalOffset="0"
+            ShowDismissButton="True"
+            StackMode="Replace"
+            VerticalOffset="100" />
+    </Grid>
+</Page>

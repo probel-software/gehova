@@ -1,4 +1,5 @@
-﻿using Probel.Gehova.Views.Views.Administration;
+﻿using Probel.Gehova.Views.Infrastructure;
+using Probel.Gehova.Views.Views.Administration;
 using Probel.Gehova.Views.Views.Provisioning;
 using Probel.Gehova.Views.Views.Visualisation;
 using System;
@@ -15,7 +16,10 @@ namespace Probel.Gehova.Views
     {
         #region Constructors
 
-        public MainPage() => InitializeComponent();
+        public MainPage()
+        {
+            InitializeComponent();
+        }
 
         #endregion Constructors
 
@@ -23,14 +27,15 @@ namespace Probel.Gehova.Views
 
         private void OnRootNavigation(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
+            var nav = Navigator.GetInstance(contentFrame);
             Type destination;
 
-            if (args.SelectedItem == UserView) { destination = typeof(VisualisationHomeView); }
+            if (args.IsSettingsSelected) { destination = typeof(SettingsHomeView); }
+            else if (args.SelectedItem == UserView) { destination = typeof(VisualisationHomeView); }
             else if (args.SelectedItem == ProvisioningView) { destination = typeof(ProvisioningHomeView); }
-            else if (args.SelectedItem == AdminView) { destination = typeof(AdministrationHomeView); }
             else { throw new NotSupportedException($"Menu '{args.SelectedItem.GetType()}' is not yet supported"); }
 
-            contentFrame.Navigate(destination);
+            nav.Navigate(destination);
         }
 
         #endregion Methods

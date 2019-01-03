@@ -11,6 +11,8 @@ namespace Probel.Gehova.Business.Services
 
         IEnumerable<AbsenceDisplayModel> GetAbsences();
 
+        IEnumerable<PersonDisplayModel> GetPeople();
+
         PersonDisplayModel GetPerson(long id);
 
         PickupRoundModel GetPickupRound(long id);

@@ -1,10 +1,10 @@
 ﻿namespace Probel.Gehova.Business.ServiceActions
 {
-    internal interface IServiceAction<TContext>
+    public interface IServiceAction<TContext>
     {
         #region Methods
 
-        void Execute();
+        object Execute();
 
         IServiceAction<TContext> WithContext(TContext context);
 

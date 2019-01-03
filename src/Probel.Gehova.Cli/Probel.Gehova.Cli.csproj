@@ -13,4 +13,12 @@
     <ProjectReference Include="..\Probel.Gehova.Business\Probel.Gehova.Business.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Assets\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\sql\test_data.sql" Link="Assets\test_data.sql" />
+  </ItemGroup>
+
 </Project>

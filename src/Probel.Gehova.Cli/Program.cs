@@ -27,8 +27,9 @@ namespace Probel.Gehova.Cli
             Output.WriteLine("Clearing data...");
             TestCaseManager.ResetData();
             Output.WriteLine("Executing Test case(s)");
-            TestCaseManager.ExecuteLast();
+            //TestCaseManager.ExecuteLast();
             //TestCaseManager.ExecuteAll();
+            TestCaseManager.Execute(04);
 
             Output.Pause();
         }

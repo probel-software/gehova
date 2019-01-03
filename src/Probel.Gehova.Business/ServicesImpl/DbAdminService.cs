@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Probel.Gehova.Business.Db;
 using Probel.Gehova.Business.Services;
 using System.IO;
 
@@ -6,16 +7,23 @@ namespace Probel.Gehova.Business.ServicesImpl
 {
     public class DbAdminService : DbAgent, IDbAdminService
     {
+        #region Constructors
+
+        public DbAdminService(IDbLocator dbLocator) : base(dbLocator)
+        {
+        }
+
+        #endregion Constructors
+
         #region Methods
 
-        public void ExecuteScript(string path) => InTransaction(c =>
+        public void ExecuteScript(string sql) => InTransaction(c =>
         {
-            if (File.Exists(path))
+            if (string.IsNullOrWhiteSpace(sql)) { throw new FileNotFoundException($"The SQL script is empty."); }
+            else
             {
-                var sql = File.ReadAllText(path);
                 c.Execute(sql);
             }
-            else { throw new FileNotFoundException($"The SQL script file not found. Specified path '{path}'."); }
         });
 
         #endregion Methods

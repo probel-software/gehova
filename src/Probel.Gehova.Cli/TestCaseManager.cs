@@ -1,4 +1,6 @@
-﻿using Probel.Gehova.Business.ServicesImpl;
+﻿using Probel.Gehova.Business.Db;
+using Probel.Gehova.Business.Helpers;
+using Probel.Gehova.Business.ServicesImpl;
 using Probel.Gehova.Cli.Helpers;
 using Probel.Gehova.Cli.Tests;
 using System;
@@ -46,15 +48,6 @@ namespace Probel.Gehova.Cli
             return instances.OrderBy(e => e.Order);
         }
 
-        public static void ExecuteAll()
-        {
-            foreach (var testCase in TestCases)
-            {
-                Output.WriteBigTitle(testCase.Title);
-                testCase.Execute();
-            }
-        }
-
         public static void Execute(int order)
         {
             var testcase = (from t in TestCases
@@ -71,6 +64,15 @@ namespace Probel.Gehova.Cli
             }
         }
 
+        public static void ExecuteAll()
+        {
+            foreach (var testCase in TestCases)
+            {
+                Output.WriteBigTitle(testCase.Title);
+                testCase.Execute();
+            }
+        }
+
         public static void ExecuteLast()
         {
             var testcase = (from t in TestCases
@@ -83,10 +85,15 @@ namespace Probel.Gehova.Cli
 
         public static void ResetData()
         {
-            var script = @"D:\Projects\gehova\sql\test_data.sql";
-            var service = new DbAdminService();
-            service.ExecuteScript(script);
+            var rn = "Probel.Gehova.Cli.Assets.test_data.sql";
+            var sql = new AssetManager(typeof(TestCaseManager))
+                                     .GetScript(rn);
+
+            var dbl = new MyDocumentLocator();
+            var service = new DbAdminService(dbl);
+            service.ExecuteScript(sql);
         }
+
         #endregion Methods
     }
 }

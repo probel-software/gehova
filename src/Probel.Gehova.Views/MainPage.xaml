@@ -7,7 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
-    <NavigationView x:Name="rootNavigation" SelectionChanged="OnRootNavigation">
+    <NavigationView
+        x:Name="rootNavigation"
+        IsBackButtonVisible="Collapsed"
+        IsPaneOpen="False"
+        PaneTitle="Gehova"
+        SelectionChanged="OnRootNavigation">
         <NavigationView.MenuItems>
             <NavigationViewItem
                 x:Name="UserView"
@@ -17,10 +22,6 @@
                 x:Name="ProvisioningView"
                 x:Uid="Menu_Provisioning"
                 Icon="People" />
-            <NavigationViewItem
-                x:Name="AdminView"
-                x:Uid="Menu_Admin"
-                Icon="Admin" />
         </NavigationView.MenuItems>
         <Frame x:Name="contentFrame" />
     </NavigationView>

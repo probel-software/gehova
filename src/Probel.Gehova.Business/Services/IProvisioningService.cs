@@ -15,11 +15,15 @@ namespace Probel.Gehova.Business.Services
 
         void Create(PersonModel person);
 
+        void Create(PersonFullDisplayModel personFullDisplayModel);
+
         IEnumerable<CategoryModel> GetCategories();
 
         CategoryModel GetCategory(long id);
 
         IEnumerable<PersonFullDisplayModel> GetPeople();
+
+        PersonDisplayModel GetPerson(long id);
 
         PickupRoundDisplayModel GetPickupRound(long id);
 
@@ -44,6 +48,8 @@ namespace Probel.Gehova.Business.Services
         void Update(CategoryModel category);
 
         void Update(PickupRoundDisplayModel pickup);
+
+        void Update(PersonFullDisplayModel person);
 
         #endregion Methods
     }

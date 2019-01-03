@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Probel.Gehova.Business.Db;
 using Probel.Gehova.Business.Models;
 using Probel.Gehova.Business.ServiceActions;
 using Probel.Gehova.Business.Services;
@@ -9,6 +10,14 @@ namespace Probel.Gehova.Business.ServicesImpl
 {
     public class ProvisioningService : DbAgent, IProvisioningService
     {
+        #region Constructors
+
+        public ProvisioningService(IDbLocator dbLocator) : base(dbLocator)
+        {
+        }
+
+        #endregion Constructors
+
         #region Methods
 
         public void Create(TeamDisplayModel team) => InTransaction(c =>
@@ -40,19 +49,30 @@ namespace Probel.Gehova.Business.ServicesImpl
                 Log.Info("No person to add. Specified person id NULL");
                 return;
             }
-            if (person?.PickupRound == null)
-            {
-                Log.Debug("No pickup round for the person.");
-                return;
-            }
             if (person?.Categories == null || person?.Categories?.Count() == 0)
             {
                 Log.Debug("No category for the person.");
                 return;
             }
-            new CreatePerson()
+            new CreatePerson(DbLocator)
                 .WithContext(person)
                 .Execute();
+        }
+
+        public void Create(PersonFullDisplayModel person)
+        {
+            var categories = new List<CategoryModel>();
+            foreach (var catId in person.CategoryIds) { categories.Add(new CategoryModel { Id = catId }); }
+            var p = new PersonModel
+            {
+                FirstName = person.FirstName,
+                LastName = person.LastName,
+                IsLunchTime = person.IsLunchTime,
+                IsReceptionEvening = person.IsReceptionEvening,
+                IsReceptionMorning = person.IsReceptionMorning,
+                Categories = categories,
+            };
+            Create(p);
         }
 
         public IEnumerable<CategoryModel> GetCategories()
@@ -95,6 +115,7 @@ namespace Probel.Gehova.Business.ServicesImpl
                          , first_name           as FirstName
                          , last_name            as LastName
                          , category             as Category
+                         , category_key         as CategoryKey
                          , team                 as Team
                          , is_reception_morning as IsReceptionMorning
                          , is_reception_evening as IsReceptionEvening
@@ -104,6 +125,14 @@ namespace Probel.Gehova.Business.ServicesImpl
                 var result = c.Query<PersonFullDisplayModel>(sql);
                 return result;
             }
+        }
+
+        public PersonDisplayModel GetPerson(long id)
+        {
+            var r = new GetPerson(DbLocator)
+                        .WithContext(new PersonDisplayModel { Id = id })
+                        .Execute();
+            return (PersonDisplayModel)r;
         }
 
         public PickupRoundDisplayModel GetPickupRound(long id)
@@ -228,7 +257,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             {
                 var sql = @"
                     update category
-                    set 
+                    set
                         display = @Display,
                         key     = @Key
                      where id = @Id";
@@ -292,6 +321,31 @@ namespace Probel.Gehova.Business.ServicesImpl
                         )";
                     c.Execute(sql, new { person_id = person.Id, category_id = category.Id });
                 }
+            }
+        });
+
+        public void Update(PersonFullDisplayModel person) => InTransaction(c =>
+        {
+            var sql = @"
+                update person
+                set
+                    first_name = @first_name,
+                    last_name  = @last_name
+                where id = @id";
+            c.Execute(sql, new
+            {
+                first_name = person.FirstName,
+                last_name = person.LastName,
+                id = person.Id
+            });
+
+            sql = @"delete from person_category where person_id = @id";
+            c.Execute(sql, new { id = person.Id });
+
+            sql = @"insert into person_category(person_id, category_id) values (@person_id, @category_id)";
+            foreach (var categoryId in person.CategoryIds)
+            {
+                c.Execute(sql, new { person_id = person.Id, category_id = categoryId });
             }
         });
 

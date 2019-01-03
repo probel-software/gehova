@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Probel.Gehova.Business.Db;
 using Probel.Gehova.Business.Models;
 using Probel.Gehova.Business.Services;
 using System;
@@ -9,6 +10,14 @@ namespace Probel.Gehova.Business.ServicesImpl
 {
     public class VisualisationService : DbAgent, IVisualisationService
     {
+        #region Constructors
+
+        public VisualisationService(IDbLocator dbLocator) : base(dbLocator)
+        {
+        }
+
+        #endregion Constructors
+
         #region Methods
 
         private IEnumerable<WeekDay> GetLunchtime(DateTime? date) => InTransaction(c =>

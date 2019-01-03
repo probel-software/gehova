@@ -1,4 +1,5 @@
-﻿using Probel.Gehova.Business.Models;
+﻿using Probel.Gehova.Business.Db;
+using Probel.Gehova.Business.Models;
 using Probel.Gehova.Business.Services;
 using Probel.Gehova.Business.ServicesImpl;
 using Probel.Gehova.Cli.Helpers;
@@ -10,9 +11,19 @@ namespace Probel.Gehova.Cli.Tests
     {
         #region Fields
 
-        private readonly IUserService _service = new UserService();
+        private readonly IUserService _service;
 
         #endregion Fields
+
+        #region Constructors
+
+        public UserTeams()
+        {
+            var dbl = new MyDocumentLocator();
+            _service = new UserService(dbl);
+        }
+
+        #endregion Constructors
 
         #region Properties
 
@@ -36,7 +47,7 @@ namespace Probel.Gehova.Cli.Tests
             Output.WriteTitle("Update team");
             var team1 = _service.GetTeam(1);
             team1.People.Remove(team1.People[0]);
-            team1.People.Remove(team1.People[1]);
+            //team1.People.Remove(team1.People[1]);
 
             var team2 = _service.GetTeam(2);
             var p = new List<PersonDisplayModel>();

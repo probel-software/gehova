@@ -1,5 +1,7 @@
 ﻿using Dapper;
 using NLog;
+using Probel.Gehova.Business.Db;
+using Probel.Gehova.Business.Helpers;
 using System;
 using System.Data;
 using System.Data.SQLite;
@@ -8,13 +10,57 @@ namespace Probel.Gehova.Business
 {
     public abstract class DbAgent
     {
+        #region Constructors
+
+        public DbAgent(IDbLocator dbLocator)
+        {
+            DbLocator = dbLocator;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
+        protected IDbLocator DbLocator { get; private set; }
         protected ILogger Log { get; } = LogManager.GetLogger("Service");
 
         #endregion Properties
 
         #region Methods
+
+        private void CreateDatabase()
+        {
+            var assetManager = new AssetManager(this);
+            var scripts = new string[]
+            {
+                "Probel.Gehova.Business.Assets.database.sql",
+                "Probel.Gehova.Business.Assets.default_data.sql",
+                "Probel.Gehova.Business.Assets.views_person.sql",
+                "Probel.Gehova.Business.Assets.views_absences.sql",
+                "Probel.Gehova.Business.Assets.views_absence_on_date.sql",
+                "Probel.Gehova.Business.Assets.views_settings.sql"
+            };
+            using (var c = new SQLiteConnection(GetConnectionString()))
+            {
+                c.Open();
+                using (var t = c.BeginTransaction())
+                {
+                    foreach (var script in scripts)
+                    {
+                        var sql = assetManager.GetScript(script);
+                        c.Execute(sql);
+                    }
+                    t.Commit();
+                }
+            };
+        }
+
+        private string GetConnectionString()
+        {
+            var path = DbLocator.GetDatabasePath();
+            var cs = $@"Data Source={path};Version=3;";
+            return cs;
+        }
 
         protected static long GetLastId(IDbConnection c)
         {
@@ -47,8 +93,15 @@ namespace Probel.Gehova.Business
 
         protected IDbConnection NewConnection()
         {
-            var cs = @"Data Source=D:\Binaries\geho_db.db;Version=3;";
+            var cs = GetConnectionString();
             Log.Trace($"Creating new connection at '{cs}'");
+
+            if (!DbLocator.CheckDbExist())
+            {
+                Log.Info($"Database does not exists. Creation using this connection string '{cs}'");
+                CreateDatabase();
+            }
+
             return new SQLiteConnection(cs);
         }
 

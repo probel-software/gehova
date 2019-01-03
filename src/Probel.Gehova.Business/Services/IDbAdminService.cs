@@ -2,6 +2,10 @@
 {
     public interface IDbAdminService
     {
-        void ExecuteScript(string path);
+        #region Methods
+
+        void ExecuteScript(string sql);
+
+        #endregion Methods
     }
 }

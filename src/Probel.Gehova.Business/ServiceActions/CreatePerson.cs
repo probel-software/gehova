@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Probel.Gehova.Business.Db;
 using Probel.Gehova.Business.Helpers;
 using Probel.Gehova.Business.Models;
 using System;
@@ -10,6 +11,14 @@ namespace Probel.Gehova.Business.ServiceActions
 {
     internal class CreatePerson : DbAgent, IServiceAction<PersonModel>
     {
+        #region Constructors
+
+        public CreatePerson(IDbLocator dbLocator) : base(dbLocator)
+        {
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         private PersonModel Context { get; set; }
@@ -33,7 +42,7 @@ namespace Probel.Gehova.Business.ServiceActions
                 select id
                      , ""key""
                      , display
-                 from category 
+                 from category
                  where id  in @ids";
             var result = c.Query<CategoryModel>(sql, new { ids = Context.Categories.Select(i => i.Id) });
 
@@ -75,33 +84,6 @@ namespace Probel.Gehova.Business.ServiceActions
             }
         }
 
-        public void Execute()
-        {
-            if (Context == null) { throw new NotSupportedException($"The context is not configured. Please set the property Context."); }
-            else
-            {
-                InTransaction(c =>
-                {
-                    var categories = GetCategories(c);
-                    var pickupRound = GetPickupRound(c);
-                    var team = GetTeam(c);
-
-                    InsertPerson(c, pickupRound.Id, team.Id);
-                    if (categories != null && categories.Count() > 0)
-                    {
-                        InsertCategories(c, categories.Select(cat => cat.Id));
-                    }
-                    else
-                    {
-                        var t = string.Empty;
-                        categories.ToList().ForEach(i => t += i + ", ");
-                        t.Remove(t.Length - 2, 2);
-                        Log.Warn($"Categories '{t}' do not exist in the database.");
-                    }
-                });
-            }
-        }
-
         private void InsertCategories(IDbConnection c, IEnumerable<long> categoryIds)
         {
             foreach (var categoryId in categoryIds)
@@ -120,20 +102,20 @@ namespace Probel.Gehova.Business.ServiceActions
         {
             var sql = @"
                 insert into person (
-                    first_name, 
-                    last_name, 
-                    is_lunchtime, 
-                    is_reception_morning, 
-                    is_reception_evening, 
-                    pickup_round_id, 
+                    first_name,
+                    last_name,
+                    is_lunchtime,
+                    is_reception_morning,
+                    is_reception_evening,
+                    pickup_round_id,
                     team_id
                 ) values (
-                    @first_name, 
-                    @last_name, 
-                    @is_lunchtime, 
-                    @is_reception_morning, 
-                    @is_reception_evening, 
-                    @pickup_round_id, 
+                    @first_name,
+                    @last_name,
+                    @is_lunchtime,
+                    @is_reception_morning,
+                    @is_reception_evening,
+                    @pickup_round_id,
                     @team_id
                 )";
             c.Execute(sql, new
@@ -147,7 +129,35 @@ namespace Probel.Gehova.Business.ServiceActions
                 team_id = teamId
             });
 
-            Context.Id = GetLastId(c);            
+            Context.Id = GetLastId(c);
+        }
+
+        public object Execute()
+        {
+            if (Context == null) { throw new NotSupportedException($"The context is not configured. Please set the property Context."); }
+            else
+            {
+                InTransaction(c =>
+                {
+                    var categories = GetCategories(c);
+                    var pickupRound = GetPickupRound(c);
+                    var team = GetTeam(c);
+
+                    InsertPerson(c, pickupRound?.Id ?? 0, team?.Id ?? 0);
+                    if (categories != null && categories.Count() > 0)
+                    {
+                        InsertCategories(c, categories.Select(cat => cat.Id));
+                    }
+                    else
+                    {
+                        var t = string.Empty;
+                        categories.ToList().ForEach(i => t += i + ", ");
+                        t.Remove(t.Length - 2, 2);
+                        Log.Warn($"Categories '{t}' do not exist in the database.");
+                    }
+                });
+            }
+            return null;
         }
 
         public IServiceAction<PersonModel> WithContext(PersonModel context)

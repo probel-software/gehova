@@ -11,4 +11,21 @@
     <PackageReference Include="System.Data.SQLite" Version="1.0.109.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Assets\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\sql\database.sql" Link="Assets\database.sql" />
+    <EmbeddedResource Include="..\..\sql\default_data.sql" Link="Assets\default_data.sql" />
+    <EmbeddedResource Include="..\..\sql\views\views_absences.sql" Link="Assets\views_absences.sql" />
+    <EmbeddedResource Include="..\..\sql\views\views_absence_on_date.sql" Link="Assets\views_absence_on_date.sql" />
+    <EmbeddedResource Include="..\..\sql\views\views_person.sql" Link="Assets\views_person.sql" />
+    <EmbeddedResource Include="..\..\sql\views\views_settings.sql" Link="Assets\views_settings.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\sql\test_data.sql" Link="Assets\test_data.sql" />
+  </ItemGroup>
+
 </Project>

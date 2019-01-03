@@ -1,4 +1,5 @@
-﻿using Probel.Gehova.Business.Models;
+﻿using Probel.Gehova.Business.Db;
+using Probel.Gehova.Business.Models;
 using Probel.Gehova.Business.Services;
 using Probel.Gehova.Business.ServicesImpl;
 using Probel.Gehova.Cli.Helpers;
@@ -10,9 +11,19 @@ namespace Probel.Gehova.Cli.Tests
     {
         #region Fields
 
-        private readonly IUserService _service = new UserService();
+        private readonly IUserService _service;
 
         #endregion Fields
+
+        #region Constructors
+
+        public ProvisioningAbsence()
+        {
+            var dbl = new MyDocumentLocator();
+            _service = new UserService(dbl);
+        }
+
+        #endregion Constructors
 
         #region Properties
 
@@ -22,6 +33,16 @@ namespace Probel.Gehova.Cli.Tests
         #endregion Properties
 
         #region Methods
+
+        private void DisplayAbsences()
+        {
+            var absences = _service.GetAbsences();
+            Output.WriteLine("List absences");
+            foreach (var absence in absences)
+            {
+                Output.Write(absence);
+            }
+        }
 
         public void Execute()
         {
@@ -51,16 +72,6 @@ namespace Probel.Gehova.Cli.Tests
             Output.WriteTitle("Delete absence");
             _service.Remove(absence);
             DisplayAbsences();
-        }
-
-        private void DisplayAbsences()
-        {
-            var absences = _service.GetAbsences();
-            Output.WriteLine("List absences");
-            foreach (var absence in absences)
-            {
-                Output.Write(absence);
-            }
         }
 
         #endregion Methods

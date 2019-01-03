@@ -14,8 +14,14 @@ create view everyone_v as
          	inner join category c on pc.category_id = c.id
          	where pc.person_id = p.id
          ) as category
+         , (
+         	select group_concat(c."key", ', ')
+         	from person_category pc
+         	inner join category c on pc.category_id = c.id
+         	where pc.person_id = p.id
+         ) as category_key
     from person p   
-    inner join team t on t.id = p.team_id;
+    left join team t on t.id = p.team_id;
 /********************************************************************/
 drop view if exists people_v;
 create view people_v as    

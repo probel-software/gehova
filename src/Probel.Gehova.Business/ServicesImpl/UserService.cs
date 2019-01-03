@@ -1,5 +1,7 @@
 ﻿using Dapper;
+using Probel.Gehova.Business.Db;
 using Probel.Gehova.Business.Models;
+using Probel.Gehova.Business.ServiceActions;
 using Probel.Gehova.Business.Services;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,14 @@ namespace Probel.Gehova.Business.ServicesImpl
 {
     public class UserService : DbAgent, IUserService
     {
+        #region Constructors
+
+        public UserService(IDbLocator dbLocator) : base(dbLocator)
+        {
+        }
+
+        #endregion Constructors
+
         #region Methods
 
         public void Create(AbsenceModel absence) => InTransaction(c =>
@@ -62,19 +72,28 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
-        public PersonDisplayModel GetPerson(long id)
+        public IEnumerable<PersonDisplayModel> GetPeople()
         {
             using (var c = NewConnection())
             {
                 var sql = @"
-                    select id         as id
-                         , first_name as FirstName
-                         , last_name  as LastName
-                    from person
-                    where id = @id";
-                var person = c.Query<PersonDisplayModel>(sql, new { id });
-                return person.FirstOrDefault();
+                    select id           as id
+                         , first_name   as FirstName
+                         , last_name    as LastName
+                         , category     as Category
+                         , category_key as CategoryKey
+                    from everyone_v";
+                var people = c.Query<PersonDisplayModel>(sql);
+                return people.ToList();
             }
+        }
+
+        public PersonDisplayModel GetPerson(long id)
+        {
+            var r = new GetPerson(DbLocator)
+                      .WithContext(new PersonDisplayModel { Id = id })
+                      .Execute();
+            return (PersonDisplayModel)r;
         }
 
         public PickupRoundModel GetPickupRound(long id)
@@ -219,7 +238,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             c.Execute(sql, new { RoundId = round.Id });
 
             sql = @"
-                update person 
+                update person
                 set
                     pickup_round_id = @RoundId
                 where id in @Ids";
