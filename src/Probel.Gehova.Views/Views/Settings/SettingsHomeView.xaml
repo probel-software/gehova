@@ -17,7 +17,8 @@
                     x:Name="MasterDetailPeople"
                     x:Uid="MasterDetailPeople"
                     CompactModeThresholdWidth="720"
-                    ItemsSource="{Binding People, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                    ItemsSource="{Binding People, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    SelectedItem="{Binding SelectedPerson, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                     <c:MasterDetailsView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="0,8">
@@ -89,12 +90,15 @@
                     <c:MasterDetailsView.MasterCommandBar>
                         <CommandBar>
                             <AppBarButton
-                                x:Uid="ButtonAdd"
-                                Command="{Binding CreatePersonCommand}"
+                                x:Uid="AppButtonAdd"
+                                Margin="0,0,0,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Command="{Binding AddPersonCommand}"
                                 CommandParameter="{Binding ElementName=MasterDetailPeople, Path=SelectedItem}"
                                 Icon="Add" />
                             <AppBarButton
-                                x:Uid="ButtonRefresh"
+                                x:Uid="AppButtonRefresh"
                                 Command="{Binding RefreshCommand}"
                                 Icon="Refresh" />
                         </CommandBar>
@@ -102,12 +106,28 @@
                     <c:MasterDetailsView.DetailsCommandBar>
                         <CommandBar>
                             <AppBarButton
-                                x:Uid="ButtonSave"
+                                x:Uid="AppButtonSave"
                                 Command="{Binding UpdatePersonCommand}"
                                 CommandParameter="{Binding ElementName=MasterDetailPeople, Path=SelectedItem}"
                                 Icon="Save" />
+                            <AppBarButton x:Uid="AppButtonDelete" Icon="Delete">
+                                <Button.Flyout>
+                                    <Flyout>
+                                        <StackPanel>
+                                            <TextBlock
+                                                x:Uid="FlyoutBtn_AskRemove"
+                                                Margin="0,0,0,12"
+                                                Style="{ThemeResource BaseTextBlockStyle}" />
+                                            <Button
+                                                x:Uid="FlyoutBtn_ConfirmRemove"
+                                                Command="{Binding RemovePersonCommand}"
+                                                CommandParameter="{Binding ElementName=MasterDetailPeople, Path=SelectedItem}" />
+                                        </StackPanel>
+                                    </Flyout>
+                                </Button.Flyout>
+                            </AppBarButton>
                             <AppBarButton
-                                x:Uid="ButtonRemove"
+                                x:Uid="AppButtonRemove"
                                 Command="{Binding RemovePersonCommand}"
                                 CommandParameter="{Binding ElementName=MasterDetailPeople, Path=SelectedItem}"
                                 Icon="Remove" />
@@ -116,34 +136,98 @@
                 </c:MasterDetailsView>
             </PivotItem>
             <PivotItem x:Uid="PivotItem_PickupRound">
-                <c:DataGrid
-                    x:Name="DgPickupRounds"
-                    Margin="12"
-                    AutoGenerateColumns="False"
-                    CellEditEnded="DgPickupRounds_CellEditEnded"
-                    ItemsSource="{Binding PickupRounds}">
-                    <c:DataGrid.Columns>
-                        <c:DataGridTextColumn
-                            x:Uid="Column_PickupRound"
-                            Width="*"
-                            Binding="{Binding Name}" />
-                    </c:DataGrid.Columns>
-                </c:DataGrid>
+                <StackPanel>
+                    <CommandBar
+                        Background="Transparent"
+                        DefaultLabelPosition="Right"
+                        IsOpen="False">
+                        <AppBarButton
+                            x:Uid="AppButtonAdd"
+                            Command="{Binding AddPickupRoundCommand}"
+                            Icon="Add" />
+                        <AppBarButton x:Uid="AppButtonDelete" Icon="Delete">
+                            <Button.Flyout>
+                                <Flyout>
+                                    <StackPanel>
+                                        <TextBlock
+                                            x:Uid="FlyoutBtn_AskRemove"
+                                            Margin="0,0,0,12"
+                                            Style="{ThemeResource BaseTextBlockStyle}" />
+                                        <Button
+                                            x:Uid="FlyoutBtn_ConfirmRemove"
+                                            Command="{Binding RemovePickupRoundCommand}"
+                                            CommandParameter="{Binding SelectedRemovePickupRound}" />
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </AppBarButton>
+                        <AppBarButton
+                            x:Uid="ButtonRefresh"
+                            Command="{Binding RefreshCommand}"
+                            Icon="Refresh" />
+                    </CommandBar>
+                    <c:DataGrid
+                        x:Name="DgPickupRounds"
+                        Margin="12"
+                        AutoGenerateColumns="False"
+                        CellEditEnded="DgPickupRounds_CellEditEnded"
+                        ItemsSource="{Binding PickupRounds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        SelectedItem="{Binding ElementName=DgPickupRounds, Path=DataContext.SelectedPickupRound, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                        <c:DataGrid.Columns>
+                            <c:DataGridTextColumn
+                                x:Uid="Column_PickupRound"
+                                Width="*"
+                                Binding="{Binding Name}" />
+                        </c:DataGrid.Columns>
+                    </c:DataGrid>
+                </StackPanel>
             </PivotItem>
             <PivotItem x:Uid="PivotItem_Teams">
-                <c:DataGrid
-                    x:Name="DgTeams"
-                    Margin="12"
-                    AutoGenerateColumns="False"
-                    CellEditEnded="DgTeams_CellEditEnded"
-                    ItemsSource="{Binding Teams}">
-                    <c:DataGrid.Columns>
-                        <c:DataGridTextColumn
-                            x:Uid="Column_Team"
-                            Width="*"
-                            Binding="{Binding Name}" />
-                    </c:DataGrid.Columns>
-                </c:DataGrid>
+                <StackPanel>
+                    <CommandBar
+                        Background="Transparent"
+                        DefaultLabelPosition="Right"
+                        IsOpen="False">
+                        <AppBarButton
+                            x:Uid="AppButtonAdd"
+                            Command="{Binding AddTeamCommand}"
+                            Icon="Add" />
+                        <AppBarButton x:Uid="AppButtonDelete" Icon="Delete">
+                            <Button.Flyout>
+                                <Flyout>
+                                    <StackPanel>
+                                        <TextBlock
+                                            x:Uid="FlyoutBtn_AskRemove"
+                                            Margin="0,0,0,12"
+                                            Style="{ThemeResource BaseTextBlockStyle}" />
+                                        <Button
+                                            x:Uid="FlyoutBtn_ConfirmRemove"
+                                            Command="{Binding RemoveTeamCommand}"
+                                            CommandParameter="{Binding SelectedTeam}" />
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </AppBarButton>
+                        <AppBarButton
+                            x:Uid="AppButtonRefresh"
+                            Command="{Binding RefreshCommand}"
+                            Icon="Refresh" />
+                    </CommandBar>
+                    <c:DataGrid
+                        x:Name="DgTeams"
+                        Margin="12"
+                        AutoGenerateColumns="False"
+                        CellEditEnded="DgTeams_CellEditEnded"
+                        ItemsSource="{Binding Teams, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        SelectedItem="{Binding ElementName=DgTeams, Path=DataContext.SelectedTeam, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                        <c:DataGrid.Columns>
+                            <c:DataGridTextColumn
+                                x:Uid="Column_Team"
+                                Width="*"
+                                Binding="{Binding Name}" />
+                        </c:DataGrid.Columns>
+                    </c:DataGrid>
+                </StackPanel>
             </PivotItem>
         </Pivot>
         <c:InAppNotification

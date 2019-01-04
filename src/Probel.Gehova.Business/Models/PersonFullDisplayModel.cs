@@ -10,7 +10,10 @@ namespace Probel.Gehova.Business.Models
         public bool IsLunchTime { get; set; }
         public bool IsReceptionEvening { get; set; }
         public bool IsReceptionMorning { get; set; }
+        public string PickupRound { get; set; }
+        public long PickupRoundId { get; set; }
         public string Team { get; set; }
+        public long TeamId { get; set; }
 
         #endregion Properties
 

@@ -15,10 +15,54 @@
                 <TextBlock Text="all emails go here." />
             </PivotItem>
             <PivotItem x:Uid="PivotItem_PickupRound">
-                <TextBlock Text="unread emails go here." />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <ComboBox
+                        DisplayMemberPath="Name"
+                        ItemsSource="{x:Bind ViewModel.PickupRounds}"
+                        SelectedIndex="0"
+                        SelectedItem="{x:Bind ViewModel.SelectedPickupRound, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    <ListView
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        ItemsSource="{x:Bind ViewModel.PeopleNotInAnyPickupRound, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    <ListView
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        ItemsSource="{x:Bind ViewModel.PeopleInCurrentPickupRound, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                </Grid>
             </PivotItem>
             <PivotItem x:Uid="PivotItem_Teams">
-                <TextBlock Text="flagged emails go here." />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <ComboBox
+                        DisplayMemberPath="Name"
+                        ItemsSource="{x:Bind ViewModel.Teams}"
+                        SelectedIndex="0"
+                        SelectedItem="{x:Bind ViewModel.SelectedTeam, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    <ListView
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        ItemsSource="{x:Bind ViewModel.PeopleNotInAnyTeam, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    <ListView
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        ItemsSource="{x:Bind ViewModel.PeopleInCurrentTeam, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                </Grid>
             </PivotItem>
         </Pivot>
     </Grid>

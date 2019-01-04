@@ -117,6 +117,7 @@ namespace Probel.Gehova.Business.ServicesImpl
                          , category             as Category
                          , category_key         as CategoryKey
                          , team                 as Team
+                         , team_id              as TeamId
                          , is_reception_morning as IsReceptionMorning
                          , is_reception_evening as IsReceptionEvening
                          , is_lunchtime         as IsLunchTime
@@ -226,7 +227,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
-        public void Remove(PersonModel person) => InTransaction(c =>
+        public void Remove(PersonDisplayModel person) => InTransaction(c =>
         {
             var sql = @"
                     delete from person_category

@@ -40,8 +40,10 @@ namespace Probel.Gehova.Views.Infrastructure
             {
                 _container.RegisterType<IUserService, UserService>();
                 _container.RegisterType<IProvisioningService, ProvisioningService>();
+                _container.RegisterType<IVisualisationService, VisualisationService>();
                 _container.RegisterType<IDbLocator, UwpDbLocator>();
                 _container.RegisterType<IDataReset, DataReset>();
+                _container.RegisterType<IProvisioningService, ProvisioningService>();
                 _container.RegisterType<ILogger>(new InjectionFactory(l => LogManager.GetCurrentClassLogger()));
                 //----
                 _isLoaded = true;

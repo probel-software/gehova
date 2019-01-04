@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Probel.Gehova.ViewModels.Visualisation.WeekViewModel" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Members>
+      <Field Name="_days" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAIAAAAAA=</HashCode>
+      <FileName>Visualisation\WeekViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Days" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Probel.Gehova.ViewModels.Visualisation.DayViewModel">
+    <Position X="2.5" Y="1.25" Width="1.5" />
+    <Members>
+      <Field Name="_day" Hidden="true" />
+      <Field Name="_teams" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAACgAAIAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Visualisation\DayViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Teams" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Probel.Gehova.ViewModels.Visualisation.TeamViewModel">
+    <Position X="4.5" Y="2.5" Width="1.5" />
+    <Members>
+      <Field Name="_people" Hidden="true" />
+      <Field Name="_team" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAIAAAAAAAAAAAAACAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Visualisation\TeamViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="People" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Probel.Gehova.ViewModels.Visualisation.PersonViewModel">
+    <Position X="6.25" Y="4" Width="1.5" />
+    <Members>
+      <Field Name="_firstName" Hidden="true" />
+      <Field Name="_lastName" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAEAAEAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Visualisation\PersonViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

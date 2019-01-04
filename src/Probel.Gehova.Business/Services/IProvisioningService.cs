@@ -39,7 +39,7 @@ namespace Probel.Gehova.Business.Services
 
         void Remove(PickupRoundDisplayModel pickup);
 
-        void Remove(PersonModel person);
+        void Remove(PersonDisplayModel person);
 
         void Update(PersonModel person);
 

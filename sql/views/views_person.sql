@@ -5,6 +5,8 @@ create view everyone_v as
          , p.last_name  as last_name
          , t.name       as team
          , t.id         as team_id
+         , pu.name      as pickup_round
+         , pu.id        as pickup_round_id
          , p.is_lunchtime
          , p.is_reception_morning
          , p.is_reception_evening
@@ -21,7 +23,8 @@ create view everyone_v as
          	where pc.person_id = p.id
          ) as category_key
     from person p   
-    left join team t on t.id = p.team_id;
+    left join team t on t.id = p.team_id
+    left join pickup_round pu on pu.id = p.pickup_round_id;
 /********************************************************************/
 drop view if exists people_v;
 create view people_v as    

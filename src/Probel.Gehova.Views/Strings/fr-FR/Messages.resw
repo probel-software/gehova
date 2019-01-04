@@ -120,8 +120,17 @@
   <data name="Info_PersonAdded" xml:space="preserve">
     <value>{0} a été ajouté(e).</value>
   </data>
+  <data name="Info_PersonRemoved" xml:space="preserve">
+    <value>{0} a été supprimé(e).</value>
+  </data>
   <data name="Info_PersonUpdated" xml:space="preserve">
     <value>{0} a été mis(e) à jour.</value>
+  </data>
+  <data name="Info_PickupRoundCreated" xml:space="preserve">
+    <value>La tournée '{0}' a été ajoutée.</value>
+  </data>
+  <data name="Info_PickupRoundRemoved" xml:space="preserve">
+    <value>La tournée '{0}' a été supprimée.</value>
   </data>
   <data name="Info_PickupRoundUpdated" xml:space="preserve">
     <value>La tournée '{0}' a été mise à jour.</value>
@@ -129,13 +138,25 @@
   <data name="Info_PleaseUpdateToSave" xml:space="preserve">
     <value>Veuillez entrer les données pour cette personne ensuite cliquer sur 'Sauver'.</value>
   </data>
+  <data name="Info_TeamCreated" xml:space="preserve">
+    <value>L'équipe '{0}' a été ajoutée.</value>
+  </data>
+  <data name="Info_TeamRemoved" xml:space="preserve">
+    <value>Le groupe '{0}' a été supprimé.</value>
+  </data>
   <data name="Info_TeamUpdated" xml:space="preserve">
     <value>Le groupe '{0}' a été mis à jour.</value>
+  </data>
+  <data name="Info_WeekUpdated" xml:space="preserve">
+    <value>Semaine affichée changée.</value>
   </data>
   <data name="Label_New" xml:space="preserve">
     <value>Nouvelle</value>
   </data>
   <data name="Label_Person" xml:space="preserve">
     <value>personne</value>
+  </data>
+  <data name="Title_SelectedWeek" xml:space="preserve">
+    <value>Semaine affichée: {0}</value>
   </data>
 </root>

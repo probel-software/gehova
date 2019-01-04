@@ -117,17 +117,47 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BtnEditPerson.Content" xml:space="preserve">
-    <value>Editer</value>
-  </data>
-  <data name="ButtonAdd" xml:space="preserve">
+  <data name="AppButtonAdd.Content" xml:space="preserve">
     <value>Ajouter</value>
   </data>
-  <data name="ButtonRemove" xml:space="preserve">
+  <data name="AppButtonAdd.Label" xml:space="preserve">
+    <value>Ajouter</value>
+  </data>
+  <data name="AppButtonChangeWeek.Content" xml:space="preserve">
+    <value>Changer de semaine</value>
+  </data>
+  <data name="AppButtonChangeWeek.Label" xml:space="preserve">
+    <value>Changer de semaine</value>
+  </data>
+  <data name="AppButtonDelete.Content" xml:space="preserve">
     <value>Supprimer</value>
   </data>
-  <data name="ButtonSave.Label" xml:space="preserve">
+  <data name="AppButtonDelete.Label" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="AppButtonRefresh.Content" xml:space="preserve">
+    <value>Rafraîchir</value>
+  </data>
+  <data name="AppButtonRefresh.Label" xml:space="preserve">
+    <value>Rafraîchir</value>
+  </data>
+  <data name="AppButtonRemove.Content" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="AppButtonRemove.Label" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="AppButtonSave.Content" xml:space="preserve">
     <value>Sauver</value>
+  </data>
+  <data name="AppButtonSave.Label" xml:space="preserve">
+    <value>Sauver</value>
+  </data>
+  <data name="ButtonRefresh.Content" xml:space="preserve">
+    <value>Rafraîchir</value>
+  </data>
+  <data name="CdpWeelSelector.Header" xml:space="preserve">
+    <value>Semaine achichée</value>
   </data>
   <data name="Column_Category.Header" xml:space="preserve">
     <value>Catégorie(s)</value>
@@ -152,6 +182,14 @@
   </data>
   <data name="Column_Team.Header" xml:space="preserve">
     <value>Groupe</value>
+  </data>
+  <data name="FlyoutBtn_AskRemove.Text" xml:space="preserve">
+    <value>Etes-vous sûr de vouloir supprimer cet élément?</value>
+    <comment>Work on a textblock.</comment>
+  </data>
+  <data name="FlyoutBtn_ConfirmRemove.Content" xml:space="preserve">
+    <value>Oui, je veux le supprimer!</value>
+    <comment>Works on a button</comment>
   </data>
   <data name="MasterDetailPeople.NoSelectionContent" xml:space="preserve">
     <value>Sélectionnez une personne.</value>
@@ -191,6 +229,9 @@
   </data>
   <data name="Pivot_User.Title" xml:space="preserve">
     <value>Calendriers</value>
+  </data>
+  <data name="RunDisplayedWeek.Text" xml:space="preserve">
+    <value>Semaine du:</value>
   </data>
   <data name="TbCategory.Text" xml:space="preserve">
     <value>Catégories</value>

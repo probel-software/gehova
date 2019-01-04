@@ -78,14 +78,10 @@ namespace Probel.Gehova.Business.ServicesImpl
         {
             using (var c = NewConnection())
             {
-                var sql = @"
-                    select ""key""   as ""Key""
-                         , ""value"" as ""Value""
-                    from settings
-                    where ""key"" = 'week_date'";
+                var sql = @"select monday from settings_weekday_v";
 
-                var strResult = (from e in c.Query<SettingModel>(sql)
-                                 select e.Value).FirstOrDefault();
+                var strResult = c.Query<string>(sql).FirstOrDefault();
+
                 Log.Trace($"Retrieving 'week_date' from settings. ({strResult})");
 
                 return (DateTime.TryParse(strResult, out var dateResult))
