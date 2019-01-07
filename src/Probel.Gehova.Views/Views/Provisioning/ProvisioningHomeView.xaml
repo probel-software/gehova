@@ -8,7 +8,26 @@
     d:DesignHeight="300"
     d:DesignWidth="400"
     mc:Ignorable="d">
-
+    <Page.Resources>
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="5" />
+        </Style>
+        <Style TargetType="ListView">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="DimGray" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="SelectedIndex" Value="0" />
+        </Style>
+        <DataTemplate x:Name="PersonTemplate">
+            <Grid Margin="0,8">
+                <TextBlock FontSize="14" FontWeight="Bold">
+                    <Run Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Run Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </TextBlock>
+                <TextBlock Text="{Binding CategoryDisplay}" />
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
     <Grid>
         <Pivot x:Uid="Pivot_Provisioning">
             <PivotItem x:Uid="PivotItem_Absences">
@@ -27,15 +46,26 @@
                     <ComboBox
                         DisplayMemberPath="Name"
                         ItemsSource="{x:Bind ViewModel.PickupRounds}"
-                        SelectedIndex="0"
                         SelectedItem="{x:Bind ViewModel.SelectedPickupRound, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     <ListView
                         Grid.Row="1"
                         Grid.Column="0"
+                        AllowDrop="True"
+                        CanDragItems="True"
+                        DragItemsStarting="OnDragItemsStarting"
+                        DragOver="OnDragOver"
+                        Drop="PickupRoundSource_Drop"
+                        ItemTemplate="{StaticResource PersonTemplate}"
                         ItemsSource="{x:Bind ViewModel.PeopleNotInAnyPickupRound, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     <ListView
                         Grid.Row="1"
                         Grid.Column="1"
+                        AllowDrop="True"
+                        CanDragItems="True"
+                        DragItemsStarting="OnDragItemsStarting"
+                        DragOver="OnDragOver"
+                        Drop="PickupRoundDestination_Drop"
+                        ItemTemplate="{StaticResource PersonTemplate}"
                         ItemsSource="{x:Bind ViewModel.PeopleInCurrentPickupRound, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                 </Grid>
             </PivotItem>
@@ -52,15 +82,26 @@
                     <ComboBox
                         DisplayMemberPath="Name"
                         ItemsSource="{x:Bind ViewModel.Teams}"
-                        SelectedIndex="0"
                         SelectedItem="{x:Bind ViewModel.SelectedTeam, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     <ListView
                         Grid.Row="1"
                         Grid.Column="0"
+                        AllowDrop="True"
+                        CanDragItems="True"
+                        DragItemsStarting="OnDragItemsStarting"
+                        DragOver="OnDragOver"
+                        Drop="TeamSource_Drop"
+                        ItemTemplate="{StaticResource PersonTemplate}"
                         ItemsSource="{x:Bind ViewModel.PeopleNotInAnyTeam, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     <ListView
                         Grid.Row="1"
                         Grid.Column="1"
+                        AllowDrop="True"
+                        CanDragItems="True"
+                        DragItemsStarting="OnDragItemsStarting"
+                        DragOver="OnDragOver"
+                        Drop="TeamDestination_Drop"
+                        ItemTemplate="{StaticResource PersonTemplate}"
                         ItemsSource="{x:Bind ViewModel.PeopleInCurrentTeam, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                 </Grid>
             </PivotItem>

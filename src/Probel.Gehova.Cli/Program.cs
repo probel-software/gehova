@@ -29,7 +29,7 @@ namespace Probel.Gehova.Cli
             Output.WriteLine("Executing Test case(s)");
             //TestCaseManager.ExecuteLast();
             //TestCaseManager.ExecuteAll();
-            TestCaseManager.Execute(04);
+            TestCaseManager.Execute(2);
 
             Output.Pause();
         }

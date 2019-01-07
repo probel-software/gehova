@@ -47,9 +47,13 @@ namespace Probel.Gehova.Business.Services
 
         void Update(CategoryModel category);
 
+        void Update(PickupRoundModel pickup);
+
         void Update(PickupRoundDisplayModel pickup);
 
         void Update(PersonFullDisplayModel person);
+
+        void Update(TeamModel team);
 
         #endregion Methods
     }

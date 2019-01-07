@@ -118,6 +118,7 @@ namespace Probel.Gehova.Business.ServicesImpl
                          , category_key         as CategoryKey
                          , team                 as Team
                          , team_id              as TeamId
+                         , pickup_round_id      as PickupRoundId
                          , is_reception_morning as IsReceptionMorning
                          , is_reception_evening as IsReceptionEvening
                          , is_lunchtime         as IsLunchTime
@@ -252,6 +253,31 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
+        public void Update(TeamModel team) => InTransaction(c =>
+        {
+            var sql = @"
+                    update team
+                       set name = @Name
+                     where id = @Id";
+            c.Execute(sql, new { team.Id, team.Name });
+
+            sql = @"
+            update person
+            set
+                team_id = null
+            where team_id = @tid";
+
+            c.Execute(sql, new { tid = team.Id });
+
+            sql = @"
+            update person
+            set
+                team_id = @team_id
+            where id in @person_ids";
+            var prid = team.People.Select(e => e.Id).ToList();
+            c.Execute(sql, new { team_id = team.Id, person_ids = prid });
+        });
+
         public void Update(CategoryModel category)
         {
             using (var c = NewConnection())
@@ -266,17 +292,30 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
-        public void Update(PickupRoundDisplayModel pickup)
+        public void Update(PickupRoundModel pickupRound) => InTransaction(c =>
         {
-            using (var c = NewConnection())
-            {
-                var sql = @"
+            var sql = @"
                     update pickup_round
                        set name = @Name
                      where id = @Id";
-                c.Execute(sql, new { pickup.Id, pickup.Name });
-            }
-        }
+            c.Execute(sql, new { pickupRound.Id, pickupRound.Name });
+
+            sql = @"
+            update person
+            set
+                pickup_round_id = null
+            where pickup_round_id = @pid";
+
+            c.Execute(sql, new { pid = pickupRound.Id });
+
+            sql = @"
+            update person
+            set
+                pickup_round_id = @pickup_id
+            where id in @person_ids";
+            var prid = pickupRound.People.Select(e => e.Id).ToList();
+            c.Execute(sql, new { pickup_id = pickupRound.Id, person_ids = prid });
+        });
 
         public void Update(PersonModel person) => InTransaction(c =>
         {
@@ -349,6 +388,18 @@ namespace Probel.Gehova.Business.ServicesImpl
                 c.Execute(sql, new { person_id = person.Id, category_id = categoryId });
             }
         });
+
+        public void Update(PickupRoundDisplayModel pickup)
+        {
+            using (var c = NewConnection())
+            {
+                var sql = @"
+                    update pickup_round
+                       set name = @Name
+                     where id = @Id";
+                c.Execute(sql, new { pickup.Id, pickup.Name });
+            }
+        }
 
         #endregion Methods
     }

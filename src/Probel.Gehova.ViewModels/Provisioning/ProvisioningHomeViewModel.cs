@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using Probel.Gehova.Business.Models;
 using Probel.Gehova.Business.Services;
+using Probel.Gehova.ViewModels.Mapper;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -123,6 +124,44 @@ namespace Probel.Gehova.ViewModels.Provisioning
             }
         }
 
+        private void UpdatePickupRounds()
+        {
+            var rnd = new PickupRoundModel(SelectedPickupRound)
+            {
+                People = PeopleInCurrentPickupRound.ToPersonDisplayModel()
+            };
+            _service.Update(rnd);
+            Refresh();
+        }
+
+        private void UpdateTeams()
+        {
+            var rnd = new TeamModel(SelectedTeam)
+            {
+                People = PeopleInCurrentTeam.ToPersonDisplayModel()
+            };
+            _service.Update(rnd);
+            Refresh();
+        }
+
+        public void AddToPickupRoundAndUpdate(IEnumerable<long> items)
+        {
+            foreach (var id in items)
+            {
+                _peopleInCurrentPickupRound.Add(new PersonFullDisplayModel { Id = id });
+            }
+            UpdatePickupRounds();
+        }
+
+        public void AddToTeamAndUpdate(IEnumerable<long> items)
+        {
+            foreach (var id in items)
+            {
+                _peopleInCurrentTeam.Add(new PersonFullDisplayModel { Id = id });
+            }
+            UpdateTeams();
+        }
+
         public void Refresh(string propertyName)
         {
             if (propertyName == nameof(SelectedTeam)) { RefreshPeopleInTeams(); }
@@ -141,6 +180,30 @@ namespace Probel.Gehova.ViewModels.Provisioning
 
             if (Teams.Count() > 0) { SelectedTeam = Teams[0]; }
             if (PickupRounds.Count() > 0) { SelectedPickupRound = PickupRounds[0]; }
+        }
+
+        public void RemoveFromPickupRoundAndUpdate(IEnumerable<long> items)
+        {
+            foreach (var id in items)
+            {
+                var toremove = (from p in _peopleInCurrentPickupRound
+                                where p.Id == id
+                                select p).SingleOrDefault();
+                _peopleInCurrentPickupRound.Remove(toremove);
+            }
+            UpdatePickupRounds();
+        }
+
+        public void RemoveFromTeamAndUpdate(IEnumerable<long> items)
+        {
+            foreach (var id in items)
+            {
+                var toremove = (from p in _peopleInCurrentTeam
+                                where p.Id == id
+                                select p).SingleOrDefault();
+                _peopleInCurrentTeam.Remove(toremove);
+            }
+            UpdateTeams();
         }
 
         #endregion Methods

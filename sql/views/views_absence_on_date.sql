@@ -106,6 +106,7 @@ create view reception_morning_v as
             and (select friday from settings_weekday_v limit 1) <= date_end
         )
    )
+   where team is not null
    order by day_nr;
 /********************************************************************/
 drop view if exists reception_evening_v;
@@ -213,6 +214,7 @@ create view reception_evening_v as
             and (select friday from settings_weekday_v limit 1) <= date_end
         )
    )
+   where team is not null
    order by day_nr;
 /********************************************************************/
 drop view if exists lunchtime_v;
@@ -322,4 +324,5 @@ create view lunchtime_v as
             and (select friday from settings_weekday_v limit 1) <= date_end
         )
    )
+   where team is not null
    order by day_nr;
