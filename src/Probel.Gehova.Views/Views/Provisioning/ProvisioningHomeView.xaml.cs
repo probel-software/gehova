@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -18,6 +19,7 @@ namespace Probel.Gehova.Views.Views.Provisioning
     {
         #region Fields
 
+        private readonly ResourceLoader Resources = new ResourceLoader("Messages");
 
         #endregion Fields
 
@@ -27,6 +29,7 @@ namespace Probel.Gehova.Views.Views.Provisioning
         {
             InitializeComponent();
             DataContext = IocFactory.ViewModel.ProvisioningHomeViewModel;
+            ViewModel.Messenger = new InAppMessenger(InAppNotification);
         }
 
         #endregion Constructors
@@ -38,6 +41,19 @@ namespace Probel.Gehova.Views.Views.Provisioning
         #endregion Properties
 
         #region Methods
+
+        private async void AppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new AddAbsenceView { DataContext = IocFactory.ViewModel.AbsenceViewModel };
+            dialog.ViewModel.PersonId = ViewModel.SelectedPerson.Id;
+            var result = await dialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                InAppNotification.Show(Resources.GetString("Info_AbsenceAdded"), InAppMessenger.DEFAULT_DURATION);
+                ViewModel.Refresh();
+            }
+        }
 
         private void OnDragItemsStarting(object sender, DragItemsStartingEventArgs e)
         {
@@ -76,10 +92,14 @@ namespace Probel.Gehova.Views.Views.Provisioning
                 def.Complete();
             }
         }
+
         private async void PickupRoundDestination_Drop(object sender, DragEventArgs e) => await OnDrop(e, items => ViewModel.AddToPickupRoundAndUpdate(items));
 
-
         private async void PickupRoundSource_Drop(object sender, DragEventArgs e) => await OnDrop(e, items => ViewModel.RemoveFromPickupRoundAndUpdate(items));
+
+        private async void TeamDestination_Drop(object sender, DragEventArgs e) => await OnDrop(e, items => ViewModel.AddToTeamAndUpdate(items));
+
+        private async void TeamSource_Drop(object sender, DragEventArgs e) => await OnDrop(e, items => ViewModel.RemoveFromTeamAndUpdate(items));
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -88,11 +108,5 @@ namespace Probel.Gehova.Views.Views.Provisioning
         }
 
         #endregion Methods
-
-
-
-
-        private async void TeamDestination_Drop(object sender, DragEventArgs e) => await OnDrop(e, items => ViewModel.AddToTeamAndUpdate(items));
-        private async void TeamSource_Drop(object sender, DragEventArgs e) => await OnDrop(e, items => ViewModel.RemoveFromTeamAndUpdate(items));
     }
 }

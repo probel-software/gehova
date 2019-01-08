@@ -1,0 +1,19 @@
+﻿<ContentDialog
+    x:Class="Probel.Gehova.Views.Views.Provisioning.AddAbsenceView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Probel.Gehova.Views.Views.Provisioning"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Uid="DialogAddAbsence"
+    DefaultButton="Primary"
+    PrimaryButtonCommand="{x:Bind ViewModel.AddAbsenceCommand}"
+    mc:Ignorable="d">
+    <StackPanel>
+        <CalendarDatePicker
+            Date="{x:Bind ViewModel.From, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+            FirstDayOfWeek="Monday"
+            Header="From" />
+        <CalendarDatePicker Date="{x:Bind ViewModel.To, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="To" />
+    </StackPanel>
+</ContentDialog>

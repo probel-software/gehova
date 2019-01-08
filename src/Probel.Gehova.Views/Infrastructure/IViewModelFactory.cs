@@ -11,7 +11,7 @@ namespace Probel.Gehova.Views.Infrastructure
         SettingsHomeViewModel SettingsHomeViewModel { get; }
         VisualisationHomeViewModel VisualisationHomeViewModel { get; }
         ProvisioningHomeViewModel ProvisioningHomeViewModel { get; }
-
+        AbsenceViewModel AbsenceViewModel { get; }
         #endregion Properties
     }
 }

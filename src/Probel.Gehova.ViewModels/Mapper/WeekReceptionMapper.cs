@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Probel.Gehova.ViewModels.Mapper
 {
-    public class WeekMapper
+    public class WeekReceptionMapper
     {
         #region Fields
         private readonly string[] DayNames = { "lundi", "mardi", "mercredi", "jeudi", "vendredi" };
@@ -16,7 +16,7 @@ namespace Probel.Gehova.ViewModels.Mapper
 
         #region Constructors
 
-        public WeekMapper(IEnumerable<WeekDay> days)
+        public WeekReceptionMapper(IEnumerable<WeekDay> days)
         {
             _days = days;
         }
@@ -44,16 +44,16 @@ namespace Probel.Gehova.ViewModels.Mapper
                        select d);
 
             var teamNames = all.Select(e => e.Team).Distinct();
-            var teamsResult = new List<TeamViewModel>();
+            var teamsResult = new List<PeopleBagViewModel>();
             foreach (var teamName in teamNames)
             {
-                teamsResult.Add(new TeamViewModel()
+                teamsResult.Add(new PeopleBagViewModel()
                 {
-                    TeamName = teamName,
+                    Name = teamName,
                     People = new ObservableCollection<PersonViewModel>(GetPeople(all, teamName))
                 });
             }
-            dayResult.Teams = new ObservableCollection<TeamViewModel>(teamsResult);
+            dayResult.PeopleBags = new ObservableCollection<PeopleBagViewModel>(teamsResult);
             return dayResult;
         }
 
@@ -75,7 +75,7 @@ namespace Probel.Gehova.ViewModels.Mapper
             return people;
         }
 
-        public WeekMapper Get()
+        public WeekReceptionMapper Get()
         {
             if (Result == null)
             {

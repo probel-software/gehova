@@ -1,10 +1,14 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using Probel.Gehova.Business.Models;
 using Probel.Gehova.Business.Services;
+using Probel.Gehova.ViewModels.Infrastructure;
 using Probel.Gehova.ViewModels.Mapper;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
+using Windows.ApplicationModel.Resources;
 
 namespace Probel.Gehova.ViewModels.Provisioning
 {
@@ -13,14 +17,18 @@ namespace Probel.Gehova.ViewModels.Provisioning
         #region Fields
 
         private readonly IProvisioningService _service;
-
-        private IEnumerable<PersonFullDisplayModel> _people;
+        private readonly ResourceLoader Resources = new ResourceLoader("Messages");
+        private ObservableCollection<AbsenceDisplayModel> _currentPersonAbsences;
+        private ObservableCollection<PersonFullDisplayModel> _people;
         private ObservableCollection<PersonFullDisplayModel> _peopleInCurrentPickupRound;
         private ObservableCollection<PersonFullDisplayModel> _peopleInCurrentTeam;
         private ObservableCollection<PersonFullDisplayModel> _peopleNotInAnyPickupRound;
         private ObservableCollection<PersonFullDisplayModel> _peopleNotInAnyTeam;
 
         private ObservableCollection<PickupRoundDisplayModel> _pickupRounds;
+        private RelayCommand _refreshAbsencesCommand;
+        private RelayCommand<AbsenceDisplayModel> _removeAbsenceCommand;
+        private PersonFullDisplayModel _selectedPerson;
         private PickupRoundDisplayModel _selectedPickupRound;
         private TeamDisplayModel _selectedTeam;
         private ObservableCollection<TeamDisplayModel> _teams;
@@ -39,6 +47,20 @@ namespace Probel.Gehova.ViewModels.Provisioning
         #endregion Constructors
 
         #region Properties
+
+        public ObservableCollection<AbsenceDisplayModel> CurrentPersonAbsences
+        {
+            get => _currentPersonAbsences;
+            set => Set(ref _currentPersonAbsences, value, nameof(CurrentPersonAbsences));
+        }
+
+        public IMessenger Messenger { get; set; }
+
+        public ObservableCollection<PersonFullDisplayModel> People
+        {
+            get => _people;
+            set => Set(ref _people, value, nameof(People));
+        }
 
         public ObservableCollection<PersonFullDisplayModel> PeopleInCurrentPickupRound
         {
@@ -70,6 +92,16 @@ namespace Probel.Gehova.ViewModels.Provisioning
             set => Set(ref _pickupRounds, value, nameof(PickupRounds));
         }
 
+        public ICommand RefreshAbsencesCommand => _refreshAbsencesCommand ?? (_refreshAbsencesCommand = new RelayCommand(RefreshAbsence, CanRefreshAbsence));
+
+        public ICommand RemoveAbsenceCommand => _removeAbsenceCommand ?? (_removeAbsenceCommand = new RelayCommand<AbsenceDisplayModel>(RemoveAbsence, CanRemoveAbsence));
+
+        public PersonFullDisplayModel SelectedPerson
+        {
+            get => _selectedPerson;
+            set => Set(ref _selectedPerson, value, nameof(SelectedPerson));
+        }
+
         public PickupRoundDisplayModel SelectedPickupRound
         {
             get => _selectedPickupRound;
@@ -91,6 +123,24 @@ namespace Probel.Gehova.ViewModels.Provisioning
         #endregion Properties
 
         #region Methods
+        private AbsenceDisplayModel _currentAbsence;
+        public AbsenceDisplayModel CurrentAbsence
+        {
+            get => _currentAbsence;
+            set => Set(ref _currentAbsence, value, nameof(CurrentAbsence));
+        }
+        private bool CanRefreshAbsence() => SelectedPerson != null && SelectedPerson.Id > 0;
+
+        private bool CanRemoveAbsence(AbsenceDisplayModel absence) => absence != null && absence.Id > 0;
+
+        private void RefreshAbsence()
+        {
+            if (SelectedPerson != null)
+            {
+                var result = _service.GetAbsencesOf(SelectedPerson);
+                if (result != null) { CurrentPersonAbsences = new ObservableCollection<AbsenceDisplayModel>(result); }
+            }
+        }
 
         private void RefreshPeopleInPickupRounds()
         {
@@ -122,6 +172,17 @@ namespace Probel.Gehova.ViewModels.Provisioning
                             select p).ToList();
                 PeopleNotInAnyTeam = new ObservableCollection<PersonFullDisplayModel>(@out);
             }
+        }
+
+        private void RemoveAbsence(AbsenceDisplayModel absence)
+        {
+            _service.Remove(absence);
+            Messenger?.Say(Resources.GetString("Info_AbsenceRemoved"));
+
+            var todel = (from a in CurrentPersonAbsences
+                         where a.Id == absence.Id
+                         select a).FirstOrDefault();
+            CurrentPersonAbsences.Remove(todel);
         }
 
         private void UpdatePickupRounds()
@@ -176,10 +237,13 @@ namespace Probel.Gehova.ViewModels.Provisioning
             var pickups = _service.GetPickupRounds();
             PickupRounds = new ObservableCollection<PickupRoundDisplayModel>(pickups);
 
-            _people = _service.GetPeople();
+            var people = _service.GetPeople();
+            People = new ObservableCollection<PersonFullDisplayModel>(people);
 
             if (Teams.Count() > 0) { SelectedTeam = Teams[0]; }
             if (PickupRounds.Count() > 0) { SelectedPickupRound = PickupRounds[0]; }
+
+            RefreshAbsence();
         }
 
         public void RemoveFromPickupRoundAndUpdate(IEnumerable<long> items)

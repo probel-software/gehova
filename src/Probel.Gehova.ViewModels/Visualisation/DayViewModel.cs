@@ -10,7 +10,7 @@ namespace Probel.Gehova.ViewModels.Visualisation
         #region Fields
 
         private string _dayName;
-        private ObservableCollection<TeamViewModel> _teams;
+        private ObservableCollection<PeopleBagViewModel> _peopleBags;
 
         #endregion Fields
 
@@ -22,10 +22,10 @@ namespace Probel.Gehova.ViewModels.Visualisation
             set => Set(ref _dayName, value, nameof(DayName));
         }
 
-        public ObservableCollection<TeamViewModel> Teams
+        public ObservableCollection<PeopleBagViewModel> PeopleBags
         {
-            get => _teams;
-            set => Set(ref _teams, value, nameof(Teams));
+            get => _peopleBags;
+            set => Set(ref _peopleBags, value, nameof(PeopleBags));
         }
 
         #endregion Properties

@@ -69,6 +69,20 @@
                                             IsReadOnly="True" />
                                     </c:DataGrid.Columns>
                                 </c:DataGrid>
+                                <TextBlock
+                                    x:Uid="TbReception"
+                                    Margin="5,10,0,0"
+                                    FontSize="18"
+                                    FontWeight="Bold" />
+                                <Border
+                                    Height="2"
+                                    Margin="5"
+                                    Background="Gray" />
+                                <StackPanel>
+                                    <RadioButton x:Uid="Radio_ReceptionMorning" IsChecked="{Binding IsReceptionMorning, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                    <RadioButton x:Uid="Radio_Lunchtime" IsChecked="{Binding IsLunchTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                    <RadioButton x:Uid="Radio_ReceptionEvening" IsChecked="{Binding IsReceptionEvening, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                </StackPanel>
                             </StackPanel>
                         </DataTemplate>
                     </c:MasterDetailsView.DetailsTemplate>

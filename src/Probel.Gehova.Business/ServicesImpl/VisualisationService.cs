@@ -34,6 +34,21 @@ namespace Probel.Gehova.Business.ServicesImpl
             return result;
         });
 
+        private IEnumerable<WeekDay> GetPickupRounds(DateTime? date) => InTransaction(c =>
+        {
+            if (date.HasValue) { SetSelectedWeek(date.Value); }
+
+            var sql = @"
+                select day_name     as Day
+                     , team         as Team
+                     , pickup_round as PickupRound
+                     , first_name   as FirstName
+                     , last_name    as LastName
+                from pickup_rounds_v";
+            var result = c.Query<WeekDay>(sql);
+            return result;
+        });
+
         private IEnumerable<WeekDay> GetReceptionEvening(DateTime? date) => InTransaction(c =>
         {
             if (date.HasValue) { SetSelectedWeek(date.Value); }
@@ -65,6 +80,8 @@ namespace Probel.Gehova.Business.ServicesImpl
         public IEnumerable<WeekDay> GetLunchtime(DateTime date) => GetLunchtime(date);
 
         public IEnumerable<WeekDay> GetLunchtime() => GetLunchtime(null);
+
+        public IEnumerable<WeekDay> GetPickupRounds() => GetPickupRounds(null);
 
         public IEnumerable<WeekDay> GetReceptionEvening(DateTime date) => GetReceptionEvening(date);
 

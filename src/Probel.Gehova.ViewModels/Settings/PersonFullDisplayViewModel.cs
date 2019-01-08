@@ -18,6 +18,9 @@ namespace Probel.Gehova.ViewModels.Settings
                 FirstName = src.FirstName,
                 LastName = src.LastName,
                 Category = src.CategoryDisplay,
+                IsReceptionMorning = src.IsReceptionMorning,
+                IsLunchTime = src.IsLunchTime,
+                IsReceptionEvening = src.IsReceptionEvening,
                 CategoryIds = (from c in src.Categories
                                where c.IsSelected
                                select c.Id).ToList()
@@ -43,6 +46,9 @@ namespace Probel.Gehova.ViewModels.Settings
                 Id = src.Id,
                 FirstName = src.FirstName,
                 LastName = src.LastName,
+                IsReceptionMorning = src.IsReceptionMorning,
+                IsLunchTime = src.IsLunchTime,
+                IsReceptionEvening = src.IsReceptionEvening,
                 CategoryDisplay = src.Category,
             };
             if (categories != null)
@@ -73,9 +79,10 @@ namespace Probel.Gehova.ViewModels.Settings
         private ObservableCollection<CategoryViewModel> _categories = new ObservableCollection<CategoryViewModel>();
         private string _categoryDisplay;
         private string _firstName;
-
         private long _id;
-
+        private bool _isLunchTime;
+        private bool _isReceptionEvening;
+        private bool _isReceptionMorning;
         private string _lastName;
 
         #endregion Fields
@@ -104,6 +111,24 @@ namespace Probel.Gehova.ViewModels.Settings
         {
             get => _id;
             set => Set(ref _id, value, nameof(Id));
+        }
+
+        public bool IsLunchTime
+        {
+            get => _isLunchTime;
+            set => Set(ref _isLunchTime, value, nameof(_isLunchTime));
+        }
+
+        public bool IsReceptionEvening
+        {
+            get => _isReceptionEvening;
+            set => Set(ref _isReceptionEvening, value, nameof(_isReceptionEvening));
+        }
+
+        public bool IsReceptionMorning
+        {
+            get => _isReceptionMorning;
+            set => Set(ref _isReceptionMorning, value, nameof(IsReceptionMorning));
         }
 
         public string LastName

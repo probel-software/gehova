@@ -79,6 +79,7 @@ namespace Probel.Gehova.ViewModels.Settings
         public ICommand RefreshCommand => _refreshCommand ?? (_refreshCommand = new RelayCommand(Refresh));
 
         public ICommand RemovePersonCommand => _removePersonCommand ?? (_removePersonCommand = new RelayCommand(RemovePerson, CanRemovePerson));
+
         public ICommand RemovePickupRoundCommand => _removePickupRoundCommand ?? (_removePickupRoundCommand = new RelayCommand(RemovePickupRound, CanRemovePickupRound));
 
         public ICommand RemoveTeamCommand => _removeTeamCommand ?? (_removeTeamCommand = new RelayCommand(RemoveTeam, CanRemoveTeam));

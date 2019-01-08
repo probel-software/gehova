@@ -17,11 +17,9 @@ namespace Probel.Gehova.ViewModels.Visualisation
         private readonly ResourceLoader Resources = new ResourceLoader("Messages");
         private string _displayedWeekAsText;
         private WeekViewModel _lunchtime;
-
+        private WeekViewModel _pickupRounds;
         private WeekViewModel _receptionEvening;
-
         private WeekViewModel _receptionMorning;
-
         private RelayCommand<DateTimeOffset> _updateWeekCommand;
 
         #endregion Fields
@@ -50,6 +48,12 @@ namespace Probel.Gehova.ViewModels.Visualisation
         }
 
         public IMessenger Messenger { get; set; }
+
+        public WeekViewModel PickupRounds
+        {
+            get => _pickupRounds;
+            set => Set(ref _pickupRounds, value, nameof(PickupRounds));
+        }
 
         public WeekViewModel ReceptionEvening
         {
@@ -88,14 +92,17 @@ namespace Probel.Gehova.ViewModels.Visualisation
             var rm = _service.GetReceptionMorning();
             var lt = _service.GetLunchtime();
             var re = _service.GetReceptionEvening();
+            var pu = _service.GetPickupRounds();
 
-            var rmMapper = new WeekMapper(rm);
-            var ltmMapper = new WeekMapper(lt);
-            var remMapper = new WeekMapper(re);
+            var rmMapper = new WeekReceptionMapper(rm);
+            var ltmMapper = new WeekReceptionMapper(lt);
+            var remMapper = new WeekReceptionMapper(re);
+            var puMapper = new WeekPickupRoundMapper(pu);
 
             ReceptionMorning = rmMapper.Get().Result;
             Lunchtime = ltmMapper.Get().Result;
             ReceptionEvening = remMapper.Get().Result;
+            PickupRounds = puMapper.Get().Result;
 
             DisplayedWeekAsText = string.Format(Resources.GetString("Title_SelectedWeek"), _service.GetSelectedWeek().ToLongDateString());
         }

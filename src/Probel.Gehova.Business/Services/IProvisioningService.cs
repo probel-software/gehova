@@ -7,6 +7,8 @@ namespace Probel.Gehova.Business.Services
     {
         #region Methods
 
+        void Create(AbsenceDisplayModel absence);
+
         void Create(TeamDisplayModel team);
 
         void Create(CategoryModel category);
@@ -16,6 +18,8 @@ namespace Probel.Gehova.Business.Services
         void Create(PersonModel person);
 
         void Create(PersonFullDisplayModel personFullDisplayModel);
+
+        IEnumerable<AbsenceDisplayModel> GetAbsencesOf(PersonFullDisplayModel person);
 
         IEnumerable<CategoryModel> GetCategories();
 
@@ -32,6 +36,8 @@ namespace Probel.Gehova.Business.Services
         TeamDisplayModel GetTeam(long id);
 
         IEnumerable<TeamDisplayModel> GetTeams();
+
+        void Remove(AbsenceDisplayModel absence);
 
         void Remove(TeamDisplayModel team);
 

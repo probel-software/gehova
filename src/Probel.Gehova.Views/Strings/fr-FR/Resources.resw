@@ -120,6 +120,9 @@
   <data name="AppButtonAdd.Content" xml:space="preserve">
     <value>Ajouter</value>
   </data>
+  <data name="AppButtonAdd.Icon" xml:space="preserve">
+    <value>Add</value>
+  </data>
   <data name="AppButtonAdd.Label" xml:space="preserve">
     <value>Ajouter</value>
   </data>
@@ -132,11 +135,17 @@
   <data name="AppButtonDelete.Content" xml:space="preserve">
     <value>Supprimer</value>
   </data>
+  <data name="AppButtonDelete.Icon" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="AppButtonDelete.Label" xml:space="preserve">
     <value>Supprimer</value>
   </data>
   <data name="AppButtonRefresh.Content" xml:space="preserve">
     <value>Rafraîchir</value>
+  </data>
+  <data name="AppButtonRefresh.Icon" xml:space="preserve">
+    <value>Refresh</value>
   </data>
   <data name="AppButtonRefresh.Label" xml:space="preserve">
     <value>Rafraîchir</value>
@@ -182,6 +191,15 @@
   </data>
   <data name="Column_Team.Header" xml:space="preserve">
     <value>Groupe</value>
+  </data>
+  <data name="DialogAddAbsence.PrimaryButtonText" xml:space="preserve">
+    <value>Ajouter</value>
+  </data>
+  <data name="DialogAddAbsence.SecondaryButtonText" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="DialogAddAbsence.Title" xml:space="preserve">
+    <value>Ajouter une absence.</value>
   </data>
   <data name="FlyoutBtn_AskRemove.Text" xml:space="preserve">
     <value>Etes-vous sûr de vouloir supprimer cet élément?</value>
@@ -230,8 +248,23 @@
   <data name="Pivot_User.Title" xml:space="preserve">
     <value>Calendriers</value>
   </data>
+  <data name="Radio_Lunchtime.Content" xml:space="preserve">
+    <value>Temps de midi</value>
+  </data>
+  <data name="Radio_ReceptionEvening.Content" xml:space="preserve">
+    <value>Accueil du soir</value>
+  </data>
+  <data name="Radio_ReceptionMorning.Content" xml:space="preserve">
+    <value>Accueil du matin</value>
+  </data>
   <data name="RunDisplayedWeek.Text" xml:space="preserve">
     <value>Semaine du:</value>
+  </data>
+  <data name="Run_AbsenceFrom.Text" xml:space="preserve">
+    <value>Absent(e) du</value>
+  </data>
+  <data name="Run_AbsenceTo.Text" xml:space="preserve">
+    <value>au</value>
   </data>
   <data name="TbCategory.Text" xml:space="preserve">
     <value>Catégories</value>
@@ -250,5 +283,8 @@
   </data>
   <data name="TbPersonEditorLastName.PlaceholderText" xml:space="preserve">
     <value>entrez le nom...</value>
+  </data>
+  <data name="TbReception.Text" xml:space="preserve">
+    <value>Réceptions</value>
   </data>
 </root>

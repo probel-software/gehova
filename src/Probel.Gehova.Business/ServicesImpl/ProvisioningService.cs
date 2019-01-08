@@ -75,6 +75,42 @@ namespace Probel.Gehova.Business.ServicesImpl
             Create(p);
         }
 
+        public void Create(AbsenceDisplayModel absence)
+        {
+            using (var c = NewConnection())
+            {
+                var sql = @"
+                    insert into absence (
+                        date_start,
+                        date_end,
+                        person_id)
+                    values (
+                        @from,
+                        @to,
+                        @person_id
+                    )";
+                c.Execute(sql, new { from = absence.From, to = absence.To, person_id = absence.PersonId });
+            }
+        }
+
+        public IEnumerable<AbsenceDisplayModel> GetAbsencesOf(PersonFullDisplayModel person)
+        {
+            using (var c = NewConnection())
+            {
+                var sql = @"
+                    select id         as Id
+                         , date_end   as ""From""
+                         , date_start as ""To""
+                         , person_id  as PersonId
+                    from absence
+                    where person_id = @pid
+                    order by date_start desc";
+                var result = c.Query<AbsenceDisplayModel>(sql, new { pid = person.Id });
+
+                return result;
+            }
+        }
+
         public IEnumerable<CategoryModel> GetCategories()
         {
             using (var c = NewConnection())
@@ -241,6 +277,17 @@ namespace Probel.Gehova.Business.ServicesImpl
             c.Execute(sql, new { person.Id });
         });
 
+        public void Remove(AbsenceDisplayModel absence)
+        {
+            using (var c = NewConnection())
+            {
+                var sql = @"
+                    delete from absence
+                    where id = @id";
+                c.Execute(sql, new { id = absence.Id });
+            }
+        }
+
         public void Update(TeamDisplayModel team)
         {
             using (var c = NewConnection())
@@ -370,13 +417,19 @@ namespace Probel.Gehova.Business.ServicesImpl
                 update person
                 set
                     first_name = @first_name,
-                    last_name  = @last_name
+                    last_name  = @last_name,
+                    is_reception_morning = @is_reception_morning,
+                    is_lunchtime = @is_lunchtime,
+                    is_reception_evening = @is_reception_evening
                 where id = @id";
             c.Execute(sql, new
             {
                 first_name = person.FirstName,
                 last_name = person.LastName,
-                id = person.Id
+                id = person.Id,
+                is_reception_morning = person.IsReceptionMorning,
+                is_lunchtime = person.IsLunchTime,
+                is_reception_evening = person.IsReceptionEvening
             });
 
             sql = @"delete from person_category where person_id = @id";

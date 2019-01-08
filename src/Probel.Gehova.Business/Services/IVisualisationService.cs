@@ -12,6 +12,8 @@ namespace Probel.Gehova.Business.Services
 
         IEnumerable<WeekDay> GetLunchtime();
 
+        IEnumerable<WeekDay> GetPickupRounds();
+
         IEnumerable<WeekDay> GetReceptionEvening(DateTime date);
 
         IEnumerable<WeekDay> GetReceptionEvening();

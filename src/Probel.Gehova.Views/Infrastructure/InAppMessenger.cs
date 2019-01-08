@@ -7,7 +7,7 @@ namespace Probel.Gehova.Views.Infrastructure
     {
         #region Fields
 
-        private const int DEFAULT_DURATION = 2000;
+        public const int DEFAULT_DURATION = 2000;
         private readonly InAppNotification _inAppNotification;
 
         #endregion Fields

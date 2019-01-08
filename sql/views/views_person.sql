@@ -26,13 +26,4 @@ create view everyone_v as
     left join team t on t.id = p.team_id
     left join pickup_round pu on pu.id = p.pickup_round_id;
 /********************************************************************/
-drop view if exists people_v;
-create view people_v as    
-    select first_name 
-         , last_name 
-         , team
-         , is_lunchtime
-         , is_reception_morning
-         , is_reception_evening
-    from everyone_v;
-/********************************************************************/
+

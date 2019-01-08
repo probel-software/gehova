@@ -27,6 +27,7 @@ namespace Probel.Gehova.Views.Infrastructure
         public ProvisioningHomeViewModel ProvisioningHomeViewModel => _container.Resolve<ProvisioningHomeViewModel>();
         public SettingsHomeViewModel SettingsHomeViewModel => _container.Resolve<SettingsHomeViewModel>();
         public VisualisationHomeViewModel VisualisationHomeViewModel => _container.Resolve<VisualisationHomeViewModel>();
+        public AbsenceViewModel AbsenceViewModel => _container.Resolve<AbsenceViewModel>();
         #endregion Properties
 
     }
