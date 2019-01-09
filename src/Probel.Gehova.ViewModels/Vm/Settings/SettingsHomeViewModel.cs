@@ -4,12 +4,13 @@ using Probel.Gehova.Business.Helpers;
 using Probel.Gehova.Business.Models;
 using Probel.Gehova.Business.Services;
 using Probel.Gehova.ViewModels.Infrastructure;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Windows.ApplicationModel.Resources;
 
-namespace Probel.Gehova.ViewModels.Settings
+namespace Probel.Gehova.ViewModels.Vm.Settings
 {
     public class SettingsHomeViewModel : ViewModelBase
     {
@@ -17,10 +18,8 @@ namespace Probel.Gehova.ViewModels.Settings
 
         private readonly IDataReset _dataReset;
         private readonly IProvisioningService _service;
-        private readonly ResourceLoader Resources = new ResourceLoader("Messages");
+        private readonly ResourceLoader _resources = new ResourceLoader("Messages");
         private RelayCommand _addPerson;
-        private RelayCommand _addPickupRoundCommand;
-        private RelayCommand _addTeamCommand;
         private ObservableCollection<PersonFullDisplayViewModel> _people = new ObservableCollection<PersonFullDisplayViewModel>();
         private ObservableCollection<PickupRoundDisplayModel> _pickupRounds = new ObservableCollection<PickupRoundDisplayModel>();
         private RelayCommand _refreshCommand;
@@ -50,11 +49,7 @@ namespace Probel.Gehova.ViewModels.Settings
 
         #region Properties
 
-        public ICommand AddPersonCommand => _addPerson ?? (_addPerson = new RelayCommand(AddPerson));
-
-        public ICommand AddPickupRoundCommand { get => _addPickupRoundCommand ?? (_addPickupRoundCommand = new RelayCommand(AddPickupRound)); }
-
-        public ICommand AddTeamCommand => _addTeamCommand ?? (_addTeamCommand = new RelayCommand(AddTeam));
+        public ICommand AddPersonCommand => _addPerson ?? (_addPerson = new RelayCommand(AddPerson));                
 
         public ObservableCollection<CategoryModel> Categories
         {
@@ -129,34 +124,16 @@ namespace Probel.Gehova.ViewModels.Settings
         #endregion Properties
 
         #region Methods
-
+        [Obsolete]
         private void AddPerson()
         {
             People.Add(new PersonFullDisplayViewModel
             {
-                FirstName = Resources.GetString("Label_New"),
-                LastName = Resources.GetString("Label_Person"),
+                FirstName = _resources.GetString("Label_New"),
+                LastName = _resources.GetString("Label_Person"),
                 Categories = new ObservableCollection<CategoryViewModel>(Categories.ToViewModel())
             });
-            Messenger.Say(Resources.GetString("Info_PleaseUpdateToSave"));
-        }
-
-        private void AddPickupRound()
-        {
-            PickupRounds.Add(new PickupRoundDisplayModel());
-            var s = (from p in PickupRounds
-                     where p.Id == 0
-                     select p).FirstOrDefault();
-            if (s != null) { SelectedPickupRound = s; }
-        }
-
-        private void AddTeam()
-        {
-            Teams.Add(new TeamDisplayModel());
-            var s = (from t in Teams
-                     where t.Id == 0
-                     select t).FirstOrDefault();
-            if (s != null) { SelectedTeam = s; }
+            Messenger.Say(_resources.GetString("Info_PleaseUpdateToSave"));
         }
 
         private bool CanRemovePerson() => SelectedPerson != null && SelectedPerson.Id > 0;
@@ -199,21 +176,21 @@ namespace Probel.Gehova.ViewModels.Settings
         private void RemovePerson()
         {
             _service.Remove(SelectedPerson.ToModel());
-            Messenger.Say(string.Format(Resources.GetString("Info_PersonRemoved"), $"{SelectedPerson.FirstName} {SelectedPerson.LastName}"));
+            Messenger.Say(string.Format(_resources.GetString("Info_PersonRemoved"), $"{SelectedPerson.FirstName} {SelectedPerson.LastName}"));
             RefreshPeople();
         }
 
         private void RemovePickupRound()
         {
             _service.Remove(SelectedPickupRound);
-            Messenger.Say(string.Format(Resources.GetString("Info_PickupRoundRemoved"), SelectedPickupRound.Name));
+            Messenger.Say(string.Format(_resources.GetString("Info_PickupRoundRemoved"), SelectedPickupRound.Name));
             RefreshPickupRounds();
         }
 
         private void RemoveTeam()
         {
             _service.Remove(SelectedTeam);
-            Messenger.Say(string.Format(Resources.GetString("Info_TeamRemoved"), SelectedTeam.Name));
+            Messenger.Say(string.Format(_resources.GetString("Info_TeamRemoved"), SelectedTeam.Name));
             RefreshTeams();
         }
 
@@ -225,12 +202,12 @@ namespace Probel.Gehova.ViewModels.Settings
                 var p = _service.GetPerson(person.Id);
                 person.CategoryDisplay = p.Category;
 
-                Messenger?.Say(string.Format(Resources.GetString("Info_PersonUpdated"), $"{person.FirstName} {person.LastName}"));
+                Messenger?.Say(string.Format(_resources.GetString("Info_PersonUpdated"), $"{person.FirstName} {person.LastName}"));
             }
             else
             {
                 _service.Create(person.ToModel());
-                Messenger?.Say(string.Format(Resources.GetString("Info_PersonAdded"), $"{person.FirstName} {person.LastName}"));
+                Messenger?.Say(string.Format(_resources.GetString("Info_PersonAdded"), $"{person.FirstName} {person.LastName}"));
             }
         }
 
@@ -240,27 +217,27 @@ namespace Probel.Gehova.ViewModels.Settings
             else if (pickupRound.Id > 0)
             {
                 _service.Update(pickupRound);
-                Messenger?.Say(string.Format(Resources.GetString("Info_PickupRoundUpdated"), pickupRound.Name));
+                Messenger?.Say(string.Format(_resources.GetString("Info_PickupRoundUpdated"), pickupRound.Name));
             }
             else
             {
                 _service.Create(pickupRound);
-                Messenger?.Say(string.Format(Resources.GetString("Info_PickupRoundCreated"), pickupRound.Name));
+                Messenger?.Say(string.Format(_resources.GetString("Info_PickupRoundCreated"), pickupRound.Name));
             }
         }
 
         private void UpdateTeam(TeamDisplayModel team)
         {
             if (team == null || string.IsNullOrEmpty(team.Name)) { return; }
-            else if (team.Id < 0)
+            else if (team.Id > 0)
             {
                 _service.Update(team);
-                Messenger?.Say(string.Format(Resources.GetString("Info_TeamUpdated"), team.Name));
+                Messenger?.Say(string.Format(_resources.GetString("Info_TeamUpdated"), team.Name));
             }
             else
             {
                 _service.Create(team);
-                Messenger?.Say(string.Format(Resources.GetString("Info_TeamCreated"), team.Name));
+                Messenger?.Say(string.Format(_resources.GetString("Info_TeamCreated"), team.Name));
             }
         }
 

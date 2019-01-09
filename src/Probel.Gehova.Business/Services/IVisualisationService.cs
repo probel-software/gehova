@@ -22,7 +22,8 @@ namespace Probel.Gehova.Business.Services
 
         IEnumerable<WeekDay> GetReceptionMorning();
 
-        DateTime GetSelectedWeek();
+        DateTime GetSelectedWeekAsMonday();
+        DateTime GetSelectedWeekAsFriday();
 
         void SetSelectedWeek(DateTime date);
 

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Windows.Input;
 using Windows.ApplicationModel.Resources;
 
-namespace Probel.Gehova.ViewModels.Provisioning
+namespace Probel.Gehova.ViewModels.Vm.Provisioning
 {
     public class ProvisioningHomeViewModel : ViewModelBase
     {
@@ -18,6 +18,7 @@ namespace Probel.Gehova.ViewModels.Provisioning
 
         private readonly IProvisioningService _service;
         private readonly ResourceLoader Resources = new ResourceLoader("Messages");
+        private AbsenceDisplayModel _currentAbsence;
         private ObservableCollection<AbsenceDisplayModel> _currentPersonAbsences;
         private ObservableCollection<PersonFullDisplayModel> _people;
         private ObservableCollection<PersonFullDisplayModel> _peopleInCurrentPickupRound;
@@ -47,6 +48,12 @@ namespace Probel.Gehova.ViewModels.Provisioning
         #endregion Constructors
 
         #region Properties
+
+        public AbsenceDisplayModel CurrentAbsence
+        {
+            get => _currentAbsence;
+            set => Set(ref _currentAbsence, value, nameof(CurrentAbsence));
+        }
 
         public ObservableCollection<AbsenceDisplayModel> CurrentPersonAbsences
         {
@@ -123,12 +130,7 @@ namespace Probel.Gehova.ViewModels.Provisioning
         #endregion Properties
 
         #region Methods
-        private AbsenceDisplayModel _currentAbsence;
-        public AbsenceDisplayModel CurrentAbsence
-        {
-            get => _currentAbsence;
-            set => Set(ref _currentAbsence, value, nameof(CurrentAbsence));
-        }
+
         private bool CanRefreshAbsence() => SelectedPerson != null && SelectedPerson.Id > 0;
 
         private bool CanRemoveAbsence(AbsenceDisplayModel absence) => absence != null && absence.Id > 0;

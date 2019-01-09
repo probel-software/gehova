@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Probel.Gehova.ViewModels.Settings
+namespace Probel.Gehova.ViewModels.Vm.Settings
 {
     public static class PersonFullDisplayViewModelExtensions
     {

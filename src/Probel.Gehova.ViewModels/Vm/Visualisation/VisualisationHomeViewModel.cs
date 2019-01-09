@@ -7,7 +7,7 @@ using System;
 using System.Windows.Input;
 using Windows.ApplicationModel.Resources;
 
-namespace Probel.Gehova.ViewModels.Visualisation
+namespace Probel.Gehova.ViewModels.Vm.Visualisation
 {
     public class VisualisationHomeViewModel : ViewModelBase
     {
@@ -104,7 +104,9 @@ namespace Probel.Gehova.ViewModels.Visualisation
             ReceptionEvening = remMapper.Get().Result;
             PickupRounds = puMapper.Get().Result;
 
-            DisplayedWeekAsText = string.Format(Resources.GetString("Title_SelectedWeek"), _service.GetSelectedWeek().ToLongDateString());
+            var monday = _service.GetSelectedWeekAsMonday().ToLongDateString();
+            var friday = _service.GetSelectedWeekAsFriday().ToLongDateString();
+            DisplayedWeekAsText = string.Format(Resources.GetString("Title_SelectedWeek"), monday, friday);
         }
 
         #endregion Methods

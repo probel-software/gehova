@@ -32,58 +32,67 @@
                     </c:MasterDetailsView.ItemTemplate>
                     <c:MasterDetailsView.DetailsTemplate>
                         <DataTemplate>
-                            <StackPanel Margin="50">
-                                <TextBlock
-                                    x:Uid="TbPerson"
-                                    Margin="5,10,0,0"
-                                    FontSize="18"
-                                    FontWeight="Bold" />
-                                <Border
-                                    Height="2"
-                                    Margin="5"
-                                    Background="Gray" />
-                                <TextBox
-                                    x:Uid="TbPersonEditorFirstName"
-                                    Margin="5"
-                                    Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                <TextBox
-                                    x:Uid="TbPersonEditorLastName"
-                                    Margin="5"
-                                    Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                <TextBlock
-                                    x:Uid="TbCategory"
-                                    Margin="5,10,0,0"
-                                    FontSize="18"
-                                    FontWeight="Bold" />
-                                <Border
-                                    Height="2"
-                                    Margin="5"
-                                    Background="Gray" />
-                                <c:DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Categories}">
-                                    <c:DataGrid.Columns>
-                                        <c:DataGridCheckBoxColumn Width="35" Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                        <c:DataGridTextColumn
-                                            x:Uid="Column_Category"
-                                            Width="*"
-                                            Binding="{Binding Name}"
-                                            IsReadOnly="True" />
-                                    </c:DataGrid.Columns>
-                                </c:DataGrid>
-                                <TextBlock
-                                    x:Uid="TbReception"
-                                    Margin="5,10,0,0"
-                                    FontSize="18"
-                                    FontWeight="Bold" />
-                                <Border
-                                    Height="2"
-                                    Margin="5"
-                                    Background="Gray" />
-                                <StackPanel>
-                                    <RadioButton x:Uid="Radio_ReceptionMorning" IsChecked="{Binding IsReceptionMorning, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                    <RadioButton x:Uid="Radio_Lunchtime" IsChecked="{Binding IsLunchTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                    <RadioButton x:Uid="Radio_ReceptionEvening" IsChecked="{Binding IsReceptionEvening, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            <ScrollViewer>
+                                <StackPanel Margin="50">
+                                    <TextBlock
+                                        x:Uid="TbPerson"
+                                        Margin="5,10,0,0"
+                                        FontSize="18"
+                                        FontWeight="Bold" />
+                                    <Border
+                                        Height="2"
+                                        Margin="5"
+                                        Background="Gray" />
+                                    <TextBox
+                                        x:Uid="TbPersonEditorFirstName"
+                                        Margin="5"
+                                        Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                    <TextBox
+                                        x:Uid="TbPersonEditorLastName"
+                                        Margin="5"
+                                        Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel>
+                                            <TextBlock
+                                                x:Uid="TbCategory"
+                                                Margin="5,10,0,0"
+                                                FontSize="18"
+                                                FontWeight="Bold" />
+                                            <Border
+                                                Height="2"
+                                                Margin="5"
+                                                Background="Gray" />
+                                            <ItemsControl ItemsSource="{Binding Categories}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock
+                                                x:Uid="TbReception"
+                                                Margin="5,10,0,0"
+                                                FontSize="18"
+                                                FontWeight="Bold" />
+                                            <Border
+                                                Height="2"
+                                                Margin="5"
+                                                Background="Gray" />
+                                            <StackPanel>
+                                                <RadioButton x:Uid="Radio_ReceptionMorning" IsChecked="{Binding IsReceptionMorning, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                                <RadioButton x:Uid="Radio_Lunchtime" IsChecked="{Binding IsLunchTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                                <RadioButton x:Uid="Radio_ReceptionEvening" IsChecked="{Binding IsReceptionEvening, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
                                 </StackPanel>
-                            </StackPanel>
+                            </ScrollViewer>
                         </DataTemplate>
                     </c:MasterDetailsView.DetailsTemplate>
                     <c:MasterDetailsView.NoSelectionContentTemplate>
@@ -108,8 +117,7 @@
                                 Margin="0,0,0,0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Command="{Binding AddPersonCommand}"
-                                CommandParameter="{Binding ElementName=MasterDetailPeople, Path=SelectedItem}"
+                                Click="ClickOnAddPerson"
                                 Icon="Add" />
                             <AppBarButton
                                 x:Uid="AppButtonRefresh"
@@ -157,26 +165,10 @@
                         IsOpen="False">
                         <AppBarButton
                             x:Uid="AppButtonAdd"
-                            Command="{Binding AddPickupRoundCommand}"
+                            Click="ClickOnAddPickupRound"
                             Icon="Add" />
-                        <AppBarButton x:Uid="AppButtonDelete" Icon="Delete">
-                            <Button.Flyout>
-                                <Flyout>
-                                    <StackPanel>
-                                        <TextBlock
-                                            x:Uid="FlyoutBtn_AskRemove"
-                                            Margin="0,0,0,12"
-                                            Style="{ThemeResource BaseTextBlockStyle}" />
-                                        <Button
-                                            x:Uid="FlyoutBtn_ConfirmRemove"
-                                            Command="{Binding RemovePickupRoundCommand}"
-                                            CommandParameter="{Binding SelectedRemovePickupRound}" />
-                                    </StackPanel>
-                                </Flyout>
-                            </Button.Flyout>
-                        </AppBarButton>
                         <AppBarButton
-                            x:Uid="ButtonRefresh"
+                            x:Uid="AppButtonRefresh"
                             Command="{Binding RefreshCommand}"
                             Icon="Refresh" />
                     </CommandBar>
@@ -192,6 +184,16 @@
                                 x:Uid="Column_PickupRound"
                                 Width="*"
                                 Binding="{Binding Name}" />
+                            <c:DataGridTemplateColumn>
+                                <c:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <AppBarButton
+                                            VerticalAlignment="Center"
+                                            Click="OnDeleteCurrentPickupRound"
+                                            Icon="Delete" />
+                                    </DataTemplate>
+                                </c:DataGridTemplateColumn.CellTemplate>
+                            </c:DataGridTemplateColumn>
                         </c:DataGrid.Columns>
                     </c:DataGrid>
                 </StackPanel>
@@ -204,24 +206,8 @@
                         IsOpen="False">
                         <AppBarButton
                             x:Uid="AppButtonAdd"
-                            Command="{Binding AddTeamCommand}"
+                            Click="ClickOnAddTeam"
                             Icon="Add" />
-                        <AppBarButton x:Uid="AppButtonDelete" Icon="Delete">
-                            <Button.Flyout>
-                                <Flyout>
-                                    <StackPanel>
-                                        <TextBlock
-                                            x:Uid="FlyoutBtn_AskRemove"
-                                            Margin="0,0,0,12"
-                                            Style="{ThemeResource BaseTextBlockStyle}" />
-                                        <Button
-                                            x:Uid="FlyoutBtn_ConfirmRemove"
-                                            Command="{Binding RemoveTeamCommand}"
-                                            CommandParameter="{Binding SelectedTeam}" />
-                                    </StackPanel>
-                                </Flyout>
-                            </Button.Flyout>
-                        </AppBarButton>
                         <AppBarButton
                             x:Uid="AppButtonRefresh"
                             Command="{Binding RefreshCommand}"
@@ -239,11 +225,47 @@
                                 x:Uid="Column_Team"
                                 Width="*"
                                 Binding="{Binding Name}" />
+                            <c:DataGridTemplateColumn>
+                                <c:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <AppBarButton
+                                            VerticalAlignment="Center"
+                                            Click="OnDeleteCurrentTeam"
+                                            Icon="Delete" />
+                                    </DataTemplate>
+                                </c:DataGridTemplateColumn.CellTemplate>
+                            </c:DataGridTemplateColumn>
                         </c:DataGrid.Columns>
                     </c:DataGrid>
                 </StackPanel>
             </PivotItem>
         </Pivot>
+        <ContentDialog
+            x:Name="DialogRemovePickupRound"
+            x:Uid="DialogAskRemove"
+            DefaultButton="Primary"
+            PrimaryButtonCommand="{Binding RemovePickupRoundCommand}"
+            PrimaryButtonCommandParameter="{Binding SelectedRemovePickupRound}">
+            <StackPanel>
+                <TextBlock
+                    x:Uid="FlyoutBtn_AskRemove"
+                    Margin="0,0,0,12"
+                    Style="{ThemeResource BaseTextBlockStyle}" />
+            </StackPanel>
+        </ContentDialog>
+        <ContentDialog
+            x:Name="DialogRemoveTeam"
+            x:Uid="DialogAskRemove"
+            DefaultButton="Primary"
+            PrimaryButtonCommand="{Binding RemoveTeamCommand}"
+            PrimaryButtonCommandParameter="{Binding SelectedRemoveTeam}">
+            <StackPanel>
+                <TextBlock
+                    x:Uid="FlyoutBtn_AskRemove"
+                    Margin="0,0,0,12"
+                    Style="{ThemeResource BaseTextBlockStyle}" />
+            </StackPanel>
+        </ContentDialog>
         <c:InAppNotification
             x:Name="InAppNotification"
             AnimationDuration="00:00:00.1000000"

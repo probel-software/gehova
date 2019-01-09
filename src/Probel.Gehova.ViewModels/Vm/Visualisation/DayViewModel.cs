@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
-namespace Probel.Gehova.ViewModels.Visualisation
+namespace Probel.Gehova.ViewModels.Vm.Visualisation
 {
     [DebuggerDisplay("{DayName}")]
     public class DayViewModel : ViewModelBase

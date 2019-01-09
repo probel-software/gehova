@@ -6,12 +6,12 @@
     xmlns:local="using:Probel.Gehova.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
     <NavigationView
         x:Name="rootNavigation"
         IsBackButtonVisible="Collapsed"
         IsPaneOpen="False"
-        PaneTitle="Gehova"
         SelectionChanged="OnRootNavigation">
         <NavigationView.MenuItems>
             <NavigationViewItem

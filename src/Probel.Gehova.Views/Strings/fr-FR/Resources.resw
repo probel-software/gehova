@@ -201,6 +201,30 @@
   <data name="DialogAddAbsence.Title" xml:space="preserve">
     <value>Ajouter une absence.</value>
   </data>
+  <data name="DialogAddPerson.PrimaryButtonText" xml:space="preserve">
+    <value>Ajouter</value>
+  </data>
+  <data name="DialogAddPerson.SecondaryButtonText" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="DialogAddPerson.Title" xml:space="preserve">
+    <value>Ajouter une personne.</value>
+  </data>
+  <data name="DialogAddTeamView.SecondaryButtonText" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="DialogAddWithNameView.PrimaryButtonText" xml:space="preserve">
+    <value>Ajouter</value>
+  </data>
+  <data name="DialogAskRemove.PrimaryButtonText" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="DialogAskRemove.SecondaryButtonText" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="DialogAskRemove.Title" xml:space="preserve">
+    <value>Suppression</value>
+  </data>
   <data name="FlyoutBtn_AskRemove.Text" xml:space="preserve">
     <value>Etes-vous sûr de vouloir supprimer cet élément?</value>
     <comment>Work on a textblock.</comment>
@@ -268,6 +292,21 @@
   </data>
   <data name="TbCategory.Text" xml:space="preserve">
     <value>Catégories</value>
+  </data>
+  <data name="TbFirstName.Header" xml:space="preserve">
+    <value>Prénom</value>
+  </data>
+  <data name="TbLastName.Header" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="TbName.Header" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="TbPeopleWithoutPickupRound.Text" xml:space="preserve">
+    <value>Personne sans tournée</value>
+  </data>
+  <data name="TbPeopleWithoutTeam.Text" xml:space="preserve">
+    <value>Personne sans groupe</value>
   </data>
   <data name="TbPerson.Text" xml:space="preserve">
     <value>Nom</value>

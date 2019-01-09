@@ -3,7 +3,7 @@ using Probel.Gehova.Business.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Probel.Gehova.ViewModels.Settings
+namespace Probel.Gehova.ViewModels.Vm.Settings
 {
     public static class CategoryViewModelExtesions
     {
@@ -90,7 +90,13 @@ namespace Probel.Gehova.ViewModels.Settings
             get => _name;
             set => Set(ref _name, value, nameof(Name));
         }
-        public override string ToString() => $"[{(IsSelected? "x" : " ")}] {Name}";
+
         #endregion Properties
+
+        #region Methods
+
+        public override string ToString() => $"[{(IsSelected ? "x" : " ")}] {Name}";
+
+        #endregion Methods
     }
 }

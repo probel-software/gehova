@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Probel.Gehova.Business.Db;
+using Probel.Gehova.Business.Helpers;
 using Probel.Gehova.Business.Models;
 using Probel.Gehova.Business.ServiceActions;
 using Probel.Gehova.Business.Services;
@@ -89,7 +90,12 @@ namespace Probel.Gehova.Business.ServicesImpl
                         @to,
                         @person_id
                     )";
-                c.Execute(sql, new { from = absence.From, to = absence.To, person_id = absence.PersonId });
+                c.Execute(sql, new
+                {
+                    from = absence.From.ToSQLiteDate(),
+                    to = absence.To.ToSQLiteDate(),
+                    person_id = absence.PersonId
+                });
             }
         }
 
@@ -99,8 +105,8 @@ namespace Probel.Gehova.Business.ServicesImpl
             {
                 var sql = @"
                     select id         as Id
-                         , date_end   as ""From""
-                         , date_start as ""To""
+                         , date_start as ""From""
+                         , date_end   as ""To""
                          , person_id  as PersonId
                     from absence
                     where person_id = @pid
@@ -231,16 +237,20 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
-        public void Remove(TeamDisplayModel team)
+        public void Remove(TeamDisplayModel team) => InTransaction(c =>
         {
-            using (var c = NewConnection())
-            {
-                var sql = @"
+            var sql = @"
+                update person
+                set
+                    team_id = null
+                where team_id = @tid";
+            c.Execute(sql, new { tid = team.Id });
+
+            sql = @"
                     delete from team
-                    where id = @Id";
-                c.Execute(sql, new { team.Id });
-            }
-        }
+                    where id = @id";
+            c.Execute(sql, new { id = team.Id });
+        });
 
         public void Remove(CategoryModel category)
         {
@@ -253,16 +263,20 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
-        public void Remove(PickupRoundDisplayModel pickup)
+        public void Remove(PickupRoundDisplayModel pickup) => InTransaction(c =>
         {
-            using (var c = NewConnection())
-            {
-                var sql = @"
+            var sql = @"
+                update person
+                set
+                    pickup_round_id = null
+                where pickup_round_id = @prid";
+            c.Execute(sql, new { prid = pickup.Id });
+
+            sql = @"
                     delete from pickup_round
-                    where id = @Id";
-                c.Execute(sql, new { pickup.Id });
-            }
-        }
+                    where id = @id";
+            c.Execute(sql, new { id = pickup.Id });
+        });
 
         public void Remove(PersonDisplayModel person) => InTransaction(c =>
         {

@@ -1,4 +1,5 @@
-﻿using Probel.Gehova.Views.Infrastructure;
+﻿using Probel.Gehova.ViewModels.Vm;
+using Probel.Gehova.Views.Infrastructure;
 using Probel.Gehova.Views.Views.Administration;
 using Probel.Gehova.Views.Views.Provisioning;
 using Probel.Gehova.Views.Views.Visualisation;
@@ -19,9 +20,16 @@ namespace Probel.Gehova.Views
         public MainPage()
         {
             InitializeComponent();
+            DataContext = IocFactory.ViewModel.MainViewModel;
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        private MainViewModel ViewModel => DataContext as MainViewModel;
+
+        #endregion Properties
 
         #region Methods
 
@@ -39,5 +47,7 @@ namespace Probel.Gehova.Views
         }
 
         #endregion Methods
+
+        private void Page_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e) => ViewModel?.LoadDefaultWeek();
     }
 }

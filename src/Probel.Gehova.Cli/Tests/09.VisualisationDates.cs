@@ -35,12 +35,12 @@ namespace Probel.Gehova.Cli.Tests
 
         public void Execute()
         {
-            var current = _service.GetSelectedWeek();
+            var current = _service.GetSelectedWeekAsMonday();
             Output.Write(current);
 
             _service.SetSelectedWeek(DateTime.Today);
 
-            current = _service.GetSelectedWeek();
+            current = _service.GetSelectedWeekAsMonday();
             Output.Write(current);
         }
 

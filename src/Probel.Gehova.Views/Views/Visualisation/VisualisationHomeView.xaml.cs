@@ -1,4 +1,4 @@
-﻿using Probel.Gehova.ViewModels.Visualisation;
+﻿using Probel.Gehova.ViewModels.Vm.Visualisation;
 using Probel.Gehova.Views.Infrastructure;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;

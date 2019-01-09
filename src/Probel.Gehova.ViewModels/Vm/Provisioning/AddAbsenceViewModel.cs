@@ -5,9 +5,9 @@ using Probel.Gehova.Business.Services;
 using System;
 using System.Windows.Input;
 
-namespace Probel.Gehova.ViewModels.Provisioning
+namespace Probel.Gehova.ViewModels.Vm.Provisioning
 {
-    public class AbsenceViewModel : ViewModelBase
+    public class AddAbsenceViewModel : ViewModelBase
     {
         #region Fields
 
@@ -21,7 +21,7 @@ namespace Probel.Gehova.ViewModels.Provisioning
 
         #region Constructors
 
-        public AbsenceViewModel(IProvisioningService service)
+        public AddAbsenceViewModel(IProvisioningService service)
         {
             _service = service;
             From = new DateTime(DateTime.Today.Ticks);
@@ -66,18 +66,19 @@ namespace Probel.Gehova.ViewModels.Provisioning
 
         private void AddAbsence()
         {
-            _service.Create(new AbsenceDisplayModel
+            var abs = new AbsenceDisplayModel
             {
                 PersonId = PersonId,
                 From = new DateTime(From.Ticks),
-                To = new DateTime(To.Ticks),
-            });
+                To = new DateTime(To.Ticks).Date,
+            };
+            _service.Create(abs);
         }
 
         private bool CanAddAbsence()
         {
             var result = PersonId > 0
-                && From < To;
+                      && From < To;
             return result;
         }
 

@@ -159,13 +159,25 @@
   <data name="Info_WeekUpdated" xml:space="preserve">
     <value>Semaine affichée changée.</value>
   </data>
+  <data name="Label_Add" xml:space="preserve">
+    <value>Ajouter</value>
+  </data>
+  <data name="Label_Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
   <data name="Label_New" xml:space="preserve">
     <value>Nouvelle</value>
   </data>
   <data name="Label_Person" xml:space="preserve">
     <value>personne</value>
   </data>
+  <data name="Title_AddPickupRound" xml:space="preserve">
+    <value>Ajouter une tournée</value>
+  </data>
+  <data name="Title_AddTeam" xml:space="preserve">
+    <value>Ajouter un groupe</value>
+  </data>
   <data name="Title_SelectedWeek" xml:space="preserve">
-    <value>Semaine affichée: {0}</value>
+    <value>Semaine affichée: du  {0} au {1}</value>
   </data>
 </root>

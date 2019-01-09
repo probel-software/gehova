@@ -11,8 +11,8 @@ create view all_absence_v as
          , is_reception_morning
     from absence a
     inner join person p on a.person_id = p.id
-    inner join team t   on p.team_id = t.id
-    inner join pickup_round pr on pr.id = p.pickup_round_id;
+    left join team t   on p.team_id = t.id
+    left join pickup_round pr on pr.id = p.pickup_round_id;
 -------------------------------------------------------------------------------
 drop view if exists absence_lunchtime_v;
 create view absence_lunchtime_v as 

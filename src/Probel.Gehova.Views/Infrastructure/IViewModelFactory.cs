@@ -1,6 +1,7 @@
-﻿using Probel.Gehova.ViewModels.Provisioning;
-using Probel.Gehova.ViewModels.Settings;
-using Probel.Gehova.ViewModels.Visualisation;
+﻿using Probel.Gehova.ViewModels.Vm;
+using Probel.Gehova.ViewModels.Vm.Provisioning;
+using Probel.Gehova.ViewModels.Vm.Settings;
+using Probel.Gehova.ViewModels.Vm.Visualisation;
 
 namespace Probel.Gehova.Views.Infrastructure
 {
@@ -8,10 +9,14 @@ namespace Probel.Gehova.Views.Infrastructure
     {
         #region Properties
 
+        AddAbsenceViewModel AbsenceViewModel { get; }
+        AddPersonViewModel AddPersonViewModel { get; }
+        AddPickupRoundViewModel AddPickupRoundViewModel { get; }
+        AddTeamViewModel AddTeamViewModel { get; }
+        ProvisioningHomeViewModel ProvisioningHomeViewModel { get; }
         SettingsHomeViewModel SettingsHomeViewModel { get; }
         VisualisationHomeViewModel VisualisationHomeViewModel { get; }
-        ProvisioningHomeViewModel ProvisioningHomeViewModel { get; }
-        AbsenceViewModel AbsenceViewModel { get; }
+        MainViewModel MainViewModel { get; }
         #endregion Properties
     }
 }

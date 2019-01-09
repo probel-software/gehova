@@ -91,11 +91,15 @@ namespace Probel.Gehova.Business.ServicesImpl
 
         public IEnumerable<WeekDay> GetReceptionMorning() => GetReceptionMorning(null);
 
-        public DateTime GetSelectedWeek()
+        public DateTime GetSelectedWeekAsFriday() => GetSelectedWeekAs("friday");
+
+        public DateTime GetSelectedWeekAsMonday() => GetSelectedWeekAs("monday");
+
+        private DateTime GetSelectedWeekAs(string day)
         {
             using (var c = NewConnection())
             {
-                var sql = @"select monday from settings_weekday_v";
+                var sql = $@"select {day} from settings_weekday_v";
 
                 var strResult = c.Query<string>(sql).FirstOrDefault();
 

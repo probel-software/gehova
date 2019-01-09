@@ -1,5 +1,5 @@
 ﻿using Probel.Gehova.Business.Models;
-using Probel.Gehova.ViewModels.Visualisation;
+using Probel.Gehova.ViewModels.Vm.Visualisation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;

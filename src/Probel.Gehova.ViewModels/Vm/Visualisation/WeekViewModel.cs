@@ -1,7 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using System.Collections.ObjectModel;
 
-namespace Probel.Gehova.ViewModels.Visualisation
+namespace Probel.Gehova.ViewModels.Vm.Visualisation
 {
     public class WeekViewModel : ViewModelBase
     {

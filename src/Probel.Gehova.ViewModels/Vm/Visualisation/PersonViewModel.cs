@@ -1,7 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using System.Diagnostics;
 
-namespace Probel.Gehova.ViewModels.Visualisation
+namespace Probel.Gehova.ViewModels.Vm.Visualisation
 {
     [DebuggerDisplay("FirstName: {FirstName} - LastName: {LastName}")]
     public class PersonViewModel : ViewModelBase

@@ -55,10 +55,29 @@
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition />
                 <RowDefinition Height="Auto" />
+                <RowDefinition />
             </Grid.RowDefinitions>
-            <Pivot Title="{x:Bind ViewModel.DisplayedWeekAsText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Row="0">
+            <CommandBar
+                Background="Transparent"
+                DefaultLabelPosition="Right"
+                IsOpen="false">
+                <AppBarButton x:Uid="AppButtonChangeWeek" Icon="CalendarWeek">
+                    <Button.Flyout>
+                        <Flyout>
+                            <StackPanel Orientation="Horizontal">
+                                <CalendarDatePicker x:Name="CdpWeekSelector" x:Uid="CdpWeekSelector" />
+                                <Button
+                                    x:Uid="ButtonRefresh"
+                                    Margin="5"
+                                    Command="{Binding UpdateWeekCommand}"
+                                    CommandParameter="{Binding ElementName=CdpWeekSelector, Path=Date}" />
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </AppBarButton>
+            </CommandBar>
+            <Pivot Title="{x:Bind ViewModel.DisplayedWeekAsText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Row="1">
                 <PivotItem x:Uid="PivotItem_ReceptionMorning">
                     <StackPanel>
                         <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding ReceptionMorning.Days}">
@@ -98,26 +117,6 @@
                     </ItemsControl>
                 </PivotItem>
             </Pivot>
-            <CommandBar
-                Grid.Row="1"
-                Background="Transparent"
-                DefaultLabelPosition="Right"
-                IsOpen="false">
-                <AppBarButton x:Uid="AppButtonChangeWeek" Icon="CalendarWeek">
-                    <Button.Flyout>
-                        <Flyout>
-                            <StackPanel Orientation="Horizontal">
-                                <CalendarDatePicker x:Name="CdpWeekSelector" x:Uid="CdpWeekSelector" />
-                                <Button
-                                    x:Uid="ButtonRefresh"
-                                    Margin="5"
-                                    Command="{Binding UpdateWeekCommand}"
-                                    CommandParameter="{Binding ElementName=CdpWeekSelector, Path=Date}" />
-                            </StackPanel>
-                        </Flyout>
-                    </Button.Flyout>
-                </AppBarButton>
-            </CommandBar>
         </Grid>
         <c:InAppNotification
             x:Name="InAppNotification"

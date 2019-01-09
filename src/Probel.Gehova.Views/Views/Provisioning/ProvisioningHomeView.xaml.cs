@@ -1,4 +1,4 @@
-﻿using Probel.Gehova.ViewModels.Provisioning;
+﻿using Probel.Gehova.ViewModels.Vm.Provisioning;
 using Probel.Gehova.Views.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace Probel.Gehova.Views.Views.Provisioning
     {
         #region Fields
 
-        private readonly ResourceLoader Resources = new ResourceLoader("Messages");
+        private readonly ResourceLoader _resources = new ResourceLoader("Messages");
 
         #endregion Fields
 
@@ -50,7 +50,7 @@ namespace Probel.Gehova.Views.Views.Provisioning
 
             if (result == ContentDialogResult.Primary)
             {
-                InAppNotification.Show(Resources.GetString("Info_AbsenceAdded"), InAppMessenger.DEFAULT_DURATION);
+                InAppNotification.Show(_resources.GetString("Info_AbsenceAdded"), InAppMessenger.DEFAULT_DURATION);
                 ViewModel.Refresh();
             }
         }
