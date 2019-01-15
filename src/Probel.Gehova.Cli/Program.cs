@@ -28,8 +28,8 @@ namespace Probel.Gehova.Cli
             TestCaseManager.ResetData();
             Output.WriteLine("Executing Test case(s)");
             //TestCaseManager.ExecuteLast();
-            //TestCaseManager.ExecuteAll();
-            TestCaseManager.Execute(2);
+            TestCaseManager.ExecuteAll();
+            //TestCaseManager.Execute(2);
 
             Output.Pause();
         }

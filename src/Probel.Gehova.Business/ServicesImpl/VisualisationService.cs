@@ -1,7 +1,7 @@
-﻿using Dapper;
-using Probel.Gehova.Business.Db;
+﻿using Probel.Gehova.Business.Db;
 using Probel.Gehova.Business.Models;
 using Probel.Gehova.Business.Services;
+using Probel.Lorm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,6 +77,20 @@ namespace Probel.Gehova.Business.ServicesImpl
             return result;
         });
 
+        private DateTime GetSelectedWeekAs(string day)
+        {
+            using (var c = NewConnection())
+            {
+                var sql = $@"select {day} from settings_weekday_v";
+                var strResult = c.Query<string>(sql)
+                                .FirstOrDefault();
+
+                return (DateTime.TryParse(strResult, out var dateResult))
+                    ? dateResult
+                    : throw new InvalidCastException($"The string '{strResult}' cannot be casted as a '{typeof(DateTime)}'");
+            }
+        }
+
         public IEnumerable<WeekDay> GetLunchtime(DateTime date) => GetLunchtime(date);
 
         public IEnumerable<WeekDay> GetLunchtime() => GetLunchtime(null);
@@ -95,31 +109,16 @@ namespace Probel.Gehova.Business.ServicesImpl
 
         public DateTime GetSelectedWeekAsMonday() => GetSelectedWeekAs("monday");
 
-        private DateTime GetSelectedWeekAs(string day)
-        {
-            using (var c = NewConnection())
-            {
-                var sql = $@"select {day} from settings_weekday_v";
-
-                var strResult = c.Query<string>(sql).FirstOrDefault();
-
-                Log.Trace($"Retrieving 'week_date' from settings. ({strResult})");
-
-                return (DateTime.TryParse(strResult, out var dateResult))
-                    ? dateResult
-                    : throw new InvalidCastException($"The string '{strResult}' cannot be casted as a '{typeof(DateTime)}'");
-            }
-        }
-
         public void SetSelectedWeek(DateTime date)
         {
-            using (var c = NewConnection())
-            {
-                var sql = @"
+            var sql = @"
                     update settings
                     set
                         ""value"" = @SetDate
                     where ""key"" = 'week_date'";
+
+            using (var c = NewConnection())
+            {
                 c.Execute(sql, new { SetDate = date });
             }
         }

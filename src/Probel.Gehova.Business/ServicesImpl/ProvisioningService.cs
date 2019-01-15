@@ -1,9 +1,8 @@
-﻿using Dapper;
-using Probel.Gehova.Business.Db;
-using Probel.Gehova.Business.Helpers;
+﻿using Probel.Gehova.Business.Db;
 using Probel.Gehova.Business.Models;
 using Probel.Gehova.Business.ServiceActions;
 using Probel.Gehova.Business.Services;
+using Probel.Lorm;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,21 +23,34 @@ namespace Probel.Gehova.Business.ServicesImpl
         public void Create(TeamDisplayModel team) => InTransaction(c =>
         {
             var sql = @"insert into team (name) values (@Name);";
-            c.Execute(sql, new { team.Name });
+            using (var cmd = c.CreateCommand(sql))
+            {
+                cmd.AddParameter("Name", team.Name);
+                cmd.ExecuteNonQuery();
+            }
             team.Id = GetLastId(c);
         });
 
         public void Create(CategoryModel category) => InTransaction(c =>
         {
             var sql = @"insert into category (display, key) values (@Display, @Key);";
-            c.Execute(sql, new { category.Display, category.Key });
+            using (var cmd = c.CreateCommand(sql))
+            {
+                cmd.AddParameter("Display", category.Display);
+                cmd.AddParameter("Key", category.Key);
+                cmd.ExecuteNonQuery();
+            }
             category.Id = GetLastId(c);
         });
 
         public void Create(PickupRoundDisplayModel pickup) => InTransaction(c =>
         {
             var sql = @"insert into pickup_round (name) values (@Name);";
-            c.Execute(sql, new { pickup.Name });
+            using (var cmd = GetCommand(sql, c))
+            {
+                cmd.AddParameter("Name", pickup.Name);
+                cmd.ExecuteNonQuery();
+            }
 
             pickup.Id = GetLastId(c);
         });
@@ -90,12 +102,13 @@ namespace Probel.Gehova.Business.ServicesImpl
                         @to,
                         @person_id
                     )";
-                c.Execute(sql, new
+                using (var cmd = GetCommand(sql, c))
                 {
-                    from = absence.From.ToSQLiteDate(),
-                    to = absence.To.ToSQLiteDate(),
-                    person_id = absence.PersonId
-                });
+                    cmd.AddParameter("from", absence.From.ToSQLiteDateString());
+                    cmd.AddParameter("to", absence.To.ToSQLiteDateString());
+                    cmd.AddParameter("person_id", absence.PersonId);
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
 
@@ -111,9 +124,13 @@ namespace Probel.Gehova.Business.ServicesImpl
                     from absence
                     where person_id = @pid
                     order by date_start desc";
-                var result = c.Query<AbsenceDisplayModel>(sql, new { pid = person.Id });
-
-                return result;
+                using (var cmd = GetCommand(sql, c))
+                {
+                    cmd.AddParameter("pid", person.Id);
+                    var result = cmd.ExecuteReader()
+                                    .AsAbsenceDisplayModel();
+                    return result;
+                }
             }
         }
 
@@ -122,13 +139,16 @@ namespace Probel.Gehova.Business.ServicesImpl
             using (var c = NewConnection())
             {
                 var sql = @"
-                    select id       as ID
+                    select id       as Id
                          , key      as Key
                          , display  as Display
                     from category";
-
-                var result = c.Query<CategoryModel>(sql);
-                return result;
+                using (var cmd = GetCommand(sql, c))
+                {
+                    var result = cmd.ExecuteReader()
+                                   .AsCategoryModel();
+                    return result;
+                }
             }
         }
 
@@ -143,8 +163,14 @@ namespace Probel.Gehova.Business.ServicesImpl
                     from category
                    where id = @id";
 
-                var result = c.Query<CategoryModel>(sql, new { id });
-                return result.FirstOrDefault();
+                using (var cmd = GetCommand(sql, c))
+                {
+                    cmd.AddParameter("id", id);
+                    var result = cmd.ExecuteReader()
+                                    .AsCategoryModel()
+                                    .FirstOrDefault();
+                    return result;
+                }
             }
         }
 
@@ -165,9 +191,12 @@ namespace Probel.Gehova.Business.ServicesImpl
                          , is_reception_evening as IsReceptionEvening
                          , is_lunchtime         as IsLunchTime
                     from everyone_v";
-
-                var result = c.Query<PersonFullDisplayModel>(sql);
-                return result;
+                using (var cmd = GetCommand(sql, c))
+                {
+                    var result = cmd.ExecuteReader()
+                                    .AsPersonFullDisplayModel();
+                    return result;
+                }
             }
         }
 
@@ -184,13 +213,13 @@ namespace Probel.Gehova.Business.ServicesImpl
             using (var c = NewConnection())
             {
                 var sql = @"
-                    select id      as id
-                         , name    as Name
+                    select id   as Id
+                         , name as Name
                     from pickup_round
                    where id = @id";
-
-                var result = c.Query<PickupRoundDisplayModel>(sql, new { id });
-                return result.FirstOrDefault();
+                var result = c.Query<PickupRoundDisplayModel>(sql, new { id })
+                              .FirstOrDefault();
+                return result;
             }
         }
 
@@ -199,12 +228,15 @@ namespace Probel.Gehova.Business.ServicesImpl
             using (var c = NewConnection())
             {
                 var sql = @"
-                    select id   as ID
+                    select id   as Id
                          , name as Name
                     from pickup_round";
 
-                var result = c.Query<PickupRoundDisplayModel>(sql);
-                return result;
+                using (var cmd = GetCommand(sql, c))
+                {
+                    var result = cmd.ExecuteReader().AsPickupRoundDisplayModel();
+                    return result;
+                }
             }
         }
 
@@ -213,13 +245,14 @@ namespace Probel.Gehova.Business.ServicesImpl
             using (var c = NewConnection())
             {
                 var sql = @"
-                    select id   as id
+                    select id   as Id
                          , name as Name
                     from team
                    where id = @id";
 
-                var result = c.Query<TeamDisplayModel>(sql, new { id });
-                return result.FirstOrDefault();
+                var r = c.Query<TeamDisplayModel>(sql, new { id })                         
+                         .FirstOrDefault();
+                return r;
             }
         }
 
@@ -228,12 +261,14 @@ namespace Probel.Gehova.Business.ServicesImpl
             using (var c = NewConnection())
             {
                 var sql = @"
-                    select id    as ID
+                    select id    as Id
                          , name  as Name
                     from team";
-
-                var result = c.Query<TeamDisplayModel>(sql);
-                return result;
+                using (var cmd = GetCommand(sql, c))
+                {
+                    var result = cmd.ExecuteReader().AsTeamDisplayModel();
+                    return result;
+                }
             }
         }
 
@@ -244,12 +279,20 @@ namespace Probel.Gehova.Business.ServicesImpl
                 set
                     team_id = null
                 where team_id = @tid";
-            c.Execute(sql, new { tid = team.Id });
+            using (var cmd = GetCommand(sql, c))
+            {
+                cmd.AddParameter("tid", team.Id);
+                cmd.ExecuteNonQuery();
+            }
 
             sql = @"
                     delete from team
                     where id = @id";
-            c.Execute(sql, new { id = team.Id });
+            using (var cmd = GetCommand(sql, c))
+            {
+                cmd.AddParameter("id", team.Id);
+                cmd.ExecuteNonQuery();
+            }
         });
 
         public void Remove(CategoryModel category)
@@ -259,7 +302,11 @@ namespace Probel.Gehova.Business.ServicesImpl
                 var sql = @"
                     delete from category
                     where id = @Id";
-                c.Execute(sql, new { category.Id });
+                using (var cmd = GetCommand(sql, c))
+                {
+                    cmd.AddParameter("Id", category.Id);
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
 
@@ -270,12 +317,20 @@ namespace Probel.Gehova.Business.ServicesImpl
                 set
                     pickup_round_id = null
                 where pickup_round_id = @prid";
-            c.Execute(sql, new { prid = pickup.Id });
+            using (var cmd = GetCommand(sql, c))
+            {
+                cmd.AddParameter("prid", pickup.Id);
+                cmd.ExecuteNonQuery();
+            }
 
             sql = @"
-                    delete from pickup_round
-                    where id = @id";
-            c.Execute(sql, new { id = pickup.Id });
+               delete from pickup_round
+                where id = @id";
+            using (var cmd = GetCommand(sql, c))
+            {
+                cmd.AddParameter("id", pickup.Id);
+                cmd.ExecuteNonQuery();
+            }
         });
 
         public void Remove(PersonDisplayModel person) => InTransaction(c =>
@@ -283,12 +338,20 @@ namespace Probel.Gehova.Business.ServicesImpl
             var sql = @"
                     delete from person_category
                     where person_id = @Id";
-            c.Execute(sql, new { person.Id });
+            using (var cmd = GetCommand(sql, c))
+            {
+                cmd.AddParameter("Id", person.Id);
+                cmd.ExecuteNonQuery();
+            }
 
             sql = @"
                 delete from person
                 where id = @id";
-            c.Execute(sql, new { person.Id });
+            using (var cmd = GetCommand(sql, c))
+            {
+                cmd.AddParameter("id", person.Id);
+                cmd.ExecuteNonQuery();
+            }
         });
 
         public void Remove(AbsenceDisplayModel absence)
@@ -298,7 +361,11 @@ namespace Probel.Gehova.Business.ServicesImpl
                 var sql = @"
                     delete from absence
                     where id = @id";
-                c.Execute(sql, new { id = absence.Id });
+                using (var cmd = GetCommand(sql, c))
+                {
+                    cmd.AddParameter("id", absence.Id);
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
 
@@ -310,7 +377,12 @@ namespace Probel.Gehova.Business.ServicesImpl
                     update team
                        set name = @Name
                      where id = @Id";
-                c.Execute(sql, new { team.Id, team.Name });
+                using (var cmd = GetCommand(sql, c))
+                {
+                    cmd.AddParameter("Id", team.Id);
+                    cmd.AddParameter("Name", team.Name);
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
 
@@ -320,23 +392,37 @@ namespace Probel.Gehova.Business.ServicesImpl
                     update team
                        set name = @Name
                      where id = @Id";
-            c.Execute(sql, new { team.Id, team.Name });
+            using (var cmd = GetCommand(sql, c))
+            {
+                cmd.AddParameter("Name", team.Id);
+                cmd.AddParameter("Id", team.Name);
+                cmd.ExecuteNonQuery();
+            }
 
             sql = @"
             update person
             set
                 team_id = null
             where team_id = @tid";
-
-            c.Execute(sql, new { tid = team.Id });
+            using (var cmd = GetCommand(sql, c))
+            {
+                cmd.AddParameter("tid", team.Id);
+                cmd.ExecuteNonQuery();
+            }
 
             sql = @"
             update person
             set
                 team_id = @team_id
             where id in @person_ids";
-            var prid = team.People.Select(e => e.Id).ToList();
-            c.Execute(sql, new { team_id = team.Id, person_ids = prid });
+
+            using (var cmd = GetCommand(sql, c))
+            {
+                var prid = team.People.Select(e => e.Id).ToList();
+                cmd.AddParameter("team_id", team.Id);
+                cmd.AddParameters("person_ids", prid);
+                cmd.ExecuteNonQuery();
+            }
         });
 
         public void Update(CategoryModel category)
@@ -349,7 +435,14 @@ namespace Probel.Gehova.Business.ServicesImpl
                         display = @Display,
                         key     = @Key
                      where id = @Id";
-                c.Execute(sql, new { category.Id, category.Display, category.Key });
+
+                using (var cmd = GetCommand(sql, c))
+                {
+                    cmd.AddParameter("Id", category.Id);
+                    cmd.AddParameter("Key", category.Display);
+                    cmd.AddParameter("Display", category.Key);
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
 
@@ -359,15 +452,22 @@ namespace Probel.Gehova.Business.ServicesImpl
                     update pickup_round
                        set name = @Name
                      where id = @Id";
-            c.Execute(sql, new { pickupRound.Id, pickupRound.Name });
-
+            using (var cmd = GetCommand(sql, c))
+            {
+                cmd.AddParameter("Id", pickupRound.Id);
+                cmd.AddParameter("Name", pickupRound.Name);
+                cmd.ExecuteNonQuery();
+            }
             sql = @"
             update person
             set
                 pickup_round_id = null
             where pickup_round_id = @pid";
-
-            c.Execute(sql, new { pid = pickupRound.Id });
+            using (var cmd = GetCommand(sql, c))
+            {
+                cmd.AddParameter("pid", pickupRound.Id);
+                cmd.ExecuteNonQuery();
+            }
 
             sql = @"
             update person
@@ -375,7 +475,12 @@ namespace Probel.Gehova.Business.ServicesImpl
                 pickup_round_id = @pickup_id
             where id in @person_ids";
             var prid = pickupRound.People.Select(e => e.Id).ToList();
-            c.Execute(sql, new { pickup_id = pickupRound.Id, person_ids = prid });
+            using (var cmd = GetCommand(sql, c))
+            {
+                cmd.AddParameter("pickup_id", pickupRound.Id);
+                cmd.AddParameters("person_ids", prid);
+                cmd.ExecuteNonQuery();
+            }
         });
 
         public void Update(PersonModel person) => InTransaction(c =>
@@ -395,24 +500,31 @@ namespace Probel.Gehova.Business.ServicesImpl
                     pickup_round_id = @pickup_round_id,
                     team_id = @team_id
                 where id = @id";
-                c.Execute(sql, new
+                using (var cmd = GetCommand(sql, c))
                 {
-                    first_name = person.FirstName,
-                    last_name = person.LastName,
-                    is_reception_morning = person.IsReceptionMorning,
-                    is_reception_evening = person.IsReceptionEvening,
-                    is_lunchtime = person.IsLunchTime,
-                    pickup_round_id = person.PickupRound.Id,
-                    team_id = person.Team.Id,
-                    id = person.Id
-                });
+                    cmd.AddParameter("first_name", person.FirstName);
+                    cmd.AddParameter("last_name", person.LastName);
+                    cmd.AddParameter("is_reception_morning", person.IsReceptionMorning);
+                    cmd.AddParameter("is_reception_evening", person.IsReceptionEvening);
+                    cmd.AddParameter("is_lunchtime", person.IsLunchTime);
+                    cmd.AddParameter("pickup_round_id", person.PickupRound.Id);
+                    cmd.AddParameter("team_id", person.Team.Id);
+                    cmd.AddParameter("id", person.Id);
+                    cmd.ExecuteNonQuery();
+                }
 
                 sql = @"delete from person_category where person_id = @id";
-                c.Execute(sql, new { id = person.Id });
+                using (var cmd = GetCommand(sql, c))
+                {
+                    cmd.AddParameter("id", person.Id);
+                    cmd.ExecuteNonQuery();
+                }
 
                 foreach (var category in person.Categories)
                 {
-                    sql = @"
+                    using (var cmd = GetCommand(sql, c))
+                    {
+                        sql = @"
                         insert into person_category (
                             person_id,
                             category_id
@@ -420,7 +532,10 @@ namespace Probel.Gehova.Business.ServicesImpl
                             @person_id,
                             @category_id
                         )";
-                    c.Execute(sql, new { person_id = person.Id, category_id = category.Id });
+                        cmd.AddParameter("person_id", person.Id);
+                        cmd.AddParameter("category_id", category.Id);
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
         });
@@ -436,23 +551,33 @@ namespace Probel.Gehova.Business.ServicesImpl
                     is_lunchtime = @is_lunchtime,
                     is_reception_evening = @is_reception_evening
                 where id = @id";
-            c.Execute(sql, new
+            using (var cmd = GetCommand(sql, c))
             {
-                first_name = person.FirstName,
-                last_name = person.LastName,
-                id = person.Id,
-                is_reception_morning = person.IsReceptionMorning,
-                is_lunchtime = person.IsLunchTime,
-                is_reception_evening = person.IsReceptionEvening
-            });
+                cmd.AddParameter("first_name", person.FirstName);
+                cmd.AddParameter("last_name", person.LastName);
+                cmd.AddParameter("id", person.Id);
+                cmd.AddParameter("is_reception_morning", person.IsReceptionMorning);
+                cmd.AddParameter("is_lunchtime", person.IsLunchTime);
+                cmd.AddParameter("is_reception_evening", person.IsReceptionEvening);
+                cmd.ExecuteNonQuery();
+            }
 
             sql = @"delete from person_category where person_id = @id";
-            c.Execute(sql, new { id = person.Id });
+            using (var cmd = GetCommand(sql, c))
+            {
+                cmd.AddParameter("id", person.Id);
+                cmd.ExecuteNonQuery();
+            }
 
             sql = @"insert into person_category(person_id, category_id) values (@person_id, @category_id)";
             foreach (var categoryId in person.CategoryIds)
             {
-                c.Execute(sql, new { person_id = person.Id, category_id = categoryId });
+                using (var cmd = GetCommand(sql, c))
+                {
+                    cmd.AddParameter("person_id", person.Id);
+                    cmd.AddParameter("category_id", categoryId);
+                    cmd.ExecuteNonQuery();
+                }
             }
         });
 
@@ -464,7 +589,12 @@ namespace Probel.Gehova.Business.ServicesImpl
                     update pickup_round
                        set name = @Name
                      where id = @Id";
-                c.Execute(sql, new { pickup.Id, pickup.Name });
+                using (var cmd = GetCommand(sql, c))
+                {
+                    cmd.AddParameter("Id", pickup.Id);
+                    cmd.AddParameter("Name", pickup.Name);
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
 

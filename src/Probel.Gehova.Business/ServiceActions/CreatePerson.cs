@@ -1,7 +1,7 @@
-﻿using Dapper;
-using Probel.Gehova.Business.Db;
+﻿using Probel.Gehova.Business.Db;
 using Probel.Gehova.Business.Helpers;
 using Probel.Gehova.Business.Models;
+using Probel.Lorm;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -39,15 +39,18 @@ namespace Probel.Gehova.Business.ServiceActions
         private IEnumerable<CategoryModel> GetCategoriesOfPerson(IDbConnection c)
         {
             var sql = @"
-                select id
-                     , ""key""
-                     , display
+                select id      as Id
+                     , ""key"" as Key
+                     , display as Display
                  from category
                  where id  in @ids";
-            var result = c.Query<CategoryModel>(sql, new { ids = Context.Categories.Select(i => i.Id) });
-
-            Log.Trace(result?.Dump());
-            return result;
+            using (var cmd = GetCommand(sql, c))
+            {
+                cmd.AddParameters("ids", Context.Categories.Select(i => i.Id));
+                var result = cmd.ExecuteReader().AsCategoryModel();
+                Log.Trace(result?.Dump());
+                return result;
+            }
         }
 
         private PickupRoundDisplayModel GetPickupRound(IDbConnection c)
@@ -60,10 +63,15 @@ namespace Probel.Gehova.Business.ServiceActions
                      , name as name
                 from pickup_round
                 where id = @id";
-                var result = c.Query<PickupRoundDisplayModel>(sql, new { id = Context.PickupRound.Id })
-                              .FirstOrDefault();
-                Log.Trace(result?.Dump());
-                return result;
+                using (var cmd = GetCommand(sql, c))
+                {
+                    cmd.AddParameter("id", Context.PickupRound.Id);
+                    var result = cmd.ExecuteReader()
+                                    .AsPickupRoundDisplayModel()
+                                    .FirstOrDefault();
+                    Log.Trace(result?.Dump());
+                    return result;
+                }
             }
         }
 
@@ -77,10 +85,16 @@ namespace Probel.Gehova.Business.ServiceActions
                      , name as name
                 from team
                 where id = @id";
-                var result = c.Query<TeamDisplayModel>(sql, new { id = Context.Team.Id })
-                              .FirstOrDefault();
-                Log.Trace(result?.Dump());
-                return result;
+
+                using (var cmd = GetCommand(sql, c))
+                {
+                    cmd.AddParameter("id", Context.Team.Id);
+                    var result = cmd.ExecuteReader()
+                                    .AsTeamDisplayModel()
+                                    .FirstOrDefault();
+                    Log.Trace(result?.Dump());
+                    return result;
+                }
             }
         }
 
@@ -90,16 +104,20 @@ namespace Probel.Gehova.Business.ServiceActions
             {
                 Log.Trace($"Inserting cagegory '{categoryId}' to person '{Context.Id}'");
                 var sql = @"insert into person_category(person_id, category_id) values(@person_id, @category_id)";
-                c.Execute(sql, new
+                using (var cmd = GetCommand(sql, c))
                 {
-                    person_id = Context.Id,
-                    category_id = categoryId
-                });
+                    cmd.AddParameter("person_id", Context.Id);
+                    cmd.AddParameter("category_id", categoryId);
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
 
         private void InsertPerson(IDbConnection c, long pickupRoundId, long teamId)
         {
+            var pri = pickupRoundId == 0 ? DBNull.Value : (object)pickupRoundId;
+            var tid = (teamId == 0) ? DBNull.Value : (object)teamId;
+
             var sql = @"
                 insert into person (
                     first_name,
@@ -118,16 +136,17 @@ namespace Probel.Gehova.Business.ServiceActions
                     @pickup_round_id,
                     @team_id
                 )";
-            c.Execute(sql, new
+            using (var cmd = GetCommand(sql, c))
             {
-                first_name = Context.FirstName,
-                last_name = Context.LastName,
-                is_lunchtime = Context.IsLunchTime,
-                is_reception_morning = Context.IsReceptionMorning,
-                is_reception_evening = Context.IsReceptionEvening,
-                pickup_round_id = pickupRoundId,
-                team_id = teamId
-            });
+                cmd.AddParameter("first_name", Context.FirstName);
+                cmd.AddParameter("last_name", Context.LastName);
+                cmd.AddParameter("is_lunchtime", Context.IsLunchTime);
+                cmd.AddParameter("is_reception_morning", Context.IsReceptionMorning);
+                cmd.AddParameter("is_reception_evening", Context.IsReceptionEvening);
+                cmd.AddParameter("pickup_round_id", pri, DbType.Int64);
+                cmd.AddParameter("team_id", tid, DbType.Int64);
+                cmd.ExecuteNonQuery();
+            }
 
             Context.Id = GetLastId(c);
         }
@@ -152,7 +171,7 @@ namespace Probel.Gehova.Business.ServiceActions
                     {
                         var t = string.Empty;
                         categories.ToList().ForEach(i => t += i + ", ");
-                        t.Remove(t.Length - 2, 2);
+                        if (t.Length > 2) { t.Remove(t.Length - 2, 2); }
                         Log.Warn($"Categories '{t}' do not exist in the database.");
                     }
                 });

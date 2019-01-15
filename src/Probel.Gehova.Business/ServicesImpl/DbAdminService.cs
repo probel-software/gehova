@@ -1,6 +1,6 @@
-﻿using Dapper;
-using Probel.Gehova.Business.Db;
+﻿using Probel.Gehova.Business.Db;
 using Probel.Gehova.Business.Services;
+using Probel.Lorm;
 using System.IO;
 
 namespace Probel.Gehova.Business.ServicesImpl

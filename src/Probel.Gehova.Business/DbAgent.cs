@@ -1,16 +1,30 @@
-﻿using Dapper;
+﻿using Microsoft.Data.Sqlite;
 using NLog;
 using Probel.Gehova.Business.Db;
 using Probel.Gehova.Business.Helpers;
+using Probel.Gehova.Business.Models;
+using Probel.Lorm;
 using System;
 using System.Data;
-using System.Data.SQLite;
 
 namespace Probel.Gehova.Business
 {
     public abstract class DbAgent
     {
         #region Constructors
+
+        static DbAgent()
+        {
+            var c = new LormConfigurator();
+            c.AddMapper<WeekDay>(e => e.AsWeekday());
+            c.AddMapper<AbsenceDisplayModel>(e => e.AsAbsenceDisplayModel());
+            c.AddMapper<CategoryModel>(e => e.AsCategoryModel());
+            c.AddMapper<PersonDisplayModel>(e => e.AsPersonDisplayModel());
+            c.AddMapper<PersonFullDisplayModel>(e => e.AsPersonFullDisplayModel());
+            c.AddMapper<PickupRoundDisplayModel>(e => e.AsPickupRoundDisplayModel());
+            c.AddMapper<TeamDisplayModel>(e => e.AsTeamDisplayModel());
+            c.AddMapper<string>(e => e.AsString());
+        }
 
         public DbAgent(IDbLocator dbLocator)
         {
@@ -40,7 +54,7 @@ namespace Probel.Gehova.Business
                 "Probel.Gehova.Business.Assets.views_absence_on_date.sql",
                 "Probel.Gehova.Business.Assets.views_settings.sql"
             };
-            using (var c = new SQLiteConnection(GetConnectionString()))
+            using (var c = new SqliteConnection(GetConnectionString()))
             {
                 c.Open();
                 using (var t = c.BeginTransaction())
@@ -58,15 +72,29 @@ namespace Probel.Gehova.Business
         private string GetConnectionString()
         {
             var path = DbLocator.GetDatabasePath();
-            var cs = $@"Data Source={path};Version=3;";
+            var cs = $@"Filename={path};";
             return cs;
         }
 
         protected static long GetLastId(IDbConnection c)
         {
             var sql = "select last_insert_rowid()";
-            var lastId = c.QuerySingle<long>(sql);
-            return lastId;
+
+            using (var cmd = c.CreateCommand(sql))
+            {
+                var lastId = cmd.ExecuteScalar();
+                return (long)lastId;
+            }
+        }
+
+        protected IDbCommand GetCommand(string sql, IDbConnection connection)
+        {
+            if (connection is SqliteConnection c)
+            {
+                if (connection.State != ConnectionState.Open) { connection.Open(); }
+                return c.CreateCommand(sql);
+            }
+            else { throw new NotSupportedException($"Connection of type '{connection.GetType()}' is not supported."); }
         }
 
         protected TResult InTransaction<TResult>(Func<IDbConnection, TResult> func)
@@ -102,7 +130,7 @@ namespace Probel.Gehova.Business
                 CreateDatabase();
             }
 
-            return new SQLiteConnection(cs);
+            return new SqliteConnection(cs);
         }
 
         #endregion Methods

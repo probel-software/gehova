@@ -38,7 +38,6 @@ namespace Probel.Gehova.Views.Infrastructure
         {
             if (!_isLoaded)
             {
-                _container.RegisterType<IUserService, UserService>();
                 _container.RegisterType<IProvisioningService, ProvisioningService>();
                 _container.RegisterType<IVisualisationService, VisualisationService>();
                 _container.RegisterType<IDbLocator, UwpDbLocator>();
