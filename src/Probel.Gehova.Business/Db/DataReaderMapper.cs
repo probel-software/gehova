@@ -150,6 +150,7 @@ namespace Probel.Gehova.Business.Db
                     FirstName = (reader.HasColumn("FirstName")) ? reader["FirstName"] as string : null,
                     LastName = (reader.HasColumn("LastName")) ? reader["LastName"] as string : null,
                     PickupRound = (reader.HasColumn("PickupRound")) ? reader["PickupRound"] as string : null,
+                    Categories = (reader.HasColumn("Categories")) ? reader["Categories"] as string : null,
                 };
                 result.Add(weekday);
             };

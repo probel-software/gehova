@@ -9,6 +9,7 @@
         public string LastName { get; set; }
         public string PickupRound { get; set; }
         public string Team { get; set; }
+        public string Categories { get; set; }
 
         #endregion Properties
     }

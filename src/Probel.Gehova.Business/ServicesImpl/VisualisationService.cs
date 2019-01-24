@@ -29,6 +29,7 @@ namespace Probel.Gehova.Business.ServicesImpl
                      , team       as Team
                      , first_name as FirstName
                      , last_name  as LastName
+                     , category_key as Categories
                 from lunchtime_v";
             var result = c.Query<WeekDay>(sql);
             return result;
@@ -44,6 +45,7 @@ namespace Probel.Gehova.Business.ServicesImpl
                      , pickup_round as PickupRound
                      , first_name   as FirstName
                      , last_name    as LastName
+                     , category_key as Categories
                 from pickup_rounds_v";
             var result = c.Query<WeekDay>(sql);
             return result;
@@ -54,10 +56,11 @@ namespace Probel.Gehova.Business.ServicesImpl
             if (date.HasValue) { SetSelectedWeek(date.Value); }
 
             var sql = @"
-                select day_name   as Day
-                     , team       as Team
-                     , first_name as FirstName
-                     , last_name  as LastName
+                select day_name     as Day
+                     , team         as Team
+                     , first_name   as FirstName
+                     , last_name    as LastName
+                     , category_key as Categories
                 from reception_evening_v";
             var result = c.Query<WeekDay>(sql);
             return result;
@@ -68,10 +71,11 @@ namespace Probel.Gehova.Business.ServicesImpl
             if (date.HasValue) { SetSelectedWeek(date.Value); }
 
             var sql = @"
-                select day_name   as Day
-                     , team       as Team
-                     , first_name as FirstName
-                     , last_name  as LastName
+                select day_name     as Day
+                     , team         as Team
+                     , first_name   as FirstName
+                     , last_name    as LastName
+                     , category_key as Categories
                 from reception_morning_v";
             var result = c.Query<WeekDay>(sql);
             return result;
