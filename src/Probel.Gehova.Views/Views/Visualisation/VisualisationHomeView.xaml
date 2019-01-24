@@ -57,83 +57,98 @@
         </DataTemplate>
     </Page.Resources>
     <Grid>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <CommandBar
-                Background="Transparent"
-                DefaultLabelPosition="Right"
-                IsOpen="false">
-                <AppBarButton x:Uid="AppButtonChangeWeek" Icon="CalendarWeek">
-                    <Button.Flyout>
-                        <Flyout>
-                            <StackPanel Orientation="Horizontal">
-                                <CalendarDatePicker
-                                    x:Name="CdpWeekSelector"
-                                    x:Uid="CdpWeekSelector"
-                                    FirstDayOfWeek="Monday" />
-                                <Button
-                                    x:Uid="ButtonRefresh"
-                                    Margin="5"
-                                    Command="{Binding UpdateWeekCommand}"
-                                    CommandParameter="{Binding ElementName=CdpWeekSelector, Path=Date}" />
-                            </StackPanel>
-                        </Flyout>
-                    </Button.Flyout>
-                </AppBarButton>
-            </CommandBar>
-            <Pivot Title="{x:Bind ViewModel.DisplayedWeekAsText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Row="1">
-                <PivotItem x:Uid="PivotItem_Groups">
-                    <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding Groups.Days}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-                </PivotItem>
-                <PivotItem x:Uid="PivotItem_ReceptionMorning">
-                    <StackPanel>
-                        <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding ReceptionMorning.Days}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Margin="10,20,0,0"
+                    Style="{StaticResource SubtitleTextBlockStyle}"
+                    Text="{x:Bind ViewModel.DisplayedWeekAsText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                <CommandBar
+                    Grid.Row="1"
+                    Background="Transparent"
+                    DefaultLabelPosition="Right"
+                    IsOpen="false">
+                    <AppBarButton x:Uid="AppButtonChangeWeek" Icon="CalendarWeek">
+                        <Button.Flyout>
+                            <Flyout>
+                                <StackPanel Orientation="Horizontal">
+                                    <CalendarDatePicker
+                                        x:Name="CdpWeekSelector"
+                                        x:Uid="CdpWeekSelector"
+                                        FirstDayOfWeek="Monday" />
+                                    <Button
+                                        x:Uid="ButtonRefresh"
+                                        Margin="5"
+                                        Command="{Binding UpdateWeekCommand}"
+                                        CommandParameter="{Binding ElementName=CdpWeekSelector, Path=Date}" />
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </AppBarButton>
+                </CommandBar>
+                <Pivot Grid.Row="2">
+                    <PivotItem x:Uid="PivotItem_Groups">
+                        <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding Groups.Days}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Orientation="Horizontal" />
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                         </ItemsControl>
-                    </StackPanel>
-                </PivotItem>
-                <PivotItem x:Uid="PivotItem_LunchTime">
-                    <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding Lunchtime.Days}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-                </PivotItem>
-                <PivotItem x:Uid="PivotItem_ReceptionEvening">
-                    <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding ReceptionEvening.Days}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-                </PivotItem>
-                <PivotItem x:Uid="PivotItem_PickupRound">
-                    <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding PickupRounds.Days}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-                </PivotItem>
-            </Pivot>
-        </Grid>
+                    </PivotItem>
+                    <PivotItem x:Uid="PivotItem_Reception">
+                        <StackPanel>
+                            <TextBlock
+                                x:Uid="Label_Morning"
+                                Margin="0,15,0,0"
+                                Foreground="{StaticResource SystemAccentColor}"
+                                Style="{StaticResource TitleTextBlockStyle}" />
+                            <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding ReceptionMorning.Days}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                            <TextBlock
+                                x:Uid="Label_Evening"
+                                Foreground="{StaticResource SystemAccentColor}"
+                                Style="{StaticResource TitleTextBlockStyle}" />
+                            <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding ReceptionEvening.Days}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </StackPanel>
+                    </PivotItem>
+                    <PivotItem x:Uid="PivotItem_LunchTime">
+                        <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding Lunchtime.Days}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </PivotItem>
+                    <PivotItem x:Uid="PivotItem_PickupRound">
+                        <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding PickupRounds.Days}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </PivotItem>
+                </Pivot>
+            </Grid>
+        </ScrollViewer>
         <c:InAppNotification
             x:Name="InAppNotification"
             AnimationDuration="00:00:00.1000000"

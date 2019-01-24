@@ -233,6 +233,12 @@
     <value>Oui, je veux le supprimer!</value>
     <comment>Works on a button</comment>
   </data>
+  <data name="Label_Evening.Text" xml:space="preserve">
+    <value>Accueil du soir</value>
+  </data>
+  <data name="Label_Morning.Text" xml:space="preserve">
+    <value>Accueil du matin</value>
+  </data>
   <data name="MasterDetailPeople.NoSelectionContent" xml:space="preserve">
     <value>Sélectionnez une personne.</value>
   </data>
@@ -257,11 +263,8 @@
   <data name="PivotItem_PickupRound.Header" xml:space="preserve">
     <value>Tournées</value>
   </data>
-  <data name="PivotItem_ReceptionEvening.Header" xml:space="preserve">
-    <value>Accueil soir</value>
-  </data>
-  <data name="PivotItem_ReceptionMorning.Header" xml:space="preserve">
-    <value>Accueil matin</value>
+  <data name="PivotItem_Reception.Header" xml:space="preserve">
+    <value>Accueil matin/soir</value>
   </data>
   <data name="PivotItem_Teams.Header" xml:space="preserve">
     <value>Groupes</value>
