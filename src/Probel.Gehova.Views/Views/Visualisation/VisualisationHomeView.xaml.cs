@@ -1,5 +1,6 @@
 ﻿using Probel.Gehova.ViewModels.Vm.Visualisation;
 using Probel.Gehova.Views.Infrastructure;
+using System;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -19,6 +20,7 @@ namespace Probel.Gehova.Views.Views.Visualisation
             InitializeComponent();
             DataContext = IocFactory.ViewModel.VisualisationHomeViewModel;
             ViewModel.Messenger = new InAppMessenger(InAppNotification);
+            CdpWeekSelector.Date = DateTime.Today;
         }
 
         #endregion Constructors

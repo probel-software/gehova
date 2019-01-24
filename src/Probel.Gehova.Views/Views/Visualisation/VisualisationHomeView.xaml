@@ -66,7 +66,10 @@
                     <Button.Flyout>
                         <Flyout>
                             <StackPanel Orientation="Horizontal">
-                                <CalendarDatePicker x:Name="CdpWeekSelector" x:Uid="CdpWeekSelector" />
+                                <CalendarDatePicker
+                                    x:Name="CdpWeekSelector"
+                                    x:Uid="CdpWeekSelector"
+                                    FirstDayOfWeek="Monday" />
                                 <Button
                                     x:Uid="ButtonRefresh"
                                     Margin="5"
