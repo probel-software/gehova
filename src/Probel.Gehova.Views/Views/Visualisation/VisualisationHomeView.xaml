@@ -27,21 +27,24 @@
                 <ItemsControl ItemsSource="{Binding PeopleBags}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel>
-                                <TextBlock
-                                    Margin="0,10,0,0"
-                                    FontSize="16"
-                                    Text="{Binding Name}" />
-                                <Border
-                                    Height="1"
-                                    Margin="0,3,0,5"
-                                    Background="Gray" />
+                            <StackPanel Margin="0,5,5,0">
+                                <c:DockPanel Margin="0,0,0,5" Background="{StaticResource SystemControlBackgroundChromeMediumBrush}">
+                                    <TextBlock
+                                        Margin="5,0,10,2"
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                        Text="{Binding Name}" />
+                                </c:DockPanel>
                                 <ItemsControl ItemsSource="{Binding People}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Margin="25,0,0,0" Orientation="Horizontal">
-                                                <SymbolIcon Margin="0,3,15,0" Symbol="{Binding Category, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource CategoryToGlyphConverter}}" />
-                                                <TextBlock FontWeight="{Binding IsEducator, Converter={StaticResource EducatorToBoldConverter}}">
+                                                <SymbolIcon Margin="0,3,15,5" Symbol="{Binding Category, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource CategoryToGlyphConverter}}" />
+                                                <TextBlock
+                                                    Margin="0,0,5,0"
+                                                    VerticalAlignment="Center"
+                                                    FontWeight="{Binding IsEducator, Converter={StaticResource EducatorToBoldConverter}}">
                                                     <Run Text="{Binding LastName}" />
                                                     <Run Text="{Binding FirstName}" />
                                                 </TextBlock>
