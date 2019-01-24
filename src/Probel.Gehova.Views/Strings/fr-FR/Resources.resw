@@ -245,6 +245,9 @@
   <data name="PivotItem_Absences.Header" xml:space="preserve">
     <value>Absence</value>
   </data>
+  <data name="PivotItem_Groups.Header" xml:space="preserve">
+    <value>Groupes</value>
+  </data>
   <data name="PivotItem_LunchTime.Header" xml:space="preserve">
     <value>Temps de midi</value>
   </data>

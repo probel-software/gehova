@@ -85,6 +85,15 @@
                 </AppBarButton>
             </CommandBar>
             <Pivot Title="{x:Bind ViewModel.DisplayedWeekAsText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Row="1">
+                <PivotItem x:Uid="PivotItem_Groups">
+                    <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding Groups.Days}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </PivotItem>
                 <PivotItem x:Uid="PivotItem_ReceptionMorning">
                     <StackPanel>
                         <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding ReceptionMorning.Days}">

@@ -80,6 +80,20 @@ namespace Probel.Gehova.Business.ServicesImpl
             var result = c.Query<WeekDay>(sql);
             return result;
         });
+        private IEnumerable<WeekDay> GetGroups(DateTime? date) => InTransaction(c =>
+        {
+            if (date.HasValue) { SetSelectedWeek(date.Value); }
+
+            var sql = @"
+                select day_name     as Day
+                     , team         as Team
+                     , first_name   as FirstName
+                     , last_name    as LastName
+                     , category_key as Categories
+                from groups_v";
+            var result = c.Query<WeekDay>(sql);
+            return result;
+        });
 
         private DateTime GetSelectedWeekAs(string day)
         {
@@ -126,6 +140,8 @@ namespace Probel.Gehova.Business.ServicesImpl
                 c.Execute(sql, new { SetDate = date });
             }
         }
+
+        public IEnumerable<WeekDay> GetGroups() => GetGroups(null);
 
         #endregion Methods
     }

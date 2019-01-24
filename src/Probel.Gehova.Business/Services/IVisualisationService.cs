@@ -8,6 +8,8 @@ namespace Probel.Gehova.Business.Services
     {
         #region Methods
 
+        IEnumerable<WeekDay> GetGroups();
+
         IEnumerable<WeekDay> GetLunchtime(DateTime date);
 
         IEnumerable<WeekDay> GetLunchtime();
@@ -22,8 +24,9 @@ namespace Probel.Gehova.Business.Services
 
         IEnumerable<WeekDay> GetReceptionMorning();
 
-        DateTime GetSelectedWeekAsMonday();
         DateTime GetSelectedWeekAsFriday();
+
+        DateTime GetSelectedWeekAsMonday();
 
         void SetSelectedWeek(DateTime date);
 
