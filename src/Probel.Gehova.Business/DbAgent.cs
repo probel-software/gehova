@@ -23,6 +23,7 @@ namespace Probel.Gehova.Business
             c.AddMapper<PersonFullDisplayModel>(e => e.AsPersonFullDisplayModel());
             c.AddMapper<PickupRoundDisplayModel>(e => e.AsPickupRoundDisplayModel());
             c.AddMapper<TeamDisplayModel>(e => e.AsTeamDisplayModel());
+            c.AddMapper<SettingModel>(e => e.AsSettingModel());
             c.AddMapper<string>(e => e.AsString());
         }
 

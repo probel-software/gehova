@@ -116,7 +116,7 @@ namespace Probel.Gehova.Business.Db
 
             while (reader.Read())
             {
-                result.Add(reader.GetString(0));
+                if (!reader.IsDBNull(0)) { result.Add(reader.GetString(0)); }
             }
 
             return result;
@@ -154,6 +154,22 @@ namespace Probel.Gehova.Business.Db
                 };
                 result.Add(weekday);
             };
+            return result;
+        }
+
+        public static IEnumerable<SettingModel> AsSettingModel(this IDataReader reader)
+        {
+            var result = new List<SettingModel>();
+            while (reader.Read())
+            {
+                var setting = new SettingModel
+                {
+                    Id = (reader.HasColumn("Id")) ? (long)reader["Id"] : default(long),
+                    Key = (reader.HasColumn("Key")) ? reader["Key"] as string : null,
+                    Value = (reader.HasColumn("Value")) ? reader["Value"] as string : null,
+                };
+                result.Add(setting);
+            }
             return result;
         }
 

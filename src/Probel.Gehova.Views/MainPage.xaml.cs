@@ -48,6 +48,10 @@ namespace Probel.Gehova.Views
 
         #endregion Methods
 
-        private void Page_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e) => ViewModel?.LoadDefaultWeek();
+        private void Page_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            ViewModel?.ExecuteUpdate();
+            ViewModel?.LoadDefaultWeek();
+        }
     }
 }
