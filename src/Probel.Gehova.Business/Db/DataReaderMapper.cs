@@ -116,7 +116,7 @@ namespace Probel.Gehova.Business.Db
 
             while (reader.Read())
             {
-                result.Add(reader.GetString(0));
+                if (!reader.IsDBNull(0)) { result.Add(reader.GetString(0)); }
             }
 
             return result;
@@ -150,9 +150,26 @@ namespace Probel.Gehova.Business.Db
                     FirstName = (reader.HasColumn("FirstName")) ? reader["FirstName"] as string : null,
                     LastName = (reader.HasColumn("LastName")) ? reader["LastName"] as string : null,
                     PickupRound = (reader.HasColumn("PickupRound")) ? reader["PickupRound"] as string : null,
+                    Categories = (reader.HasColumn("Categories")) ? reader["Categories"] as string : null,
                 };
                 result.Add(weekday);
             };
+            return result;
+        }
+
+        public static IEnumerable<SettingModel> AsSettingModel(this IDataReader reader)
+        {
+            var result = new List<SettingModel>();
+            while (reader.Read())
+            {
+                var setting = new SettingModel
+                {
+                    Id = (reader.HasColumn("Id")) ? (long)reader["Id"] : default(long),
+                    Key = (reader.HasColumn("Key")) ? reader["Key"] as string : null,
+                    Value = (reader.HasColumn("Value")) ? reader["Value"] as string : null,
+                };
+                result.Add(setting);
+            }
             return result;
         }
 

@@ -126,7 +126,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\CategoryToGlyphConverter.cs" />
     <Compile Include="Converters\DateToLongDateStringConverter.cs" />
+    <Compile Include="Converters\EducatorToBoldConverter.cs" />
     <Compile Include="Helpers\DependencyObjectExtensions.cs" />
     <Compile Include="Helpers\UwpDbLocator.cs" />
     <Compile Include="Infrastructure\InAppMessenger.cs" />

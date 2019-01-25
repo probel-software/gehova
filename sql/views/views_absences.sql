@@ -7,10 +7,11 @@ create view all_absence_v as
          , t.name       as team
          , pr.name      as pickup_round
          , is_lunchtime as is_lunchtime
+         , p.category_key
          , is_reception_evening
          , is_reception_morning
     from absence a
-    inner join person p on a.person_id = p.id
+    inner join everyone_v p on a.person_id = p.id
     left join team t   on p.team_id = t.id
     left join pickup_round pr on pr.id = p.pickup_round_id;
 -------------------------------------------------------------------------------
@@ -22,6 +23,7 @@ create view absence_lunchtime_v as
          , last_name
          , team
          , pickup_round
+         , category_key
       from all_absence_v
     where is_lunchtime = 1;
 -------------------------------------------------------------------------------
@@ -33,6 +35,7 @@ create view absence_reception_morning_v as
          , last_name
          , team
          , pickup_round
+         , category_key
      from all_absence_v
     where is_reception_morning = 1;
 -------------------------------------------------------------------------------
@@ -44,5 +47,6 @@ create view absence_reception_evening_v as
          , last_name
          , team
          , pickup_round
+         , category_key
      from all_absence_v
     where is_reception_evening = 1;

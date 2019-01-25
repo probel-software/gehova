@@ -34,13 +34,13 @@
             <Setter Property="BorderThickness" Value="0" />
         </Style>
         <DataTemplate x:Name="PersonTemplate">
-            <Grid Margin="0,8">
+            <StackPanel Margin="0,8">
                 <TextBlock FontSize="14" FontWeight="Bold">
                     <Run Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <Run Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </TextBlock>
-                <TextBlock Text="{Binding CategoryDisplay}" />
-            </Grid>
+                <TextBlock Text="{Binding Category}" />
+            </StackPanel>
         </DataTemplate>
         <DataTemplate x:Name="AbsenceTemplate">
             <UserControl Margin="15,0,0,0">

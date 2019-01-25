@@ -24,6 +24,7 @@ create view everyone_v as
          ) as category_key
     from person p   
     left join team t on t.id = p.team_id
-    left join pickup_round pu on pu.id = p.pickup_round_id;
+    left join pickup_round pu on pu.id = p.pickup_round_id
+    order by category_key, p.last_name;
 /********************************************************************/
 

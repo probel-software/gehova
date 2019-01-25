@@ -178,6 +178,6 @@
     <value>Ajouter un groupe</value>
   </data>
   <data name="Title_SelectedWeek" xml:space="preserve">
-    <value>Semaine affichée: du  {0} au {1}</value>
+    <value>Semaine du {0} au {1}</value>
   </data>
 </root>

@@ -69,10 +69,11 @@ namespace Probel.Gehova.ViewModels.Mapper
                 people.Add(new PersonViewModel
                 {
                     FirstName = p.FirstName,
-                    LastName = p.LastName
+                    LastName = p.LastName,
+                    Category = p.Categories,
                 });
             }
-            return people;
+            return people.OrderBy(e => e.Category).ThenBy(e => e.LastName);
         }
 
         public WeekPickupRoundMapper Get()

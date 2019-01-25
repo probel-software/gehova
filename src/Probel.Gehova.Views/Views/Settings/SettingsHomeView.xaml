@@ -85,9 +85,9 @@
                                                 Margin="5"
                                                 Background="Gray" />
                                             <StackPanel>
-                                                <RadioButton x:Uid="Radio_ReceptionMorning" IsChecked="{Binding IsReceptionMorning, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                                <RadioButton x:Uid="Radio_Lunchtime" IsChecked="{Binding IsLunchTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                                <RadioButton x:Uid="Radio_ReceptionEvening" IsChecked="{Binding IsReceptionEvening, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                                <CheckBox x:Uid="Radio_ReceptionMorning" IsChecked="{Binding IsReceptionMorning, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                                <CheckBox x:Uid="Radio_Lunchtime" IsChecked="{Binding IsLunchTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                                <CheckBox x:Uid="Radio_ReceptionEvening" IsChecked="{Binding IsReceptionEvening, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                                             </StackPanel>
                                         </StackPanel>
                                     </Grid>
