@@ -1,5 +1,5 @@
 drop view if exists settings_weekdays_v;
-create view settings_weekday_v as
+create view settings_weekdays_v as
     select date(value) as selected_date
         , date(date(value), (1 - strftime('%w', date(value))) || ' days') as monday
         , date(date(value), (2 - strftime('%w', date(value))) || ' days') as tuesday 
