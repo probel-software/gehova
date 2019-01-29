@@ -77,8 +77,7 @@ namespace Probel.Gehova.Business.ServicesImpl
                 }
                 else
                 {
-                    var ver = new Version(1, 0, 0);
-                    sql = $@"insert into settings (key, value) values ('db_version', '{ver.ToString(3)}')";
+                    sql = $@"insert into settings (key, value) values ('db_version', '{v.ToString(3)}')";
                     c.Execute(sql);
                     return false;
                 }
