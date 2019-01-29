@@ -1,4 +1,6 @@
-﻿using Probel.Gehova.Views.Infrastructure;
+﻿using NLog;
+using NLog.Config;
+using Probel.Gehova.Views.Infrastructure;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -60,7 +62,8 @@ namespace Probel.Gehova.Views
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            IocFactory.Init();
+            IocFactory.Init();            
+
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (!(Window.Current.Content is Frame rootFrame))

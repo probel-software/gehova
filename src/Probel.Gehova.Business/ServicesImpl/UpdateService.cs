@@ -70,7 +70,8 @@ namespace Probel.Gehova.Business.ServicesImpl
                     var version = new Version(v.Major, v.Minor, v.Build);
                     if (Version.TryParse(result.Value, out var cu))
                     {
-                        return (version == new Version(cu.Major, cu.Minor, cu.Build));
+                        var r = (version == new Version(cu.Major, cu.Minor, cu.Build));
+                        return r;
                     }
                     else { return false; }
                 }
@@ -78,7 +79,7 @@ namespace Probel.Gehova.Business.ServicesImpl
                 {
                     sql = $@"insert into settings (key, value) values ('db_version', '{v.ToString(3)}')";
                     c.Execute(sql);
-                    return true;
+                    return false;
                 }
             }
         }

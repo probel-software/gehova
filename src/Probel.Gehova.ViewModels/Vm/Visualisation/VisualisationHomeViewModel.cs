@@ -1,5 +1,4 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
 using Probel.Gehova.Business.Services;
 using Probel.Gehova.ViewModels.Infrastructure;
 using Probel.Gehova.ViewModels.Mapper;
@@ -9,7 +8,7 @@ using Windows.ApplicationModel.Resources;
 
 namespace Probel.Gehova.ViewModels.Vm.Visualisation
 {
-    public class VisualisationHomeViewModel : ViewModelBase
+    public class VisualisationHomeViewModel : AsyncViewModel
     {
         #region Fields
 
@@ -96,27 +95,15 @@ namespace Probel.Gehova.ViewModels.Vm.Visualisation
 
         public void Refresh()
         {
-            var rm = _service.GetReceptionMorning();
-            var lt = _service.GetLunchtime();
-            var re = _service.GetReceptionEvening();
-            var pu = _service.GetPickupRounds();
-            var gr = _service.GetGroups();
-
-            var rmMapper = new WeekReceptionMapper(rm);
-            var ltmMapper = new WeekReceptionMapper(lt);
-            var remMapper = new WeekReceptionMapper(re);
-            var puMapper = new WeekPickupRoundMapper(pu);
-            var grMapper = new WeekReceptionMapper(gr);
-
-            ReceptionMorning = rmMapper.Get().Result;
-            Lunchtime = ltmMapper.Get().Result;
-            ReceptionEvening = remMapper.Get().Result;
-            PickupRounds = puMapper.Get().Result;
-            Groups = grMapper.Get().Result;
-
             var monday = _service.GetSelectedWeekAsMonday().ToLongDateString();
             var friday = _service.GetSelectedWeekAsFriday().ToLongDateString();
             DisplayedWeekAsText = string.Format(Resources.GetString("Title_SelectedWeek"), monday, friday);
+
+            ExecuteAsync(() => _service.GetGroups(), c => Groups = new WeekPickupRoundMapper(c).Get().Result);
+            ExecuteAsync(() => _service.GetReceptionMorning(), c => ReceptionMorning = new WeekReceptionMapper(c).Get().Result);
+            ExecuteAsync(() => _service.GetReceptionEvening(), c => ReceptionEvening = new WeekReceptionMapper(c).Get().Result);
+            ExecuteAsync(() => _service.GetLunchtime(), c => Lunchtime = new WeekReceptionMapper(c).Get().Result);
+            ExecuteAsync(() => _service.GetPickupRounds(), c => PickupRounds = new WeekPickupRoundMapper(c).Get().Result);
         }
 
         #endregion Methods
