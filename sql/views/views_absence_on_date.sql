@@ -249,7 +249,10 @@ create view reception_evening_v as
         )
    )
    where team is not null
-   order by day_nr;
+   order by day_nr     asc
+          , team       asc
+          , last_name  asc
+          , first_name asc;
 /********************************************************************/
 drop view if exists lunchtime_v;
 create view lunchtime_v as
@@ -375,7 +378,10 @@ create view lunchtime_v as
         )
    )
    where team is not null
-   order by day_nr;
+   order by day_nr     asc
+          , team       asc
+          , last_name  asc
+          , first_name asc;
 /********************************************************************/
 drop view if exists pickup_rounds_v;
 create view pickup_rounds_v as
@@ -513,7 +519,10 @@ create view pickup_rounds_v as
    )
    where team is not null
    and pickup_round is not null
-   order by day_nr;
+   order by day_nr       asc
+          , pickup_round asc
+          , last_name    asc
+          , first_name   asc;
 /********************************************************************/
 drop view if exists groups_v;
 create view groups_v as
@@ -650,4 +659,7 @@ create view groups_v as
         )
    )
    where team is not null
-   order by day_nr;
+   order by day_nr     asc
+          , team       asc
+          , last_name  asc
+          , first_name asc;
