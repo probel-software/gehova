@@ -80,6 +80,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             var result = c.Query<WeekDay>(sql);
             return result;
         });
+
         private IEnumerable<WeekDay> GetGroups(DateTime? date) => InTransaction(c =>
         {
             if (date.HasValue) { SetSelectedWeek(date.Value); }
