@@ -88,6 +88,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             var sql = @"
                 select day_name     as Day
                      , team         as Team
+                     , pickup_round as PickupRound
                      , first_name   as FirstName
                      , last_name    as LastName
                      , category_key as Categories
