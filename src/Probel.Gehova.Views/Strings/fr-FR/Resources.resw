@@ -305,6 +305,9 @@
   <data name="TbLastName.Header" xml:space="preserve">
     <value>Nom</value>
   </data>
+  <data name="TbLoading.Text" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
   <data name="TbName.Header" xml:space="preserve">
     <value>Nom</value>
   </data>
