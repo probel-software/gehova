@@ -1,5 +1,4 @@
-﻿using NLog;
-using NLog.Config;
+﻿using Microsoft.HockeyApp;
 using Probel.Gehova.Views.Infrastructure;
 using System;
 using Windows.ApplicationModel;
@@ -23,8 +22,19 @@ namespace Probel.Gehova.Views
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            UnhandledException += OnUnhandledException;
+
+            InitializeComponent();
+            InitializeTelemetry();
+            Suspending += OnSuspending;
+        }
+
+        private void OnUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e) => HockeyClient.Current.TrackException(e.Exception);
+
+        private void InitializeTelemetry()
+        {
+            var appId = "e6004d66238240e7874d3c151611c822";
+            HockeyClient.Current.Configure(appId);
         }
 
         #endregion Constructors
@@ -38,6 +48,7 @@ namespace Probel.Gehova.Views
         /// <param name="e">Details about the navigation failure</param>
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
+            HockeyClient.Current.TrackException(e.Exception);
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
 
@@ -62,7 +73,7 @@ namespace Probel.Gehova.Views
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            IocFactory.Init();            
+            IocFactory.Init();
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active

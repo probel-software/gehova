@@ -10,6 +10,8 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
     <Page.Resources>
+        <conv:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        <conv:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter" />
         <conv:CategoryToGlyphConverter x:Key="CategoryToGlyphConverter" />
         <conv:EducatorToBoldConverter x:Key="EducatorToBoldConverter" />
         <DataTemplate x:Key="PlannerTemplate">
@@ -96,58 +98,132 @@
                 </CommandBar>
                 <Pivot Grid.Row="2">
                     <PivotItem x:Uid="PivotItem_Groups">
-                        <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding Groups.Days}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
+                        <Grid>
+                            <ItemsControl
+                                x:Name="GroupList"
+                                ItemTemplate="{StaticResource PlannerTemplate}"
+                                ItemsSource="{Binding Groups.Days}"
+                                Visibility="{Binding Groups, Converter={StaticResource NotNullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding Groups, Converter={StaticResource NullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
+                                <SymbolIcon RenderTransformOrigin=".5,.5" Symbol="Sync">
+                                    <SymbolIcon.RenderTransform>
+                                        <CompositeTransform ScaleX="8" ScaleY="8" />
+                                    </SymbolIcon.RenderTransform>
+                                </SymbolIcon>
+                                <TextBlock
+                                    x:Uid="TbLoading"
+                                    Margin="0,80,0,0"
+                                    FontSize="24" />
+                            </StackPanel>
+                        </Grid>
                     </PivotItem>
                     <PivotItem x:Uid="PivotItem_Reception">
-                        <StackPanel>
-                            <TextBlock
-                                x:Uid="Label_Morning"
-                                Margin="0,15,0,0"
-                                Foreground="{StaticResource SystemAccentColor}"
-                                Style="{StaticResource TitleTextBlockStyle}" />
-                            <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding ReceptionMorning.Days}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal" />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                            </ItemsControl>
-                            <TextBlock
-                                x:Uid="Label_Evening"
-                                Foreground="{StaticResource SystemAccentColor}"
-                                Style="{StaticResource TitleTextBlockStyle}" />
-                            <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding ReceptionEvening.Days}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal" />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                            </ItemsControl>
-                        </StackPanel>
+                        <Grid>
+                            <StackPanel Visibility="{Binding Groups, Converter={StaticResource NotNullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
+                                <TextBlock
+                                    x:Uid="Label_Morning"
+                                    Margin="0,15,0,0"
+                                    Foreground="{StaticResource SystemAccentColor}"
+                                    Style="{StaticResource TitleTextBlockStyle}" />
+                                <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding ReceptionMorning.Days}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                                <TextBlock
+                                    x:Uid="Label_Evening"
+                                    Foreground="{StaticResource SystemAccentColor}"
+                                    Style="{StaticResource TitleTextBlockStyle}" />
+                                <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding ReceptionEvening.Days}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </StackPanel>
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding Groups, Converter={StaticResource NullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
+                                <SymbolIcon RenderTransformOrigin=".5,.5" Symbol="Sync">
+                                    <SymbolIcon.RenderTransform>
+                                        <CompositeTransform ScaleX="8" ScaleY="8" />
+                                    </SymbolIcon.RenderTransform>
+                                </SymbolIcon>
+                                <TextBlock
+                                    x:Uid="TbLoading"
+                                    Margin="0,80,0,0"
+                                    FontSize="24" />
+                            </StackPanel>
+                        </Grid>
                     </PivotItem>
                     <PivotItem x:Uid="PivotItem_LunchTime">
-                        <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding Lunchtime.Days}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
+                        <Grid>
+                            <ItemsControl
+                                ItemTemplate="{StaticResource PlannerTemplate}"
+                                ItemsSource="{Binding Lunchtime.Days}"
+                                Visibility="{Binding Groups, Converter={StaticResource NotNullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding Groups, Converter={StaticResource NullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
+                                <SymbolIcon RenderTransformOrigin=".5,.5" Symbol="Sync">
+                                    <SymbolIcon.RenderTransform>
+                                        <CompositeTransform ScaleX="8" ScaleY="8" />
+                                    </SymbolIcon.RenderTransform>
+                                </SymbolIcon>
+                                <TextBlock
+                                    x:Uid="TbLoading"
+                                    Margin="0,80,0,0"
+                                    FontSize="24" />
+                            </StackPanel>
+                        </Grid>
                     </PivotItem>
                     <PivotItem x:Uid="PivotItem_PickupRound">
-                        <ItemsControl ItemTemplate="{StaticResource PlannerTemplate}" ItemsSource="{Binding PickupRounds.Days}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
+                        <Grid>
+                            <ItemsControl
+                                ItemTemplate="{StaticResource PlannerTemplate}"
+                                ItemsSource="{Binding PickupRounds.Days}"
+                                Visibility="{Binding Groups, Converter={StaticResource NotNullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding Groups, Converter={StaticResource NullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
+                                <SymbolIcon RenderTransformOrigin=".5,.5" Symbol="Sync">
+                                    <SymbolIcon.RenderTransform>
+                                        <CompositeTransform ScaleX="8" ScaleY="8" />
+                                    </SymbolIcon.RenderTransform>
+                                </SymbolIcon>
+                                <TextBlock
+                                    x:Uid="TbLoading"
+                                    Margin="0,80,0,0"
+                                    FontSize="24" />
+                            </StackPanel>
+                        </Grid>
                     </PivotItem>
                 </Pivot>
             </Grid>

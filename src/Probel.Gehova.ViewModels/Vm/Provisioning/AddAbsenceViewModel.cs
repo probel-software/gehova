@@ -44,6 +44,8 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
             }
         }
 
+        public bool HasBeenAdded { get; private set; } = false;
+
         public long PersonId
         {
             get => _personId;
@@ -73,6 +75,7 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
                 To = new DateTime(To.Ticks).Date,
             };
             _service.Create(abs);
+            HasBeenAdded = true;
         }
 
         private bool CanAddAbsence()

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using Microsoft.HockeyApp;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -107,16 +108,28 @@ namespace Probel.Lorm
 
         public static void Execute(this IDbConnection connection, string sql, dynamic parameters = null)
         {
-            using (var cmd = PrepareQuery(connection, sql, (object)parameters)) { cmd.ExecuteNonQuery(); }
+            using (var cmd = PrepareQuery(connection, sql, (object)parameters))
+            {
+                try { cmd.ExecuteNonQuery(); }
+                catch (Exception ex) { HockeyClient.Current.TrackException(ex); }
+            }
         }
 
         public static IEnumerable<TResult> Query<TResult>(this IDbConnection connection, string sql, dynamic parameters = null)
         {
             using (var cmd = PrepareQuery(connection, sql, (object)parameters))
             {
-                var r = cmd.ExecuteReader();
-                var mapper = _configurator.Get<TResult>();
-                return (IEnumerable<TResult>)mapper(r);
+                try
+                {
+                    var r = cmd.ExecuteReader();
+                    var mapper = _configurator.Get<TResult>();
+                    return (IEnumerable<TResult>)mapper(r);
+                }
+                catch (Exception ex)
+                {
+                    HockeyClient.Current.TrackException(ex);
+                    return new List<TResult>();
+                }
             }
         }
 

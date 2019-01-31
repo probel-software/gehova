@@ -123,6 +123,9 @@
   <data name="Info_AbsenceAdded" xml:space="preserve">
     <value>Absence ajoutée.</value>
   </data>
+  <data name="Info_AbsenceNOTAdded" xml:space="preserve">
+    <value>Cette absence N'a PAS été ajoutée.</value>
+  </data>
   <data name="Info_AbsenceRemoved" xml:space="preserve">
     <value>Absence supprimée.</value>
   </data>
