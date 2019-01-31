@@ -50,7 +50,8 @@ namespace Probel.Gehova.Views.Views.Provisioning
 
             if (result == ContentDialogResult.Primary)
             {
-                InAppNotification.Show(_resources.GetString("Info_AbsenceAdded"), InAppMessenger.DEFAULT_DURATION);
+                if (dialog.ViewModel.HasBeenAdded) { InAppNotification.Show(_resources.GetString("Info_AbsenceAdded"), InAppMessenger.DEFAULT_DURATION); }
+                else { InAppNotification.Show(_resources.GetString("Info_AbsenceNOTAdded"), InAppMessenger.DEFAULT_DURATION); }
                 ViewModel.Refresh();
             }
         }
