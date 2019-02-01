@@ -230,7 +230,8 @@ namespace Probel.Gehova.Business.ServicesImpl
                 var sql = @"
                     select id   as Id
                          , name as Name
-                    from pickup_round";
+                    from pickup_round
+                    order by name";
 
                 using (var cmd = GetCommand(sql, c))
                 {
@@ -263,7 +264,8 @@ namespace Probel.Gehova.Business.ServicesImpl
                 var sql = @"
                     select id    as Id
                          , name  as Name
-                    from team";
+                    from team
+                    order by name";
                 using (var cmd = GetCommand(sql, c))
                 {
                     var result = cmd.ExecuteReader().AsTeamDisplayModel();

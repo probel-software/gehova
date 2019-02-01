@@ -99,7 +99,7 @@ namespace Probel.Gehova.ViewModels.Vm.Visualisation
             var friday = _service.GetSelectedWeekAsFriday().ToLongDateString();
             DisplayedWeekAsText = string.Format(Resources.GetString("Title_SelectedWeek"), monday, friday);
 
-            ExecuteAsync(() => _service.GetGroups(), c => Groups = new WeekPickupRoundMapper(c).Get().Result);
+            ExecuteAsync(() => _service.GetGroups(), c => Groups = new WeekReceptionMapper(c).Get().Result);
             ExecuteAsync(() => _service.GetReceptionMorning(), c => ReceptionMorning = new WeekReceptionMapper(c).Get().Result);
             ExecuteAsync(() => _service.GetReceptionEvening(), c => ReceptionEvening = new WeekReceptionMapper(c).Get().Result);
             ExecuteAsync(() => _service.GetLunchtime(), c => Lunchtime = new WeekReceptionMapper(c).Get().Result);

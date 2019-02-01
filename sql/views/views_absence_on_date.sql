@@ -661,4 +661,7 @@ create view groups_v as
         )
    )
    where team is not null
-   order by day_nr;
+   order by day_nr     asc
+          , team       asc
+          , last_name  asc
+          , first_name asc;

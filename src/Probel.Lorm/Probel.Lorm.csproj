@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="HockeySDK.Core" Version="4.1.6" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="2.2.1" />
   </ItemGroup>
 
