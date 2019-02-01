@@ -249,7 +249,7 @@
     <value>Calendriers</value>
   </data>
   <data name="PivotItem_Absences.Header" xml:space="preserve">
-    <value>Absence</value>
+    <value>Absences</value>
   </data>
   <data name="PivotItem_Groups.Header" xml:space="preserve">
     <value>Groupes</value>
