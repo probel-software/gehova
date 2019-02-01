@@ -1,3 +1,5 @@
+drop view if exists settings_weekdays_v;
+
 drop view if exists settings_weekday_v;
 create view settings_weekday_v as
     select date(value) as selected_date

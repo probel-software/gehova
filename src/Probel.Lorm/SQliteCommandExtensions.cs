@@ -133,6 +133,15 @@ namespace Probel.Lorm
             }
         }
 
+        public static TResult Scalar<TResult>(this IDbConnection connection, string sql, dynamic parameters = null)
+        {
+            using (var cmd = PrepareQuery(connection, sql, (object)parameters))
+            {
+                var r = cmd.ExecuteScalar();
+                return (TResult)r;
+            }
+        }
+
         #endregion Methods
     }
 }
