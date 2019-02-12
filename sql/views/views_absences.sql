@@ -1,52 +1,65 @@
-drop view if exists all_absence_v;
-create view all_absence_v as 
-    select a.date_start as date_start
-         , a.date_end   as date_end
-         , p.first_name as first_name
-         , p.last_name  as last_name
-         , t.name       as team
-         , pr.name      as pickup_round
-         , is_lunchtime as is_lunchtime
-         , p.category_key
-         , is_reception_evening
-         , is_reception_morning
-    from absence a
-    inner join everyone_v p on a.person_id = p.id
-    left join team t   on p.team_id = t.id
-    left join pickup_round pr on pr.id = p.pickup_round_id;
--------------------------------------------------------------------------------
-drop view if exists absence_lunchtime_v;
-create view absence_lunchtime_v as 
-    select date_start
-         , date_end
-         , first_name
-         , last_name
-         , team
-         , pickup_round
-         , category_key
-      from all_absence_v
-    where is_lunchtime = 1;
--------------------------------------------------------------------------------
-drop view if exists absence_reception_morning_v;
-create view absence_reception_morning_v as     
-        select date_start
-         , date_end
-         , first_name
-         , last_name
-         , team
-         , pickup_round
-         , category_key
-     from all_absence_v
-    where is_reception_morning = 1;
--------------------------------------------------------------------------------
-drop view if exists absence_reception_evening_v;
-create view absence_reception_evening_v as 
-        select date_start
-         , date_end
-         , first_name
-         , last_name
-         , team
-         , pickup_round
-         , category_key
-     from all_absence_v
-    where is_reception_evening = 1;
+drop view if exists presence_monday_v;
+create view presence_monday_v as
+    select p.*
+         , rp.reception_id         
+    from everyone_v p 
+    inner join reception_person rp on p.id = rp.person_id
+    where p.id not in (
+        select person_id
+        from absence
+        where date_start <= (select monday from settings_weekday_v limit 1)
+        and (select monday from settings_weekday_v limit 1) <= date_end
+    );
+/********************************************************************/
+drop view if exists presence_tuesday_v;
+create view presence_tuesday_v as
+    select p.*
+         , rp.reception_id         
+    from everyone_v p 
+    inner join reception_person rp on p.id = rp.person_id
+    where p.id not in (
+        select person_id
+        from absence
+        where date_start <= (select monday from settings_weekday_v limit 1)
+        and (select tuesday from settings_weekday_v limit 1) <= date_end
+    );
+/********************************************************************/
+drop view if exists presence_wednesday_v;
+create view presence_wednesday_v as
+    select p.*
+         , rp.reception_id         
+    from everyone_v p 
+    inner join reception_person rp on p.id = rp.person_id
+    where p.id not in (
+        select person_id
+        from absence
+        where date_start <= (select monday from settings_weekday_v limit 1)
+        and (select wednesday from settings_weekday_v limit 1) <= date_end
+    );
+/********************************************************************/
+drop view if exists presence_thursday_v;
+create view presence_thursday_v as
+    select p.*
+         , rp.reception_id         
+    from everyone_v p 
+    inner join reception_person rp on p.id = rp.person_id
+    where p.id not in (
+        select person_id
+        from absence
+        where date_start <= (select monday from settings_weekday_v limit 1)
+        and (select thursday from settings_weekday_v limit 1) <= date_end
+    );
+/********************************************************************/drop view if exists presence_thursday_v;
+drop view if exists presence_friday_v;
+create view presence_friday_v as
+    select p.*
+         , rp.reception_id         
+    from everyone_v p 
+    inner join reception_person rp on p.id = rp.person_id
+    where p.id not in (
+        select person_id
+        from absence
+        where date_start <= (select monday from settings_weekday_v limit 1)
+        and (select friday from settings_weekday_v limit 1) <= date_end
+    );
+/********************************************************************/
