@@ -13,10 +13,12 @@ namespace Probel.Gehova.Views.Infrastructure
         AddPersonViewModel AddPersonViewModel { get; }
         AddPickupRoundViewModel AddPickupRoundViewModel { get; }
         AddTeamViewModel AddTeamViewModel { get; }
+        MainViewModel MainViewModel { get; }
+        ReceptionPlannerView PlannerViewModel { get; }
         ProvisioningHomeViewModel ProvisioningHomeViewModel { get; }
         SettingsHomeViewModel SettingsHomeViewModel { get; }
-        VisualisationHomeViewModel VisualisationHomeViewModel { get; }
-        MainViewModel MainViewModel { get; }
+        PickupRoundViewModel PickupRoundViewModel { get; }
+        TeamPlannerViewModel TeamPlannerViewModel { get; }
         #endregion Properties
     }
 }

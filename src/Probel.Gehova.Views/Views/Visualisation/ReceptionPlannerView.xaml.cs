@@ -11,14 +11,14 @@ namespace Probel.Gehova.Views.Views.Visualisation
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class VisualisationHomeView : Page
+    public sealed partial class PlaReceptionPlannerViewnerView : Page
     {
         #region Constructors
 
-        public VisualisationHomeView()
+        public PlaReceptionPlannerViewnerView()
         {
             InitializeComponent();
-            DataContext = IocFactory.ViewModel.VisualisationHomeViewModel;
+            DataContext = IocFactory.ViewModel.PlannerViewModel;
             ViewModel.Messenger = new InAppMessenger(InAppNotification);
             CdpWeekSelector.Date = DateTime.Today;
         }
@@ -27,7 +27,7 @@ namespace Probel.Gehova.Views.Views.Visualisation
 
         #region Properties
 
-        public VisualisationHomeViewModel ViewModel => DataContext as VisualisationHomeViewModel;
+        public ReceptionPlannerView ViewModel => DataContext as ReceptionPlannerView;
 
         #endregion Properties
 

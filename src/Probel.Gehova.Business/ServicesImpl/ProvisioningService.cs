@@ -20,7 +20,7 @@ namespace Probel.Gehova.Business.ServicesImpl
 
         #region Methods
 
-        public void Create(TeamDisplayModel team) => InTransaction(c =>
+        public void CreatePickupRound(GroupDisplayModel team) => InTransaction(c =>
         {
             var sql = @"insert into team (name) values (@Name);";
             using (var cmd = c.CreateCommand(sql))
@@ -43,7 +43,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             category.Id = GetLastId(c);
         });
 
-        public void Create(PickupRoundDisplayModel pickup) => InTransaction(c =>
+        public void CreatePickup(GroupDisplayModel pickup) => InTransaction(c =>
         {
             var sql = @"insert into pickup_round (name) values (@Name);";
             using (var cmd = GetCommand(sql, c))
@@ -67,6 +67,11 @@ namespace Probel.Gehova.Business.ServicesImpl
                 Log.Debug("No category for the person.");
                 return;
             }
+            if (person?.Receptions == null || person?.Receptions?.Count() == 0)
+            {
+                Log.Debug("No reception for the person.");
+                return;
+            }
             new CreatePerson(DbLocator)
                 .WithContext(person)
                 .Execute();
@@ -80,9 +85,6 @@ namespace Probel.Gehova.Business.ServicesImpl
             {
                 FirstName = person.FirstName,
                 LastName = person.LastName,
-                IsLunchTime = person.IsLunchTime,
-                IsReceptionEvening = person.IsReceptionEvening,
-                IsReceptionMorning = person.IsReceptionMorning,
                 Categories = categories,
             };
             Create(p);
@@ -179,7 +181,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             using (var c = NewConnection())
             {
                 var sql = @"
-                    select id                   as Id
+                    select person_id                   as Id
                          , first_name           as FirstName
                          , last_name            as LastName
                          , category             as Category
@@ -187,9 +189,6 @@ namespace Probel.Gehova.Business.ServicesImpl
                          , team                 as Team
                          , team_id              as TeamId
                          , pickup_round_id      as PickupRoundId
-                         , is_reception_morning as IsReceptionMorning
-                         , is_reception_evening as IsReceptionEvening
-                         , is_lunchtime         as IsLunchTime
                     from everyone_v";
                 using (var cmd = GetCommand(sql, c))
                 {
@@ -204,11 +203,12 @@ namespace Probel.Gehova.Business.ServicesImpl
         {
             var r = new GetPerson(DbLocator)
                         .WithContext(new PersonDisplayModel { Id = id })
-                        .Execute();
+                        .Execute()
+                        .Result;
             return (PersonDisplayModel)r;
         }
 
-        public PickupRoundDisplayModel GetPickupRound(long id)
+        public GroupDisplayModel GetPickupRound(long id)
         {
             using (var c = NewConnection())
             {
@@ -217,13 +217,13 @@ namespace Probel.Gehova.Business.ServicesImpl
                          , name as Name
                     from pickup_round
                    where id = @id";
-                var result = c.Query<PickupRoundDisplayModel>(sql, new { id })
+                var result = c.Query<GroupDisplayModel>(sql, new { id })
                               .FirstOrDefault();
                 return result;
             }
         }
 
-        public IEnumerable<PickupRoundDisplayModel> GetPickupRounds()
+        public IEnumerable<GroupDisplayModel> GetPickupRounds()
         {
             using (var c = NewConnection())
             {
@@ -241,7 +241,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
-        public TeamDisplayModel GetTeam(long id)
+        public GroupDisplayModel GetTeam(long id)
         {
             using (var c = NewConnection())
             {
@@ -251,13 +251,13 @@ namespace Probel.Gehova.Business.ServicesImpl
                     from team
                    where id = @id";
 
-                var r = c.Query<TeamDisplayModel>(sql, new { id })                         
+                var r = c.Query<GroupDisplayModel>(sql, new { id })
                          .FirstOrDefault();
                 return r;
             }
         }
 
-        public IEnumerable<TeamDisplayModel> GetTeams()
+        public IEnumerable<GroupDisplayModel> GetTeams()
         {
             using (var c = NewConnection())
             {
@@ -274,7 +274,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
-        public void Remove(TeamDisplayModel team) => InTransaction(c =>
+        public void Remove(GroupDisplayModel team) => InTransaction(c =>
         {
             var sql = @"
                 update person
@@ -312,7 +312,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
-        public void Remove(PickupRoundDisplayModel pickup) => InTransaction(c =>
+        public void RemovePickup(GroupDisplayModel pickup) => InTransaction(c =>
         {
             var sql = @"
                 update person
@@ -371,7 +371,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
-        public void Update(TeamDisplayModel team)
+        public void UpdateTeam(GroupDisplayModel team)
         {
             using (var c = NewConnection())
             {
@@ -388,7 +388,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
-        public void Update(TeamModel team) => InTransaction(c =>
+        public void UpdateTeam(GroupModel team) => InTransaction(c =>
         {
             var sql = @"
                     update team
@@ -448,7 +448,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
-        public void Update(PickupRoundModel pickupRound) => InTransaction(c =>
+        public void UpdatePickupRound(GroupModel pickupRound) => InTransaction(c =>
         {
             var sql = @"
                     update pickup_round
@@ -496,9 +496,6 @@ namespace Probel.Gehova.Business.ServicesImpl
                 set
                     first_name = @first_name,
                     last_name = @last_name,
-                    is_reception_morning = @is_reception_morning,
-                    is_reception_evening = @is_reception_evening,
-                    is_lunchtime = @is_lunchtime,
                     pickup_round_id = @pickup_round_id,
                     team_id = @team_id
                 where id = @id";
@@ -506,9 +503,6 @@ namespace Probel.Gehova.Business.ServicesImpl
                 {
                     cmd.AddParameter("first_name", person.FirstName);
                     cmd.AddParameter("last_name", person.LastName);
-                    cmd.AddParameter("is_reception_morning", person.IsReceptionMorning);
-                    cmd.AddParameter("is_reception_evening", person.IsReceptionEvening);
-                    cmd.AddParameter("is_lunchtime", person.IsLunchTime);
                     cmd.AddParameter("pickup_round_id", person.PickupRound.Id);
                     cmd.AddParameter("team_id", person.Team.Id);
                     cmd.AddParameter("id", person.Id);
@@ -542,48 +536,14 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         });
 
-        public void Update(PersonFullDisplayModel person) => InTransaction(c =>
+        public void Update(PersonFullDisplayModel person)
         {
-            var sql = @"
-                update person
-                set
-                    first_name = @first_name,
-                    last_name  = @last_name,
-                    is_reception_morning = @is_reception_morning,
-                    is_lunchtime = @is_lunchtime,
-                    is_reception_evening = @is_reception_evening
-                where id = @id";
-            using (var cmd = GetCommand(sql, c))
-            {
-                cmd.AddParameter("first_name", person.FirstName);
-                cmd.AddParameter("last_name", person.LastName);
-                cmd.AddParameter("id", person.Id);
-                cmd.AddParameter("is_reception_morning", person.IsReceptionMorning);
-                cmd.AddParameter("is_lunchtime", person.IsLunchTime);
-                cmd.AddParameter("is_reception_evening", person.IsReceptionEvening);
-                cmd.ExecuteNonQuery();
-            }
+            new UpdatePerson(DbLocator)
+                .WithContext(person)
+                .Execute();
+        }
 
-            sql = @"delete from person_category where person_id = @id";
-            using (var cmd = GetCommand(sql, c))
-            {
-                cmd.AddParameter("id", person.Id);
-                cmd.ExecuteNonQuery();
-            }
-
-            sql = @"insert into person_category(person_id, category_id) values (@person_id, @category_id)";
-            foreach (var categoryId in person.CategoryIds)
-            {
-                using (var cmd = GetCommand(sql, c))
-                {
-                    cmd.AddParameter("person_id", person.Id);
-                    cmd.AddParameter("category_id", categoryId);
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        });
-
-        public void Update(PickupRoundDisplayModel pickup)
+        public void UpdatePickup(GroupDisplayModel pickup)
         {
             using (var c = NewConnection())
             {
@@ -596,6 +556,37 @@ namespace Probel.Gehova.Business.ServicesImpl
                     cmd.AddParameter("Id", pickup.Id);
                     cmd.AddParameter("Name", pickup.Name);
                     cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public IEnumerable<ReceptionModel> GetReceptions()
+        {
+            using (var c = NewConnection())
+            {
+                var sql = @"
+                    select id   as Id
+                         , name as Name
+                    from reception";
+                var result = c.Query<ReceptionModel>(sql);
+                return result;
+            }
+        }
+
+        public IEnumerable<long> GetReceptionsOf(long personId)
+        {
+            using (var c = NewConnection())
+            {
+                var sql = @"
+                    select r.id   as Id
+                    from reception r
+                    inner join reception_person rp on rp.reception_id = r.id
+                    where rp.person_id = @personId";
+                using (var cmd = GetCommand(sql, c))
+                {
+                    cmd.AddParameter("personId", personId);
+                    var result = cmd.ExecuteReader().AsLong();
+                    return result;
                 }
             }
         }

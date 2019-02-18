@@ -21,10 +21,10 @@ namespace Probel.Gehova.Business
             c.AddMapper<CategoryModel>(e => e.AsCategoryModel());
             c.AddMapper<PersonDisplayModel>(e => e.AsPersonDisplayModel());
             c.AddMapper<PersonFullDisplayModel>(e => e.AsPersonFullDisplayModel());
-            c.AddMapper<PickupRoundDisplayModel>(e => e.AsPickupRoundDisplayModel());
-            c.AddMapper<TeamDisplayModel>(e => e.AsTeamDisplayModel());
             c.AddMapper<SettingModel>(e => e.AsSettingModel());
+            c.AddMapper<ReceptionModel>(e => e.AsReceptionModel());
             c.AddMapper<string>(e => e.AsString());
+            c.AddMapper<RawPresenceWeekModel>(e => e.AsPresenceWeekRaw());
         }
 
         public DbAgent(IDbLocator dbLocator)
@@ -43,6 +43,7 @@ namespace Probel.Gehova.Business
 
         #region Methods
 
+        //TODO: update database build script
         private void CreateDatabase()
         {
             var assetManager = new AssetManager(this);

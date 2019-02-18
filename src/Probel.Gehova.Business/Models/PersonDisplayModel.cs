@@ -1,5 +1,8 @@
-﻿namespace Probel.Gehova.Business.Models
+﻿using System.Diagnostics;
+
+namespace Probel.Gehova.Business.Models
 {
+    [DebuggerDisplay("PersonDisplayModel: {FirstName} {LastName} [{Id}]")]
     public class PersonDisplayModel : BaseModel
     {
         public string FirstName { get; set; }

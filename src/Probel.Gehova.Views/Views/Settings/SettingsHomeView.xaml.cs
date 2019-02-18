@@ -1,13 +1,14 @@
 ﻿using Microsoft.Toolkit.Uwp.UI.Controls;
+using Probel.Gehova.ViewModels.ViewModelBuilders;
+using Probel.Gehova.ViewModels.Vm.Settings;
 using Probel.Gehova.Views.Infrastructure;
 using Probel.Gehova.Views.Views.Settings;
 using System;
+using System.Linq;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Probel.Gehova.ViewModels.ViewModelBuilders;
-using Probel.Gehova.ViewModels.Vm.Settings;
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace Probel.Gehova.Views.Views.Administration
@@ -79,7 +80,7 @@ namespace Probel.Gehova.Views.Views.Administration
 
         private async void ClickOnAddPickupRound(object sender, RoutedEventArgs e)
         {
-            var vm = IocFactory.ViewModel.AddPickupRoundViewModel;            
+            var vm = IocFactory.ViewModel.AddPickupRoundViewModel;
 
             var dialog = new AddWithNameView { DataContext = vm };
             var result = await dialog.ShowAsync();
@@ -114,5 +115,13 @@ namespace Probel.Gehova.Views.Views.Administration
         private async void OnDeleteCurrentPickupRound(object sender, RoutedEventArgs e) => await DialogRemovePickupRound.ShowAsync();
 
         private async void OnDeleteCurrentTeam(object sender, RoutedEventArgs e) => await DialogRemoveTeam.ShowAsync();
+
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count() > 0)
+            {
+                ViewModel.RefreshSelectedPerson(e.AddedItems[0]);
+            }
+        }
     }
 }

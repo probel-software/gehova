@@ -39,19 +39,21 @@ namespace Probel.Gehova.Views
             Type destination;
 
             if (args.IsSettingsSelected) { destination = typeof(SettingsHomeView); }
-            else if (args.SelectedItem == UserView) { destination = typeof(VisualisationHomeView); }
+            else if (args.SelectedItem == PlannerView) { destination = typeof(PlaReceptionPlannerViewnerView); }
+            else if (args.SelectedItem == PickupRoundView) { destination = typeof(PickupRoundPlannerView); }
             else if (args.SelectedItem == ProvisioningView) { destination = typeof(ProvisioningHomeView); }
+            else if(args.SelectedItem == TeamsView) { destination = typeof(TeamPlannerView); }
             else { throw new NotSupportedException($"Menu '{args.SelectedItem.GetType()}' is not yet supported"); }
 
             nav.Navigate(destination);
         }
-
-        #endregion Methods
 
         private void Page_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             ViewModel?.ExecuteUpdate();
             ViewModel?.LoadDefaultWeek();
         }
+
+        #endregion Methods
     }
 }

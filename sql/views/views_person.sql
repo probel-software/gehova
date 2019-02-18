@@ -1,6 +1,6 @@
 drop view if exists everyone_v;
 create view everyone_v as
-    select p.id
+    select p.id         as person_id
          , p.first_name as first_name
          , p.last_name  as last_name
          , t.name       as team

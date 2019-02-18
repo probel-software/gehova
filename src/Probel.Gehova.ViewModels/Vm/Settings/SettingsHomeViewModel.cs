@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using Probel.Gehova.Business.Helpers;
 using Probel.Gehova.Business.Models;
 using Probel.Gehova.Business.Services;
+using Probel.Gehova.ViewModels.GuiUtils;
 using Probel.Gehova.ViewModels.Infrastructure;
 using System;
 using System.Collections.ObjectModel;
@@ -17,22 +18,23 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
         #region Fields
 
         private readonly IDataReset _dataReset;
-        private readonly IProvisioningService _service;
         private readonly ResourceLoader _resources = new ResourceLoader("Messages");
+        private readonly IProvisioningService _service;
         private RelayCommand _addPerson;
         private ObservableCollection<PersonFullDisplayViewModel> _people = new ObservableCollection<PersonFullDisplayViewModel>();
-        private ObservableCollection<PickupRoundDisplayModel> _pickupRounds = new ObservableCollection<PickupRoundDisplayModel>();
+        private ObservableCollection<GroupDisplayModel> _pickupRounds = new ObservableCollection<GroupDisplayModel>();
+        private ObservableCollection<ReceptionModel> _receptions;
         private RelayCommand _refreshCommand;
         private RelayCommand _removePersonCommand;
         private RelayCommand _removePickupRoundCommand;
         private RelayCommand _removeTeamCommand;
         private PersonFullDisplayViewModel _selectedPerson;
-        private PickupRoundDisplayModel _selectedPickupRound;
-        private TeamDisplayModel _selectedTeam;
-        private ObservableCollection<TeamDisplayModel> _teams = new ObservableCollection<TeamDisplayModel>();
+        private GroupDisplayModel _selectedPickupRound;
+        private GroupDisplayModel _selectedTeam;
+        private ObservableCollection<GroupDisplayModel> _teams = new ObservableCollection<GroupDisplayModel>();
         private RelayCommand<PersonFullDisplayViewModel> _updatePersonCommand;
-        private RelayCommand<PickupRoundDisplayModel> _updatePickupRoundCommand;
-        private RelayCommand<TeamDisplayModel> _updateTeamCommand;
+        private RelayCommand<GroupDisplayModel> _updatePickupRoundCommand;
+        private RelayCommand<GroupDisplayModel> _updateTeamCommand;
         public ObservableCollection<CategoryModel> _categories = new ObservableCollection<CategoryModel>();
 
         #endregion Fields
@@ -49,7 +51,7 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
 
         #region Properties
 
-        public ICommand AddPersonCommand => _addPerson ?? (_addPerson = new RelayCommand(AddPerson));                
+        public ICommand AddPersonCommand => _addPerson ?? (_addPerson = new RelayCommand(AddPerson));
 
         public ObservableCollection<CategoryModel> Categories
         {
@@ -65,10 +67,16 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             set => Set(ref _people, value, nameof(People));
         }
 
-        public ObservableCollection<PickupRoundDisplayModel> PickupRounds
+        public ObservableCollection<GroupDisplayModel> PickupRounds
         {
             get => _pickupRounds;
             set => Set(ref _pickupRounds, value, nameof(PickupRounds));
+        }
+
+        public ObservableCollection<ReceptionModel> Receptions
+        {
+            get => _receptions;
+            set => Set(ref _receptions, value, nameof(Receptions));
         }
 
         public ICommand RefreshCommand => _refreshCommand ?? (_refreshCommand = new RelayCommand(Refresh));
@@ -89,7 +97,7 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             }
         }
 
-        public PickupRoundDisplayModel SelectedPickupRound
+        public GroupDisplayModel SelectedPickupRound
         {
             get => _selectedPickupRound;
             set
@@ -99,7 +107,21 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             }
         }
 
-        public TeamDisplayModel SelectedTeam
+        public void RefreshSelectedPerson(object item)
+        {
+            if (item is PersonFullDisplayViewModel selectedPerson)
+            {
+                SelectedPerson = selectedPerson;
+                var ids = _service.GetReceptionsOf(SelectedPerson.Id);
+                var r = _service.GetReceptions()
+                                .ToViewModel()
+                                .CheckUserReception(ids);
+
+                SelectedPerson.Receptions = new ObservableCollection<ReceptionViewModel>(r);
+            }
+        }
+
+        public GroupDisplayModel SelectedTeam
         {
             get => _selectedTeam;
             set
@@ -109,7 +131,7 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             }
         }
 
-        public ObservableCollection<TeamDisplayModel> Teams
+        public ObservableCollection<GroupDisplayModel> Teams
         {
             get => _teams;
             set => Set(ref _teams, value, nameof(Teams));
@@ -117,13 +139,14 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
 
         public ICommand UpdatePersonCommand => _updatePersonCommand ?? (_updatePersonCommand = new RelayCommand<PersonFullDisplayViewModel>(UpdatePerson, CanUpdatePerson));
 
-        public ICommand UpdatePickupRoundCommand => _updatePickupRoundCommand ?? (_updatePickupRoundCommand = new RelayCommand<PickupRoundDisplayModel>(UpdatePickupRound, CanUpdatePickupRound));
+        public ICommand UpdatePickupRoundCommand => _updatePickupRoundCommand ?? (_updatePickupRoundCommand = new RelayCommand<GroupDisplayModel>(UpdatePickupRound, CanUpdatePickupRound));
 
-        public ICommand UpdateTeamCommand => _updateTeamCommand ?? (_updateTeamCommand = new RelayCommand<TeamDisplayModel>(UpdateTeam, CanUpdateTeam));
+        public ICommand UpdateTeamCommand => _updateTeamCommand ?? (_updateTeamCommand = new RelayCommand<GroupDisplayModel>(UpdateTeam, CanUpdateTeam));
 
         #endregion Properties
 
         #region Methods
+
         [Obsolete]
         private void AddPerson()
         {
@@ -144,9 +167,9 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
 
         private bool CanUpdatePerson(PersonFullDisplayViewModel person) => person != null;
 
-        private bool CanUpdatePickupRound(PickupRoundDisplayModel pickupRound) => pickupRound != null;
+        private bool CanUpdatePickupRound(GroupDisplayModel pickupRound) => pickupRound != null;
 
-        private bool CanUpdateTeam(TeamDisplayModel team) => team != null;
+        private bool CanUpdateTeam(GroupDisplayModel team) => team != null;
 
         private void RefreshCategories()
         {
@@ -164,13 +187,19 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
         private void RefreshPickupRounds()
         {
             var r = _service.GetPickupRounds();
-            PickupRounds = new ObservableCollection<PickupRoundDisplayModel>(r);
+            PickupRounds = new ObservableCollection<GroupDisplayModel>(r);
+        }
+
+        private void RefreshReceptions()
+        {
+            var c = _service.GetReceptions();
+            Receptions = new ObservableCollection<ReceptionModel>(c);
         }
 
         private void RefreshTeams()
         {
             var t = _service.GetTeams();
-            Teams = new ObservableCollection<TeamDisplayModel>(t);
+            Teams = new ObservableCollection<GroupDisplayModel>(t);
         }
 
         private void RemovePerson()
@@ -211,46 +240,43 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             }
         }
 
-        private void UpdatePickupRound(PickupRoundDisplayModel pickupRound)
+        private void UpdatePickupRound(GroupDisplayModel pickupRound)
         {
             if (pickupRound == null || string.IsNullOrEmpty(pickupRound.Name)) { return; }
             else if (pickupRound.Id > 0)
             {
-                _service.Update(pickupRound);
+                _service.UpdateTeam(pickupRound);
                 Messenger?.Say(string.Format(_resources.GetString("Info_PickupRoundUpdated"), pickupRound.Name));
             }
             else
             {
-                _service.Create(pickupRound);
+                _service.CreatePickupRound(pickupRound);
                 Messenger?.Say(string.Format(_resources.GetString("Info_PickupRoundCreated"), pickupRound.Name));
             }
         }
 
-        private void UpdateTeam(TeamDisplayModel team)
+        private void UpdateTeam(GroupDisplayModel team)
         {
             if (team == null || string.IsNullOrEmpty(team.Name)) { return; }
             else if (team.Id > 0)
             {
-                _service.Update(team);
+                _service.UpdateTeam(team);
                 Messenger?.Say(string.Format(_resources.GetString("Info_TeamUpdated"), team.Name));
             }
             else
             {
-                _service.Create(team);
+                _service.CreatePickupRound(team);
                 Messenger?.Say(string.Format(_resources.GetString("Info_TeamCreated"), team.Name));
             }
         }
 
         public void Refresh()
         {
-            //#if DEBUG
-            //            _dataReset.Execute();
-            //#endif
-
             RefreshCategories();
             RefreshPeople();
             RefreshTeams();
             RefreshPickupRounds();
+            RefreshReceptions();
         }
 
         #endregion Methods

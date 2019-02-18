@@ -49,14 +49,14 @@ namespace Probel.Gehova.Cli.Tests
             Output.WriteTitle("Get teams");
             DisplayTeams();
 
-            var team = new TeamDisplayModel() { Name = Guid.NewGuid().ToString() };
+            var team = new GroupDisplayModel() { Name = Guid.NewGuid().ToString() };
             Output.WriteTitle("Add new team");
-            _service.Create(team);
+            _service.CreatePickupRound(team);
             DisplayTeams();
 
             Output.WriteTitle("Update team name");
             team.Name += "zzzz";
-            _service.Update(team);
+            _service.UpdateTeam(team);
             DisplayTeams();
 
             Output.WriteTitle("Delete team");

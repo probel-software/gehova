@@ -44,7 +44,7 @@ namespace Probel.Gehova.Views.Infrastructure
                 _container.RegisterType<IDataReset, DataReset>();
                 _container.RegisterType<IProvisioningService, ProvisioningService>();
                 _container.RegisterType<ILogger>(new InjectionFactory(l => LogManager.GetCurrentClassLogger()));
-                _container.RegisterType<IUpdateService, UpdateService>();
+                _container.RegisterType<IUpdateService, UpdateService>();                
                 //----
                 _isLoaded = true;
             }

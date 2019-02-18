@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using Probel.Gehova.Business.Services;
 using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 
 namespace Probel.Gehova.ViewModels.Vm
@@ -25,6 +26,8 @@ namespace Probel.Gehova.ViewModels.Vm
         private readonly IVisualisationService _service;
         private readonly IUpdateService _updateService;
 
+        private bool _isUpdating;
+
         #endregion Fields
 
         #region Constructors
@@ -37,14 +40,29 @@ namespace Probel.Gehova.ViewModels.Vm
 
         #endregion Constructors
 
+        #region Properties
+
+        public bool IsUpdating
+        {
+            get => _isUpdating;
+            set => Set(ref _isUpdating, value, nameof(IsUpdating));
+        }
+
+        #endregion Properties
+
         #region Methods
 
-        public void ExecuteUpdate()
+        public async void ExecuteUpdate()
         {
             var ver = Package.Current.Id.Version.AsVersion();
             var isUpToDate = _updateService.CheckVersion(ver);
 
-            if (!isUpToDate) { _updateService.UpdateToVersion(ver); }
+            if (!isUpToDate)
+            {
+                IsUpdating = true;
+                await Task.Run(() => _updateService.UpdateToVersion(ver));
+                IsUpdating = false;
+            }
         }
 
         public void LoadDefaultWeek() => _service.SetSelectedWeek(DateTime.Today);

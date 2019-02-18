@@ -15,7 +15,7 @@ namespace Probel.Gehova.Views.Converters
                 : Visibility.Collapsed;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language) => throw new NotImplementedException();
+        public object ConvertBack(object value, Type targetType, object parameter, string language) => null;
 
         #endregion Methods
     }

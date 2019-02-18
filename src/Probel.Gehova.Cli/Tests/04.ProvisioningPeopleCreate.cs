@@ -61,9 +61,6 @@ namespace Probel.Gehova.Cli.Tests
             {
                 FirstName = RandomText,
                 LastName = RandomText,
-                IsLunchTime = true,
-                IsReceptionEvening = false,
-                IsReceptionMorning = false,
                 PickupRound = pickupRound,
                 Categories = new List<CategoryModel> { category1, category2 },
                 Team = team

@@ -17,8 +17,8 @@
                     x:Name="MasterDetailPeople"
                     x:Uid="MasterDetailPeople"
                     CompactModeThresholdWidth="720"
-                    ItemsSource="{Binding People, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                    SelectedItem="{Binding SelectedPerson, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                    ItemsSource="{Binding People, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                    
+                    SelectionChanged="OnSelectionChanged">
                     <c:MasterDetailsView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="0,8">
@@ -84,11 +84,13 @@
                                                 Height="2"
                                                 Margin="5"
                                                 Background="Gray" />
-                                            <StackPanel>
-                                                <CheckBox x:Uid="Radio_ReceptionMorning" IsChecked="{Binding IsReceptionMorning, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                                <CheckBox x:Uid="Radio_Lunchtime" IsChecked="{Binding IsLunchTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                                <CheckBox x:Uid="Radio_ReceptionEvening" IsChecked="{Binding IsReceptionEvening, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                            </StackPanel>
+                                            <ItemsControl ItemsSource="{Binding Receptions}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
                                         </StackPanel>
                                     </Grid>
                                 </StackPanel>

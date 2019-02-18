@@ -19,10 +19,9 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
         private ObservableCollection<CategoryViewModel> _categories;
         private string _firstName;
         private bool _isAbleToAdd;
-        private bool _isLunchtime;
-        private bool _isReceptionEvening;
-        private bool _isReceptionMorning;
         private string _lastName;
+
+        private ObservableCollection<ReceptionViewModel> _receptions;
 
         #endregion Fields
 
@@ -61,24 +60,6 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             set => Set(ref _isAbleToAdd, value, nameof(IsAbleToAdd));
         }
 
-        public bool IsLunchtime
-        {
-            get => _isLunchtime;
-            set => Set(ref _isLunchtime, value, nameof(IsLunchtime));
-        }
-
-        public bool IsReceptionEvening
-        {
-            get => _isReceptionEvening;
-            set => Set(ref _isReceptionEvening, value, nameof(_isReceptionEvening));
-        }
-
-        public bool IsReceptionMorning
-        {
-            get => _isReceptionMorning;
-            set => Set(ref _isReceptionMorning, value, nameof(IsReceptionMorning));
-        }
-
         public string LastName
         {
             get => _lastName;
@@ -87,6 +68,12 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
                 Set(ref _lastName, value, nameof(LastName));
                 CanAddPerson(); //Hack: this line do not work _addCommand.RaiseCanExecuteChanged();
             }
+        }
+
+        public ObservableCollection<ReceptionViewModel> Receptions
+        {
+            get => _receptions;
+            set => Set(ref _receptions, value, nameof(Receptions));
         }
 
         #endregion Properties
@@ -99,11 +86,17 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             {
                 FirstName = FirstName,
                 LastName = LastName,
-                IsLunchTime = IsLunchtime,
-                IsReceptionEvening = IsReceptionEvening,
-                IsReceptionMorning = IsReceptionMorning,
                 Categories = GetCategories(),
+                Receptions = GetReceptions(),
             });
+        }
+
+        private IEnumerable<ReceptionModel> GetReceptions()
+        {
+            var result = (from r in Receptions
+                          where r.IsSelected
+                          select r).ToModel();
+            return result;
         }
 
         private bool CanAddPerson()

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Probel.Gehova.ViewModels.Vm.Settings
 {
-    public static class CategoryViewModelExtesions
+    public static class CategoryViewModelExtensions
     {
         #region Methods
 

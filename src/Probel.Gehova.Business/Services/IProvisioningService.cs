@@ -9,11 +9,11 @@ namespace Probel.Gehova.Business.Services
 
         void Create(AbsenceDisplayModel absence);
 
-        void Create(TeamDisplayModel team);
+        void CreatePickupRound(GroupDisplayModel team);
 
         void Create(CategoryModel category);
 
-        void Create(PickupRoundDisplayModel pickup);
+        void CreatePickup(GroupDisplayModel pickup);
 
         void Create(PersonModel person);
 
@@ -29,35 +29,39 @@ namespace Probel.Gehova.Business.Services
 
         PersonDisplayModel GetPerson(long id);
 
-        PickupRoundDisplayModel GetPickupRound(long id);
+        GroupDisplayModel GetPickupRound(long id);
 
-        IEnumerable<PickupRoundDisplayModel> GetPickupRounds();
+        IEnumerable<GroupDisplayModel> GetPickupRounds();
 
-        TeamDisplayModel GetTeam(long id);
+        IEnumerable<ReceptionModel> GetReceptions();
 
-        IEnumerable<TeamDisplayModel> GetTeams();
+        IEnumerable<long> GetReceptionsOf(long id);
+
+        GroupDisplayModel GetTeam(long id);
+
+        IEnumerable<GroupDisplayModel> GetTeams();
 
         void Remove(AbsenceDisplayModel absence);
 
-        void Remove(TeamDisplayModel team);
+        void Remove(GroupDisplayModel team);
 
         void Remove(CategoryModel category);
 
-        void Remove(PickupRoundDisplayModel pickup);
+        void RemovePickup(GroupDisplayModel pickup);
 
-        void Remove(PersonDisplayModel person);        
+        void Remove(PersonDisplayModel person);
 
-        void Update(TeamDisplayModel team);
+        void UpdateTeam(GroupDisplayModel team);
 
         void Update(CategoryModel category);
 
-        void Update(PickupRoundModel pickup);
+        void UpdatePickupRound(GroupModel pickup);
 
-        void Update(PickupRoundDisplayModel pickup);
+        void UpdatePickup(GroupDisplayModel pickup);
 
         void Update(PersonFullDisplayModel person);
 
-        void Update(TeamModel team);
+        void UpdateTeam(GroupModel team);
 
         #endregion Methods
     }

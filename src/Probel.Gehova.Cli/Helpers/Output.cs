@@ -44,7 +44,7 @@ namespace Probel.Gehova.Cli.Helpers
             }
         }
 
-        public static void Write(TeamDisplayModel model)
+        public static void Write(GroupDisplayModel model)
         {
             Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.Write("        Team: ");
@@ -56,7 +56,7 @@ namespace Probel.Gehova.Cli.Helpers
 
         public static void Write(DateTime dateTime) => Console.WriteLine($"Date and time: {dateTime.ToString()}");
 
-        public static void Write(TeamModel model)
+        public static void Write(GroupModel model)
         {
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write("Team: ");
@@ -114,7 +114,7 @@ namespace Probel.Gehova.Cli.Helpers
             else { Console.WriteLine($"[{model.Id}] {model.CategoryKey,9} -  {model.FirstName,15} {model.LastName,-15} -- {model.Category}"); }
         }
 
-        public static void Write(PickupRoundDisplayModel model)
+        public static void WritePickup(GroupDisplayModel model)
         {
             Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.Write("Pickup round: ");
@@ -122,29 +122,6 @@ namespace Probel.Gehova.Cli.Helpers
 
             if (model == null) { Console.WriteLine("NULL"); }
             else { Console.WriteLine($"[{model.Id}] {model.Name}"); }
-        }
-
-        public static void Write(PickupRoundModel model)
-        {
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write("Pickup round: ");
-            Console.ResetColor();
-
-            if (model == null) { Console.WriteLine("NULL"); }
-            else
-            {
-                Console.WriteLine($"[{model.Id}] {model.Name}");
-
-                if (model.People != null && model.People.Count() > 0)
-                {
-                    foreach (var person in model.People)
-                    {
-                        Console.Write("\t");
-                        Write(person);
-                    }
-                }
-                else { WriteLine("\tNobody."); }
-            }
         }
 
         public static void Write(PersonFullDisplayModel model)
@@ -155,9 +132,6 @@ namespace Probel.Gehova.Cli.Helpers
 
             WriteLine($"     - Categories         : {model.Category}");
             WriteLine($"     - Team               : {model.Team}.");
-            WriteLine($"     - IsLunchTime        : {model.IsLunchTime}");
-            WriteLine($"     - IsReceptionMorning : {model.IsReceptionMorning}");
-            WriteLine($"     - IsReceptionEvening : {model.IsReceptionEvening}");
         }
 
         public static void Write(IEnumerable<PersonFullDisplayModel> models)

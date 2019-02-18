@@ -8,21 +8,39 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
-    <NavigationView
-        x:Name="rootNavigation"
-        IsBackButtonVisible="Collapsed"
-        IsPaneOpen="False"
-        SelectionChanged="OnRootNavigation">
-        <NavigationView.MenuItems>
-            <NavigationViewItem
-                x:Name="UserView"
-                x:Uid="Menu_Visualisation"
-                Icon="Calendar" />
-            <NavigationViewItem
-                x:Name="ProvisioningView"
-                x:Uid="Menu_Provisioning"
-                Icon="People" />
-        </NavigationView.MenuItems>
-        <Frame x:Name="contentFrame" />
-    </NavigationView>
+    <Grid>
+        <NavigationView
+            x:Name="rootNavigation"
+            IsBackButtonVisible="Collapsed"
+            IsPaneOpen="False"
+            SelectionChanged="OnRootNavigation">
+            <NavigationView.MenuItems>
+                <NavigationViewItemHeader x:Uid="Menu_Header_Calendar" />
+                <NavigationViewItem
+                    x:Name="PlannerView"
+                    x:Uid="Menu_Visualisation"
+                    Icon="Calendar" />
+                <NavigationViewItem
+                    x:Name="PickupRoundView"
+                    x:Uid="Menu_Pickup_Round"
+                    Icon="Rotate" />
+                <NavigationViewItem
+                    x:Name="TeamsView"
+                    x:Uid="Menu_Teams"
+                    Icon="People" />
+                <NavigationViewItemHeader x:Uid="Menu_Header_Data" />
+                <NavigationViewItem
+                    x:Name="ProvisioningView"
+                    x:Uid="Menu_Provisioning"
+                    Icon="ContactInfo" />
+            </NavigationView.MenuItems>
+            <Frame x:Name="contentFrame" />
+        </NavigationView>
+        <ContentDialog x:Name="UpdateInProgress" x:Uid="DialogUpdateInProgress">
+            <StackPanel>
+                <TextBlock x:Uid="TbUpdateInProgress" />
+                <ProgressRing />
+            </StackPanel>
+        </ContentDialog>
+    </Grid>
 </Page>

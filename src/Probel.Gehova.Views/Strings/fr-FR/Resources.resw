@@ -242,11 +242,23 @@
   <data name="MasterDetailPeople.NoSelectionContent" xml:space="preserve">
     <value>Sélectionnez une personne.</value>
   </data>
+  <data name="Menu_Header_Calendar.Content" xml:space="preserve">
+    <value>Calendriers</value>
+  </data>
+  <data name="Menu_Header_Data.Content" xml:space="preserve">
+    <value>Gestion</value>
+  </data>
+  <data name="Menu_Pickup_Round.Content" xml:space="preserve">
+    <value>Calendrier des tournées</value>
+  </data>
   <data name="Menu_Provisioning.Content" xml:space="preserve">
-    <value>Données</value>
+    <value>Gestion des données</value>
+  </data>
+  <data name="Menu_Teams.Content" xml:space="preserve">
+    <value>Calendrier des équipes</value>
   </data>
   <data name="Menu_Visualisation.Content" xml:space="preserve">
-    <value>Calendriers</value>
+    <value>Calendrier des groupes</value>
   </data>
   <data name="PivotItem_Absences.Header" xml:space="preserve">
     <value>Absences</value>
@@ -334,5 +346,8 @@
   </data>
   <data name="TbReception.Text" xml:space="preserve">
     <value>Réceptions</value>
+  </data>
+  <data name="TbUpdateInProgress.Text" xml:space="preserve">
+    <value>Mise à jour de la base de données...</value>
   </data>
 </root>

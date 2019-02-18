@@ -4,7 +4,9 @@
     {
         #region Methods
 
-        object Execute();
+        IServiceAction<TContext> Execute();
+
+        object Result { get; }
 
         IServiceAction<TContext> WithContext(TContext context);
 

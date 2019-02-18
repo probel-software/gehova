@@ -2,15 +2,16 @@
 
 namespace Probel.Gehova.Business.Models
 {
-    public class PickupRoundModel : PickupRoundDisplayModel
+    public class GroupModel : GroupDisplayModel
     {
         #region Constructors
 
-        public PickupRoundModel()
+        public GroupModel()
         {
+            People = new List<PersonDisplayModel>();
         }
 
-        public PickupRoundModel(PickupRoundDisplayModel src)
+        public GroupModel(GroupDisplayModel src) : this()
         {
             Name = src.Name;
             Id = src.Id;
@@ -21,7 +22,6 @@ namespace Probel.Gehova.Business.Models
         #region Properties
 
         public IList<PersonDisplayModel> People { get; set; }
-
         #endregion Properties
     }
 }

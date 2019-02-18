@@ -23,6 +23,8 @@ namespace Probel.Gehova.Business.ServiceActions
 
         private PersonModel Context { get; set; }
 
+        public object Result { get; private set; }
+
         #endregion Properties
 
         #region Methods
@@ -53,7 +55,7 @@ namespace Probel.Gehova.Business.ServiceActions
             }
         }
 
-        private PickupRoundDisplayModel GetPickupRound(IDbConnection c)
+        private GroupDisplayModel GetPickupRound(IDbConnection c)
         {
             if (Context?.PickupRound?.Id == null) { return null; }
             else
@@ -75,7 +77,32 @@ namespace Probel.Gehova.Business.ServiceActions
             }
         }
 
-        private TeamDisplayModel GetTeam(IDbConnection c)
+        private IEnumerable<ReceptionModel> GetReceptionOfPerson(IDbConnection c)
+        {
+            var sql = @"
+                select r.id   as Id
+                     , r.name as Name
+                from reception r
+                where id in @ids";
+            using (var cmd = GetCommand(sql, c))
+            {
+                cmd.AddParameters("ids", Context.Receptions.Select(e => e.Id));
+                var result = cmd.ExecuteReader().AsReceptionModel();
+                Log.Trace(result?.Dump());
+                return result;
+            }
+        }
+
+        private IEnumerable<ReceptionModel> GetReceptions(IDbConnection c)
+        {
+            var list = GetReceptionOfPerson(c);
+            if (list == null) { list = new List<ReceptionModel>(); }
+
+            Log.Trace(list?.Dump());
+            return list;
+        }
+
+        private GroupDisplayModel GetTeam(IDbConnection c)
         {
             if (Context?.Team?.Id == null) { return null; }
             else
@@ -122,17 +149,11 @@ namespace Probel.Gehova.Business.ServiceActions
                 insert into person (
                     first_name,
                     last_name,
-                    is_lunchtime,
-                    is_reception_morning,
-                    is_reception_evening,
                     pickup_round_id,
                     team_id
                 ) values (
                     @first_name,
                     @last_name,
-                    @is_lunchtime,
-                    @is_reception_morning,
-                    @is_reception_evening,
                     @pickup_round_id,
                     @team_id
                 )";
@@ -140,9 +161,6 @@ namespace Probel.Gehova.Business.ServiceActions
             {
                 cmd.AddParameter("first_name", Context.FirstName);
                 cmd.AddParameter("last_name", Context.LastName);
-                cmd.AddParameter("is_lunchtime", Context.IsLunchTime);
-                cmd.AddParameter("is_reception_morning", Context.IsReceptionMorning);
-                cmd.AddParameter("is_reception_evening", Context.IsReceptionEvening);
                 cmd.AddParameter("pickup_round_id", pri, DbType.Int64);
                 cmd.AddParameter("team_id", tid, DbType.Int64);
                 cmd.ExecuteNonQuery();
@@ -151,7 +169,22 @@ namespace Probel.Gehova.Business.ServiceActions
             Context.Id = GetLastId(c);
         }
 
-        public object Execute()
+        private void InsertReceptions(IDbConnection c, IEnumerable<long> receptionIds)
+        {
+            foreach (var receptionId in receptionIds)
+            {
+                Log.Trace($"Inserting reception '{receptionId}' to person '{Context.Id}'");
+                var sql = @"insert into reception_person(person_id, reception_id) values(@person_id, @reception_id)";
+                using (var cmd = GetCommand(sql, c))
+                {
+                    cmd.AddParameter("person_id", Context.Id);
+                    cmd.AddParameter("reception_id", receptionId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public IServiceAction<PersonModel> Execute()
         {
             if (Context == null) { throw new NotSupportedException($"The context is not configured. Please set the property Context."); }
             else
@@ -159,6 +192,7 @@ namespace Probel.Gehova.Business.ServiceActions
                 InTransaction(c =>
                 {
                     var categories = GetCategories(c);
+                    var receptions = GetReceptions(c);
                     var pickupRound = GetPickupRound(c);
                     var team = GetTeam(c);
 
@@ -166,6 +200,10 @@ namespace Probel.Gehova.Business.ServiceActions
                     if (categories != null && categories.Count() > 0)
                     {
                         InsertCategories(c, categories.Select(cat => cat.Id));
+                    }
+                    if (receptions != null && receptions.Count() > 0)
+                    {
+                        InsertReceptions(c, receptions.Select(rec => rec.Id));
                     }
                     else
                     {
@@ -176,7 +214,7 @@ namespace Probel.Gehova.Business.ServiceActions
                     }
                 });
             }
-            return null;
+            return this;
         }
 
         public IServiceAction<PersonModel> WithContext(PersonModel context)

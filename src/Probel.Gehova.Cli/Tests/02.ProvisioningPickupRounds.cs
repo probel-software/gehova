@@ -49,14 +49,14 @@ namespace Probel.Gehova.Cli.Tests
             Output.WriteTitle("Get pickup rounds");
             DisplayCategories();
 
-            var pickup = new PickupRoundDisplayModel() { Name = Guid.NewGuid().ToString() };
+            var pickup = new GroupDisplayModel() { Name = Guid.NewGuid().ToString() };
             Output.WriteTitle("Add new  pickup round");
-            _service.Create(pickup);
+            _service.CreatePickupRound(pickup);
             DisplayCategories();
 
             Output.WriteTitle("Update  pickup round name");
             pickup.Name += "zzzz";
-            _service.Update(pickup);
+            _service.UpdateTeam(pickup);
             DisplayCategories();
 
             Output.WriteTitle("Delete  pickup rounds");

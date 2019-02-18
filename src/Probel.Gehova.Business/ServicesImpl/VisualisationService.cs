@@ -1,4 +1,5 @@
 ﻿using Probel.Gehova.Business.Db;
+using Probel.Gehova.Business.Mappers;
 using Probel.Gehova.Business.Models;
 using Probel.Gehova.Business.Services;
 using Probel.Lorm;
@@ -20,67 +21,6 @@ namespace Probel.Gehova.Business.ServicesImpl
 
         #region Methods
 
-        private IEnumerable<WeekDay> GetLunchtime(DateTime? date) => InTransaction(c =>
-        {
-            if (date.HasValue) { SetSelectedWeek(date.Value); }
-
-            var sql = @"
-                select day_name   as Day
-                     , team       as Team
-                     , first_name as FirstName
-                     , last_name  as LastName
-                     , category_key as Categories
-                from lunchtime_v";
-            var result = c.Query<WeekDay>(sql);
-            return result;
-        });
-
-        private IEnumerable<WeekDay> GetPickupRounds(DateTime? date) => InTransaction(c =>
-        {
-            if (date.HasValue) { SetSelectedWeek(date.Value); }
-
-            var sql = @"
-                select day_name     as Day
-                     , team         as Team
-                     , pickup_round as PickupRound
-                     , first_name   as FirstName
-                     , last_name    as LastName
-                     , category_key as Categories
-                from pickup_rounds_v";
-            var result = c.Query<WeekDay>(sql);
-            return result;
-        });
-
-        private IEnumerable<WeekDay> GetReceptionEvening(DateTime? date) => InTransaction(c =>
-        {
-            if (date.HasValue) { SetSelectedWeek(date.Value); }
-
-            var sql = @"
-                select day_name     as Day
-                     , team         as Team
-                     , first_name   as FirstName
-                     , last_name    as LastName
-                     , category_key as Categories
-                from reception_evening_v";
-            var result = c.Query<WeekDay>(sql);
-            return result;
-        });
-
-        private IEnumerable<WeekDay> GetReceptionMorning(DateTime? date) => InTransaction(c =>
-        {
-            if (date.HasValue) { SetSelectedWeek(date.Value); }
-
-            var sql = @"
-                select day_name     as Day
-                     , team         as Team
-                     , first_name   as FirstName
-                     , last_name    as LastName
-                     , category_key as Categories
-                from reception_morning_v";
-            var result = c.Query<WeekDay>(sql);
-            return result;
-        });
-
         private IEnumerable<WeekDay> GetGroups(DateTime? date) => InTransaction(c =>
         {
             if (date.HasValue) { SetSelectedWeek(date.Value); }
@@ -97,6 +37,21 @@ namespace Probel.Gehova.Business.ServicesImpl
             return result;
         });
 
+        private IEnumerable<WeekDay> GetLunchtime(DateTime? date) => InTransaction(c =>
+                {
+                    if (date.HasValue) { SetSelectedWeek(date.Value); }
+
+                    var sql = @"
+                select day_name   as Day
+                     , team       as Team
+                     , first_name as FirstName
+                     , last_name  as LastName
+                     , category_key as Categories
+                from lunchtime_v";
+                    var result = c.Query<WeekDay>(sql);
+                    return result;
+                });
+
         private DateTime GetSelectedWeekAs(string day)
         {
             using (var c = NewConnection())
@@ -111,19 +66,35 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
-        public IEnumerable<WeekDay> GetLunchtime(DateTime date) => GetLunchtime(date);
+        public IEnumerable<ReceptionGroupModel> GetReceptionGroups()
+        {
+            var sql = @"
+                select *
+                from presence_week_v
+                where team_id is not null";
+            using (var c = NewConnection())
+            using (var cmd = GetCommand(sql, c))
+            {
+                var r = cmd.ExecuteReader();
+                var result = Map.ToReceptionGroupModel(r);
+                return result;
+            }
+        }
 
-        public IEnumerable<WeekDay> GetLunchtime() => GetLunchtime(null);
-
-        public IEnumerable<WeekDay> GetPickupRounds() => GetPickupRounds(null);
-
-        public IEnumerable<WeekDay> GetReceptionEvening(DateTime date) => GetReceptionEvening(date);
-
-        public IEnumerable<WeekDay> GetReceptionEvening() => GetReceptionEvening(null);
-
-        public IEnumerable<WeekDay> GetReceptionMorning(DateTime date) => GetReceptionMorning(date);
-
-        public IEnumerable<WeekDay> GetReceptionMorning() => GetReceptionMorning(null);
+        public IEnumerable<DayPickupRoundModel> GetPickupRounds()
+        {
+            var sql = @"
+                select *
+                from presence_week_v
+                where pickup_round_id is not null";
+            using (var c = NewConnection())
+            using (var cmd = GetCommand(sql, c))
+            {
+                var r = cmd.ExecuteReader();
+                var result = Map.ToDayPickupRounds(r);
+                return result;
+            }
+        }
 
         public DateTime GetSelectedWeekAsFriday() => GetSelectedWeekAs("friday");
 
@@ -143,7 +114,20 @@ namespace Probel.Gehova.Business.ServicesImpl
             }
         }
 
-        public IEnumerable<WeekDay> GetGroups() => GetGroups(null);
+        public IEnumerable<DayModel> GetAllTeams()
+        {
+            var sql = @"
+                select *
+                from presence_week_v
+                where team_id is not null";
+            using (var c = NewConnection())
+            using (var cmd = GetCommand(sql, c))
+            {
+                var r = cmd.ExecuteReader();
+                var result = Map.ToDayModel(r);
+                return result;
+            }
+        }
 
         #endregion Methods
     }

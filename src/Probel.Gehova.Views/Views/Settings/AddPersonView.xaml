@@ -46,11 +46,13 @@
                     Height="2"
                     Margin="5"
                     Background="Gray" />
-                <StackPanel>
-                    <CheckBox x:Uid="Radio_ReceptionMorning" IsChecked="{x:Bind ViewModel.IsReceptionMorning, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                    <CheckBox x:Uid="Radio_Lunchtime" IsChecked="{x:Bind ViewModel.IsLunchtime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                    <CheckBox x:Uid="Radio_ReceptionEvening" IsChecked="{x:Bind ViewModel.IsReceptionEvening, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                </StackPanel>
+                <ItemsControl ItemsSource="{x:Bind ViewModel.Receptions}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
         </Grid>
     </StackPanel>
