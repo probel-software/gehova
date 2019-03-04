@@ -30,11 +30,11 @@ namespace Probel.Gehova.Views.Infrastructure
         public AddPickupRoundViewModel AddPickupRoundViewModel => _container.Resolve<AddPickupRoundViewModel>();
         public AddTeamViewModel AddTeamViewModel => _container.Resolve<AddTeamViewModel>();
         public MainViewModel MainViewModel => _container.Resolve<MainViewModel>();
-        public PickupRoundViewModel PickupRoundViewModel => _container.Resolve<PickupRoundViewModel>();
-        public ReceptionPlannerView PlannerViewModel => _container.Resolve<ViewModels.Vm.Visualisation.ReceptionPlannerView>();
+        public PlannerPickupRoundViewModel PickupRoundViewModel => _container.Resolve<PlannerPickupRoundViewModel>();
+        public PlannerReceptionViewModel ReceptionPlannerViewModel => _container.Resolve<PlannerReceptionViewModel>();
         public ProvisioningHomeViewModel ProvisioningHomeViewModel => _container.Resolve<ProvisioningHomeViewModel>();
         public SettingsHomeViewModel SettingsHomeViewModel => _container.Resolve<SettingsHomeViewModel>();
-        public TeamPlannerViewModel TeamPlannerViewModel => _container.Resolve<TeamPlannerViewModel>();
+        public PlannerTeamViewModel TeamPlannerViewModel => _container.Resolve<PlannerTeamViewModel>();
 
         #endregion Properties
     }

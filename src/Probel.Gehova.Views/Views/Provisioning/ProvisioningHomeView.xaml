@@ -200,13 +200,5 @@
                 </Grid>
             </PivotItem>
         </Pivot>
-        <c:InAppNotification
-            x:Name="InAppNotification"
-            AnimationDuration="00:00:00.1000000"
-            Content="{Binding Message}"
-            HorizontalOffset="0"
-            ShowDismissButton="True"
-            StackMode="Replace"
-            VerticalOffset="100" />
     </Grid>
 </Page>

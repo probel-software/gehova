@@ -52,8 +52,7 @@ namespace Probel.Gehova.Business
                 "Probel.Gehova.Business.Assets.database.sql",
                 "Probel.Gehova.Business.Assets.default_data.sql",
                 "Probel.Gehova.Business.Assets.views_person.sql",
-                "Probel.Gehova.Business.Assets.views_absences.sql",
-                "Probel.Gehova.Business.Assets.views_absence_on_date.sql",
+                "Probel.Gehova.Business.Assets.views_presences.sql",
                 "Probel.Gehova.Business.Assets.views_settings.sql"
             };
             using (var c = new SqliteConnection(GetConnectionString()))

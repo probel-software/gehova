@@ -9,24 +9,24 @@ using Windows.ApplicationModel.Resources;
 
 namespace Probel.Gehova.ViewModels.Vm.Visualisation
 {
-    public class ReceptionPlannerView : AsyncViewModel
+    public class PlannerReceptionViewModel : AsyncViewModel
     {
         #region Fields
 
+        private readonly IUserMessenger _messenger;
         private readonly IVisualisationService _service;
-
         private readonly ResourceLoader Resources = new ResourceLoader("Messages");
         private string _displayedWeekAsText;
         private ObservableCollection<ReceptionGroupModel> _receptionGroups;
-
         private RelayCommand<DateTimeOffset> _updateWeekCommand;
 
         #endregion Fields
 
         #region Constructors
 
-        public ReceptionPlannerView(IVisualisationService service)
+        public PlannerReceptionViewModel(IVisualisationService service, IUserMessenger messenger)
         {
+            _messenger = messenger;
             _service = service;
         }
 
@@ -39,8 +39,6 @@ namespace Probel.Gehova.ViewModels.Vm.Visualisation
             get => _displayedWeekAsText;
             set => Set(ref _displayedWeekAsText, value, nameof(DisplayedWeekAsText));
         }
-
-        public IMessenger Messenger { get; set; }
 
         public ObservableCollection<ReceptionGroupModel> ReceptionGroups
         {
@@ -65,21 +63,22 @@ namespace Probel.Gehova.ViewModels.Vm.Visualisation
             var date = new DateTime(dtOffset.Ticks);
             _service.SetSelectedWeek(date);
             Refresh();
-            Messenger?.Say(Resources.GetString("Info_WeekUpdated"));
+            _messenger?.Say(Resources.GetString("Info_WeekUpdated"));
         }
 
         public void Refresh()
         {
             ReceptionGroups = null;
+            ExecuteAsync(() =>
+            {
+                return new
+                {
+                    Monday = _service.GetSelectedWeekAsMonday().ToString("dddd dd MMMM"),
+                    Friday = _service.GetSelectedWeekAsFriday().ToString("dddd dd MMMM yyyy"),
+                };
+            }, r => DisplayedWeekAsText = string.Format(Resources.GetString("Title_SelectedWeek"), r.Monday, r.Friday));
 
-            var monday = _service.GetSelectedWeekAsMonday().ToLongDateString();
-            var friday = _service.GetSelectedWeekAsFriday().ToLongDateString();
-            DisplayedWeekAsText = string.Format(Resources.GetString("Title_SelectedWeek"), monday, friday);
-
-            //TODO: throw a StackOverflowException...
-            //ExecuteAsync(() => _service.GetReceptionGroups(), r => ReceptionGroups = new ObservableCollection<ReceptionGroupModel>(r));
-            var r = _service.GetReceptionGroups();
-            ReceptionGroups = new ObservableCollection<ReceptionGroupModel>(r);
+            ExecuteAsync(() => _service.GetReceptionGroups(), r => ReceptionGroups = new ObservableCollection<ReceptionGroupModel>(r));
         }
 
         #endregion Methods

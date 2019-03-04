@@ -21,6 +21,7 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
         private readonly ResourceLoader _resources = new ResourceLoader("Messages");
         private readonly IProvisioningService _service;
         private RelayCommand _addPerson;
+        private IUserMessenger _messenger;
         private ObservableCollection<PersonFullDisplayViewModel> _people = new ObservableCollection<PersonFullDisplayViewModel>();
         private ObservableCollection<GroupDisplayModel> _pickupRounds = new ObservableCollection<GroupDisplayModel>();
         private ObservableCollection<ReceptionModel> _receptions;
@@ -41,8 +42,9 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
 
         #region Constructors
 
-        public SettingsHomeViewModel(IProvisioningService service, IDataReset dataReset)
+        public SettingsHomeViewModel(IProvisioningService service, IDataReset dataReset, IUserMessenger messenger)
         {
+            _messenger = messenger;
             _service = service;
             _dataReset = dataReset;
         }
@@ -58,8 +60,6 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             get => _categories;
             set => Set(ref _categories, value, nameof(Categories));
         }
-
-        public IMessenger Messenger { get; set; }
 
         public ObservableCollection<PersonFullDisplayViewModel> People
         {
@@ -107,20 +107,6 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             }
         }
 
-        public void RefreshSelectedPerson(object item)
-        {
-            if (item is PersonFullDisplayViewModel selectedPerson)
-            {
-                SelectedPerson = selectedPerson;
-                var ids = _service.GetReceptionsOf(SelectedPerson.Id);
-                var r = _service.GetReceptions()
-                                .ToViewModel()
-                                .CheckUserReception(ids);
-
-                SelectedPerson.Receptions = new ObservableCollection<ReceptionViewModel>(r);
-            }
-        }
-
         public GroupDisplayModel SelectedTeam
         {
             get => _selectedTeam;
@@ -156,7 +142,7 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
                 LastName = _resources.GetString("Label_Person"),
                 Categories = new ObservableCollection<CategoryViewModel>(Categories.ToViewModel())
             });
-            Messenger.Say(_resources.GetString("Info_PleaseUpdateToSave"));
+            _messenger.Say(_resources.GetString("Info_PleaseUpdateToSave"));
         }
 
         private bool CanRemovePerson() => SelectedPerson != null && SelectedPerson.Id > 0;
@@ -205,21 +191,21 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
         private void RemovePerson()
         {
             _service.Remove(SelectedPerson.ToModel());
-            Messenger.Say(string.Format(_resources.GetString("Info_PersonRemoved"), $"{SelectedPerson.FirstName} {SelectedPerson.LastName}"));
+            _messenger.Say(string.Format(_resources.GetString("Info_PersonRemoved"), $"{SelectedPerson.FirstName} {SelectedPerson.LastName}"));
             RefreshPeople();
         }
 
         private void RemovePickupRound()
         {
             _service.Remove(SelectedPickupRound);
-            Messenger.Say(string.Format(_resources.GetString("Info_PickupRoundRemoved"), SelectedPickupRound.Name));
+            _messenger.Say(string.Format(_resources.GetString("Info_PickupRoundRemoved"), SelectedPickupRound.Name));
             RefreshPickupRounds();
         }
 
         private void RemoveTeam()
         {
             _service.Remove(SelectedTeam);
-            Messenger.Say(string.Format(_resources.GetString("Info_TeamRemoved"), SelectedTeam.Name));
+            _messenger.Say(string.Format(_resources.GetString("Info_TeamRemoved"), SelectedTeam.Name));
             RefreshTeams();
         }
 
@@ -231,12 +217,12 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
                 var p = _service.GetPerson(person.Id);
                 person.CategoryDisplay = p.Category;
 
-                Messenger?.Say(string.Format(_resources.GetString("Info_PersonUpdated"), $"{person.FirstName} {person.LastName}"));
+                _messenger?.Say(string.Format(_resources.GetString("Info_PersonUpdated"), $"{person.FirstName} {person.LastName}"));
             }
             else
             {
                 _service.Create(person.ToModel());
-                Messenger?.Say(string.Format(_resources.GetString("Info_PersonAdded"), $"{person.FirstName} {person.LastName}"));
+                _messenger?.Say(string.Format(_resources.GetString("Info_PersonAdded"), $"{person.FirstName} {person.LastName}"));
             }
         }
 
@@ -246,12 +232,12 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             else if (pickupRound.Id > 0)
             {
                 _service.UpdateTeam(pickupRound);
-                Messenger?.Say(string.Format(_resources.GetString("Info_PickupRoundUpdated"), pickupRound.Name));
+                _messenger?.Say(string.Format(_resources.GetString("Info_PickupRoundUpdated"), pickupRound.Name));
             }
             else
             {
                 _service.CreatePickupRound(pickupRound);
-                Messenger?.Say(string.Format(_resources.GetString("Info_PickupRoundCreated"), pickupRound.Name));
+                _messenger?.Say(string.Format(_resources.GetString("Info_PickupRoundCreated"), pickupRound.Name));
             }
         }
 
@@ -261,12 +247,12 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             else if (team.Id > 0)
             {
                 _service.UpdateTeam(team);
-                Messenger?.Say(string.Format(_resources.GetString("Info_TeamUpdated"), team.Name));
+                _messenger?.Say(string.Format(_resources.GetString("Info_TeamUpdated"), team.Name));
             }
             else
             {
                 _service.CreatePickupRound(team);
-                Messenger?.Say(string.Format(_resources.GetString("Info_TeamCreated"), team.Name));
+                _messenger?.Say(string.Format(_resources.GetString("Info_TeamCreated"), team.Name));
             }
         }
 
@@ -277,6 +263,20 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             RefreshTeams();
             RefreshPickupRounds();
             RefreshReceptions();
+        }
+
+        public void RefreshSelectedPerson(object item)
+        {
+            if (item is PersonFullDisplayViewModel selectedPerson)
+            {
+                SelectedPerson = selectedPerson;
+                var ids = _service.GetReceptionsOf(SelectedPerson.Id);
+                var r = _service.GetReceptions()
+                                .ToViewModel()
+                                .CheckUserReception(ids);
+
+                SelectedPerson.Receptions = new ObservableCollection<ReceptionViewModel>(r);
+            }
         }
 
         #endregion Methods

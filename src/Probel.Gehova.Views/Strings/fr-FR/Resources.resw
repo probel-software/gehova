@@ -141,6 +141,15 @@
   <data name="AppButtonDelete.Label" xml:space="preserve">
     <value>Supprimer</value>
   </data>
+  <data name="AppButtonPrint.Content" xml:space="preserve">
+    <value>Imprimer</value>
+  </data>
+  <data name="AppButtonPrint.Icon" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="AppButtonPrint.Label" xml:space="preserve">
+    <value>Imprimer</value>
+  </data>
   <data name="AppButtonRefresh.Content" xml:space="preserve">
     <value>Rafraîchir</value>
   </data>
@@ -349,5 +358,11 @@
   </data>
   <data name="TbUpdateInProgress.Text" xml:space="preserve">
     <value>Mise à jour de la base de données...</value>
+  </data>
+  <data name="Title_PickupRoundPrint.Text" xml:space="preserve">
+    <value>Accueils</value>
+  </data>
+  <data name="Title_TeamPrint.Text" xml:space="preserve">
+    <value>Groupes</value>
   </data>
 </root>

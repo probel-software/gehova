@@ -9,10 +9,11 @@ using Windows.ApplicationModel.Resources;
 
 namespace Probel.Gehova.ViewModels.Vm.Visualisation
 {
-    public class PickupRoundViewModel : AsyncViewModel
+    public class PlannerPickupRoundViewModel : AsyncViewModel
     {
         #region Fields
 
+        private readonly IUserMessenger _messenger;
         private readonly IVisualisationService _service;
         private readonly ResourceLoader Resources = new ResourceLoader("Messages");
         private string _displayedWeekAsText;
@@ -23,8 +24,9 @@ namespace Probel.Gehova.ViewModels.Vm.Visualisation
 
         #region Constructors
 
-        public PickupRoundViewModel(IVisualisationService service)
+        public PlannerPickupRoundViewModel(IVisualisationService service, IUserMessenger messenger)
         {
+            _messenger = messenger;
             _service = service;
         }
 
@@ -37,8 +39,6 @@ namespace Probel.Gehova.ViewModels.Vm.Visualisation
             get => _displayedWeekAsText;
             set => Set(ref _displayedWeekAsText, value, nameof(DisplayedWeekAsText));
         }
-
-        public IMessenger Messenger { get; set; }
 
         public ObservableCollection<DayPickupRoundModel> PickupRounds
         {
@@ -63,16 +63,20 @@ namespace Probel.Gehova.ViewModels.Vm.Visualisation
             var date = new DateTime(dtOffset.Ticks);
             _service.SetSelectedWeek(date);
             Refresh();
-            Messenger?.Say(Resources.GetString("Info_WeekUpdated"));
+            _messenger?.Say(Resources.GetString("Info_WeekUpdated"));
         }
 
         public void Refresh()
         {
             PickupRounds = null;
-
-            var monday = _service.GetSelectedWeekAsMonday().ToLongDateString();
-            var friday = _service.GetSelectedWeekAsFriday().ToLongDateString();
-            DisplayedWeekAsText = string.Format(Resources.GetString("Title_SelectedWeek"), monday, friday);
+            ExecuteAsync(() =>
+            {
+                return new
+                {
+                    Monday = _service.GetSelectedWeekAsMonday().ToLongDateString(),
+                    Friday = _service.GetSelectedWeekAsFriday().ToLongDateString()
+                };
+            }, r => DisplayedWeekAsText = string.Format(Resources.GetString("Title_SelectedWeek"), r.Monday, r.Friday));
 
             ExecuteAsync(() => _service.GetPickupRounds(), r => PickupRounds = new ObservableCollection<DayPickupRoundModel>(r));
         }

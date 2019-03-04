@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Probel.Gehova.ViewModels", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Probel.Gehova.Cli", "Probel.Gehova.Cli\Probel.Gehova.Cli.csproj", "{03E3374B-5CF2-4BC5-ABBB-E953809FA449}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Probel.Lorm", "Probel.Lorm\Probel.Lorm.csproj", "{6885C340-21FC-4104-BD72-63C85899CBB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Probel.Lorm", "Probel.Lorm\Probel.Lorm.csproj", "{6885C340-21FC-4104-BD72-63C85899CBB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

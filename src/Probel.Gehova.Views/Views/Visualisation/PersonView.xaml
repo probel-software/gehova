@@ -16,10 +16,14 @@
     </UserControl.Resources>
     <StackPanel Margin="0,5,5,0">
         <StackPanel Margin="25,0,0,0" Orientation="Horizontal">
-            <SymbolIcon Margin="0,3,15,5" Symbol="{Binding CategoryKey, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource CategoryToGlyphConverter}}" />
+            <SymbolIcon
+                Margin="0,3,15,5"
+                Symbol="{Binding CategoryKey, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource CategoryToGlyphConverter}}"
+                Visibility="{x:Bind ContentIconVisibility}" />
             <TextBlock
                 Margin="0,0,5,0"
                 VerticalAlignment="Center"
+                FontSize="{x:Bind ContentTextSize}"
                 FontWeight="{Binding IsEducator, Converter={StaticResource EducatorToBoldConverter}}">
                 <Run Text="{Binding LastName}" />
                 <Run Text="{Binding FirstName}" />

@@ -17,18 +17,40 @@ namespace Probel.Gehova.Views.Views.Visualisation
             typeof(TeamView),
             null);
 
+        public static DependencyProperty ContentTextSizeProperty = DependencyProperty.Register(
+            "ContentTextSize",
+            typeof(double),
+            typeof(TeamView),
+            new PropertyMetadata(18d));
+
+        public static DependencyProperty ContentHeightProperty = DependencyProperty.Register(
+            "ContentHeight",
+            typeof(double),
+            typeof(TeamView),
+            new PropertyMetadata(35d));
         #endregion Fields
 
         #region Constructors
 
         public TeamView()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         #endregion Constructors
 
         #region Properties
+
+        public double ContentHeight
+        {
+            get => (double)GetValue(ContentHeightProperty);
+            set => SetValue(ContentHeightProperty, value);
+        }
+        public double ContentTextSize
+        {
+            get => (double)GetValue(ContentTextSizeProperty);
+            set => SetValue(ContentTextSizeProperty, value);
+        }
 
         public IEnumerable<PersonDisplayModel> People
         {

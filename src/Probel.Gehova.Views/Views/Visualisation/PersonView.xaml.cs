@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -19,9 +7,42 @@ namespace Probel.Gehova.Views.Views.Visualisation
 {
     public sealed partial class PersonView : UserControl
     {
-        public PersonView()
+        #region Fields
+
+        public static DependencyProperty ContentTextSizeProperty = DependencyProperty.Register(
+            "ContentTextSize",
+            typeof(double),
+            typeof(PersonView),
+            new PropertyMetadata(16d));
+
+        public static DependencyProperty ContentIconVisibilityProperty = DependencyProperty.Register(
+            "ContentIconVisibility",
+            typeof(Visibility),
+            typeof(PersonView),
+            new PropertyMetadata(Visibility.Visible));
+
+        #endregion Fields
+
+        #region Constructors
+
+        public PersonView() => InitializeComponent();
+
+        #endregion Constructors
+
+        #region Properties
+
+        public double ContentTextSize
         {
-            this.InitializeComponent();
+            get => (double)GetValue(ContentTextSizeProperty);
+            set => SetValue(ContentTextSizeProperty, value);
         }
+
+        public Visibility ContentIconVisibility
+        {
+            get => (Visibility)GetValue(ContentIconVisibilityProperty);
+            set => SetValue(ContentIconVisibilityProperty, value);
+        }
+
+        #endregion Properties
     }
 }

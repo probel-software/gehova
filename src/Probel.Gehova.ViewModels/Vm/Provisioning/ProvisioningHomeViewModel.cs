@@ -14,8 +14,10 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
 {
     public class ProvisioningHomeViewModel : ViewModelBase
     {
+
         #region Fields
 
+        private readonly IUserMessenger _messenger;
         private readonly IProvisioningService _service;
         private readonly ResourceLoader Resources = new ResourceLoader("Messages");
         private AbsenceDisplayModel _currentAbsence;
@@ -38,8 +40,9 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
 
         #region Constructors
 
-        public ProvisioningHomeViewModel(IProvisioningService service)
+        public ProvisioningHomeViewModel(IProvisioningService service, IUserMessenger messenger)
         {
+            _messenger = messenger;
             _service = service;
 
             PropertyChanged += (s, e) => Refresh(e.PropertyName);
@@ -60,8 +63,6 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
             get => _currentPersonAbsences;
             set => Set(ref _currentPersonAbsences, value, nameof(CurrentPersonAbsences));
         }
-
-        public IMessenger Messenger { get; set; }
 
         public ObservableCollection<PersonFullDisplayModel> People
         {
@@ -179,7 +180,7 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
         private void RemoveAbsence(AbsenceDisplayModel absence)
         {
             _service.Remove(absence);
-            Messenger?.Say(Resources.GetString("Info_AbsenceRemoved"));
+            _messenger?.Say(Resources.GetString("Info_AbsenceRemoved"));
 
             var todel = (from a in CurrentPersonAbsences
                          where a.Id == absence.Id
@@ -273,5 +274,6 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
         }
 
         #endregion Methods
+
     }
 }

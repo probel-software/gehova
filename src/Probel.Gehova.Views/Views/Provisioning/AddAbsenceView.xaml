@@ -14,6 +14,9 @@
             Date="{x:Bind ViewModel.From, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
             FirstDayOfWeek="Monday"
             Header="From" />
-        <CalendarDatePicker Date="{x:Bind ViewModel.To, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="To" />
+        <CalendarDatePicker
+            Date="{x:Bind ViewModel.To, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+            FirstDayOfWeek="Monday"
+            Header="To" />
     </StackPanel>
 </ContentDialog>

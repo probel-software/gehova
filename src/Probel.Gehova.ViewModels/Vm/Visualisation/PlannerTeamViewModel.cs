@@ -6,10 +6,11 @@ using Windows.ApplicationModel.Resources;
 
 namespace Probel.Gehova.ViewModels.Vm.Visualisation
 {
-    public class TeamPlannerViewModel : AsyncViewModel
+    public class PlannerTeamViewModel : AsyncViewModel
     {
         #region Fields
 
+        private readonly IUserMessenger _messenger;
         private readonly IVisualisationService _service;
 
         private readonly ResourceLoader Resources = new ResourceLoader("Messages");
@@ -22,8 +23,9 @@ namespace Probel.Gehova.ViewModels.Vm.Visualisation
 
         #region Constructors
 
-        public TeamPlannerViewModel(IVisualisationService service)
+        public PlannerTeamViewModel(IVisualisationService service, IUserMessenger messenger)
         {
+            _messenger = messenger;
             _service = service;
         }
 
@@ -43,8 +45,6 @@ namespace Probel.Gehova.ViewModels.Vm.Visualisation
             set => Set(ref _displayedWeekAsText, value, nameof(DisplayedWeekAsText));
         }
 
-        public IMessenger Messenger { get; set; }
-
         #endregion Properties
 
         #region Methods
@@ -52,15 +52,16 @@ namespace Probel.Gehova.ViewModels.Vm.Visualisation
         public void Refresh()
         {
             Days = null;
+            ExecuteAsync(() =>
+            {
+                return new
+                {
+                    Monday = _service.GetSelectedWeekAsMonday().ToLongDateString(),
+                    Friday = _service.GetSelectedWeekAsFriday().ToLongDateString()
+                };
+            }, r => DisplayedWeekAsText = string.Format(Resources.GetString("Title_SelectedWeek"), r.Monday, r.Friday));
 
-            var monday = _service.GetSelectedWeekAsMonday().ToLongDateString();
-            var friday = _service.GetSelectedWeekAsFriday().ToLongDateString();
-            DisplayedWeekAsText = string.Format(Resources.GetString("Title_SelectedWeek"), monday, friday);
-
-            //TODO: throw a StackOverflowException...
-            //ExecuteAsync(() => _service.GetReceptionGroups(), r => ReceptionGroups = new ObservableCollection<ReceptionGroupModel>(r));
-            var r = _service.GetAllTeams();
-            Days = new ObservableCollection<DayModel>(r);
+            ExecuteAsync(() => _service.GetAllTeams(), r => Days = new ObservableCollection<DayModel>(r));
         }
 
         #endregion Methods

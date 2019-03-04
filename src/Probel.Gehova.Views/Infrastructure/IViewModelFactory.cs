@@ -14,11 +14,11 @@ namespace Probel.Gehova.Views.Infrastructure
         AddPickupRoundViewModel AddPickupRoundViewModel { get; }
         AddTeamViewModel AddTeamViewModel { get; }
         MainViewModel MainViewModel { get; }
-        ReceptionPlannerView PlannerViewModel { get; }
+        PlannerReceptionViewModel ReceptionPlannerViewModel { get; }
         ProvisioningHomeViewModel ProvisioningHomeViewModel { get; }
         SettingsHomeViewModel SettingsHomeViewModel { get; }
-        PickupRoundViewModel PickupRoundViewModel { get; }
-        TeamPlannerViewModel TeamPlannerViewModel { get; }
+        PlannerPickupRoundViewModel PickupRoundViewModel { get; }
+        PlannerTeamViewModel TeamPlannerViewModel { get; }
         #endregion Properties
     }
 }

@@ -1,4 +1,5 @@
-﻿using Probel.Gehova.ViewModels.Vm;
+﻿using Microsoft.Toolkit.Uwp.UI.Controls;
+using Probel.Gehova.ViewModels.Vm;
 using Probel.Gehova.Views.Infrastructure;
 using Probel.Gehova.Views.Views.Administration;
 using Probel.Gehova.Views.Views.Provisioning;
@@ -15,12 +16,22 @@ namespace Probel.Gehova.Views
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        #region Fields
+
+        private static MainPage _current;
+        private readonly InAppMessenger _messenger;
+
+        #endregion Fields
+
         #region Constructors
 
         public MainPage()
         {
             InitializeComponent();
             DataContext = IocFactory.ViewModel.MainViewModel;
+
+            _current = this;
+            _messenger = new InAppMessenger();
         }
 
         #endregion Constructors
@@ -28,6 +39,8 @@ namespace Probel.Gehova.Views
         #region Properties
 
         private MainViewModel ViewModel => DataContext as MainViewModel;
+
+        internal static InAppNotification Messenger => _current.InAppNotification;
 
         #endregion Properties
 
@@ -39,10 +52,10 @@ namespace Probel.Gehova.Views
             Type destination;
 
             if (args.IsSettingsSelected) { destination = typeof(SettingsHomeView); }
-            else if (args.SelectedItem == PlannerView) { destination = typeof(PlaReceptionPlannerViewnerView); }
-            else if (args.SelectedItem == PickupRoundView) { destination = typeof(PickupRoundPlannerView); }
+            else if (args.SelectedItem == PlannerView) { destination = typeof(PlannerReceptionView); }
+            else if (args.SelectedItem == PickupRoundView) { destination = typeof(PlannerPickupRoundView); }
             else if (args.SelectedItem == ProvisioningView) { destination = typeof(ProvisioningHomeView); }
-            else if(args.SelectedItem == TeamsView) { destination = typeof(TeamPlannerView); }
+            else if (args.SelectedItem == TeamsView) { destination = typeof(PlannerTeamView); }
             else { throw new NotSupportedException($"Menu '{args.SelectedItem.GetType()}' is not yet supported"); }
 
             nav.Navigate(destination);

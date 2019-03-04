@@ -180,7 +180,19 @@
   <data name="Title_AddTeam" xml:space="preserve">
     <value>Ajouter un groupe</value>
   </data>
+  <data name="Title_PrintPickupRounds" xml:space="preserve">
+    <value>Impression des tournées</value>
+  </data>
+  <data name="Title_PrintReceptions" xml:space="preserve">
+    <value>Impression des réceptions</value>
+  </data>
+  <data name="Title_PrintTeams" xml:space="preserve">
+    <value>Impression des groupes</value>
+  </data>
   <data name="Title_SelectedWeek" xml:space="preserve">
     <value>Semaine du {0} au {1}</value>
+  </data>
+  <data name="Title_TeamPrint.Text" xml:space="preserve">
+    <value />
   </data>
 </root>

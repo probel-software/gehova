@@ -1,40 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Probel.Gehova.Business.Models.PickupRoundDisplayModel">
-    <Position X="6.75" Y="2.25" Width="2.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Models\PickupRoundDisplayModel.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Probel.Gehova.Business.Models.PickupRoundModel" Collapsed="true">
-    <Position X="6.75" Y="4.5" Width="2.5" />
-    <Members>
-      <Method Name="PickupRoundModel" Hidden="true" />
-    </Members>
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Models\PickupRoundModel.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsCollectionAssociation>
-      <Property Name="People" />
-    </ShowAsCollectionAssociation>
-  </Class>
   <Class Name="Probel.Gehova.Business.Models.PersonDisplayModel">
-    <Position X="11.5" Y="3.75" Width="2" />
+    <Position X="6.25" Y="3.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAEAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAACAg=</HashCode>
       <FileName>Models\PersonDisplayModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Probel.Gehova.Business.Models.DayPickupRoundModel">
-    <Position X="2.5" Y="0.5" Width="2.5" />
+    <Position X="2" Y="1.25" Width="2" />
+    <Members>
+      <Method Name="DayPickupRoundModel" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAgAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAgBAAA=</HashCode>
       <FileName>Models\DayPickupRoundModel.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="PickupRounds" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Probel.Gehova.Business.Models.GroupModel" Collapsed="true">
+    <Position X="6.25" Y="1.5" Width="1.5" />
+    <Members>
+      <Method Name="GroupModel" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\GroupModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="People" />
     </ShowAsCollectionAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />

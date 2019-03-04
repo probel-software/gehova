@@ -20,14 +20,14 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid
-            Height="35"
+            Height="{x:Bind ContentHeight}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Background="{ThemeResource SystemAccentColor}">
             <TextBlock
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                FontSize="18"
+                FontSize="{x:Bind ContentTextSize}"
                 FontWeight="Bold"
                 Text="{Binding Name}" />
         </Grid>

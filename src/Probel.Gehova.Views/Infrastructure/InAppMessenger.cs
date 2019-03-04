@@ -3,20 +3,20 @@ using Probel.Gehova.ViewModels.Infrastructure;
 
 namespace Probel.Gehova.Views.Infrastructure
 {
-    public class InAppMessenger : IMessenger
+    public class InAppMessenger : IUserMessenger
     {
         #region Fields
 
-        public const int DEFAULT_DURATION = 2000;
+        public const int DEFAULT_DURATION = 5000;
         private readonly InAppNotification _inAppNotification;
 
         #endregion Fields
 
         #region Constructors
 
-        public InAppMessenger(InAppNotification inAppNotification)
+        public InAppMessenger()
         {
-            _inAppNotification = inAppNotification;
+            _inAppNotification = MainPage.Messenger;
         }
 
         #endregion Constructors

@@ -3,10 +3,10 @@ using Probel.Gehova.Business.Db;
 using Probel.Gehova.Business.Helpers;
 using Probel.Gehova.Business.Services;
 using Probel.Gehova.Business.ServicesImpl;
+using Probel.Gehova.ViewModels.Infrastructure;
 using Probel.Gehova.Views.Helpers;
 using System;
 using Unity;
-using Unity.Injection;
 
 namespace Probel.Gehova.Views.Infrastructure
 {
@@ -43,9 +43,11 @@ namespace Probel.Gehova.Views.Infrastructure
                 _container.RegisterType<IDbLocator, UwpDbLocator>();
                 _container.RegisterType<IDataReset, DataReset>();
                 _container.RegisterType<IProvisioningService, ProvisioningService>();
-                _container.RegisterType<ILogger>(new InjectionFactory(l => LogManager.GetCurrentClassLogger()));
-                _container.RegisterType<IUpdateService, UpdateService>();                
+                _container.RegisterFactory<ILogger>(_ => LogManager.GetCurrentClassLogger());
+                _container.RegisterType<IUpdateService, UpdateService>();
                 //----
+                _container.RegisterType<IUserMessenger, InAppMessenger>();
+
                 _isLoaded = true;
             }
         }
