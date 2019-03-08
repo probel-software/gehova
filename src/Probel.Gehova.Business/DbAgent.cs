@@ -42,8 +42,7 @@ namespace Probel.Gehova.Business
         #endregion Properties
 
         #region Methods
-
-        //TODO: update database build script
+        //TODO: this code should be moved into a database manager
         private void CreateDatabase()
         {
             var assetManager = new AssetManager(this);

@@ -9,15 +9,15 @@ namespace Probel.Gehova.Business.Services
 
         void Create(AbsenceDisplayModel absence);
 
-        void CreatePickupRound(GroupDisplayModel team);
-
         void Create(CategoryModel category);
-
-        void CreatePickup(GroupDisplayModel pickup);
 
         void Create(PersonModel person);
 
         void Create(PersonFullDisplayModel personFullDisplayModel);
+
+        void CreatePickupRound(GroupDisplayModel pickup);
+
+        void CreateTeam(GroupDisplayModel team);
 
         IEnumerable<AbsenceDisplayModel> GetAbsencesOf(PersonFullDisplayModel person);
 
@@ -47,19 +47,19 @@ namespace Probel.Gehova.Business.Services
 
         void Remove(CategoryModel category);
 
-        void RemovePickup(GroupDisplayModel pickup);
-
         void Remove(PersonDisplayModel person);
 
-        void UpdateTeam(GroupDisplayModel team);
+        void RemovePickup(GroupDisplayModel pickup);
 
         void Update(CategoryModel category);
 
-        void UpdatePickupRound(GroupModel pickup);
+        void Update(PersonFullDisplayModel person);
 
         void UpdatePickup(GroupDisplayModel pickup);
 
-        void Update(PersonFullDisplayModel person);
+        void UpdatePickupRound(GroupModel pickup);
+
+        void UpdateTeam(GroupDisplayModel team);
 
         void UpdateTeam(GroupModel team);
 

@@ -81,7 +81,6 @@ namespace Probel.Gehova.Business.ServicesImpl
 
         private void UpdateDbStructure(SqliteConnection c, Version from)
         {
-
             var updater = new DatabaseUpdater(Updates, AssetManager);
             var scripts = updater.GetSqlScripts(from);
             foreach (var script in scripts)

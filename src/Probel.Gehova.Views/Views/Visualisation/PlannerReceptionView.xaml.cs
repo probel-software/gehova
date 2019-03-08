@@ -77,13 +77,13 @@ namespace Probel.Gehova.Views.Views.Visualisation
         private void OnPrintFailed()
         {
             _printHelper?.Dispose();
-            _messenger.Say($"Printing miserably failed...");
+            _messenger.Warn(Txt.GetString("Error_PrintingFailed"));
         }
 
         private void OnPrintSucceeded()
         {
             _printHelper?.Dispose();
-            _messenger.Say($"Printing proudly succeed...");
+            _messenger.Say(Txt.GetString("Info_Printing"));
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e) => ViewModel.Refresh();

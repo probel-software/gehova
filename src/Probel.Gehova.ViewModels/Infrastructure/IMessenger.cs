@@ -3,5 +3,6 @@
     public interface IUserMessenger
     {
         void Say(string message);
+        void Warn(string message);
     }
 }

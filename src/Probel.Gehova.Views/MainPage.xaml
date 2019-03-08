@@ -46,10 +46,21 @@
         <c:InAppNotification
             x:Name="InAppNotification"
             AnimationDuration="00:00:00.1000000"
-            Content="{Binding Message}"
             HorizontalOffset="0"
             ShowDismissButton="True"
             StackMode="Replace"
-            VerticalOffset="100" />
+            VerticalOffset="100">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <FontIcon
+                    Margin="0,0,15,0"
+                    FontFamily="{StaticResource SymbolThemeFontFamily}"
+                    Glyph="{Binding Glyph}" />
+                <TextBlock Grid.Column="1" Text="{Binding Message}" />
+            </Grid>
+        </c:InAppNotification>
     </Grid>
 </Page>

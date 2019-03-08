@@ -20,7 +20,7 @@
     <PackageCertificateKeyFile>Probel.Gehova.Views_StoreKey.pfx</PackageCertificateKeyFile>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
-    <AppxBundle>Always</AppxBundle>
+    <AppxBundle>Auto</AppxBundle>
     <AppxBundlePlatforms>x86|x64</AppxBundlePlatforms>
     <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
@@ -144,9 +144,6 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\PrintDocument\EmptyPrintPage.xaml.cs">
-      <DependentUpon>EmptyPrintPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\PrintDocument\PickupRoundPrint.xaml.cs">
       <DependentUpon>PickupRoundPrint.xaml</DependentUpon>
     </Compile>
@@ -269,10 +266,6 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Page Include="Views\PrintDocument\EmptyPrintPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\PrintDocument\PickupRoundPrint.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

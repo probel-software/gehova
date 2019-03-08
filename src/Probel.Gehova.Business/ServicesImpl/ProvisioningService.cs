@@ -20,7 +20,7 @@ namespace Probel.Gehova.Business.ServicesImpl
 
         #region Methods
 
-        public void CreatePickupRound(GroupDisplayModel team) => InTransaction(c =>
+        public void CreateTeam(GroupDisplayModel team) => InTransaction(c =>
         {
             var sql = @"insert into team (name) values (@Name);";
             using (var cmd = c.CreateCommand(sql))
@@ -43,7 +43,7 @@ namespace Probel.Gehova.Business.ServicesImpl
             category.Id = GetLastId(c);
         });
 
-        public void CreatePickup(GroupDisplayModel pickup) => InTransaction(c =>
+        public void CreatePickupRound(GroupDisplayModel pickup) => InTransaction(c =>
         {
             var sql = @"insert into pickup_round (name) values (@Name);";
             using (var cmd = GetCommand(sql, c))
