@@ -25,7 +25,7 @@ namespace Probel.Gehova.Business.ServicesImpl
 
         #region Constructors
 
-        public UpdateService(IDbLocator dbLocator) : base(dbLocator)
+        public UpdateService(IFileLocator dbLocator) : base(dbLocator)
         {
             var asm = Assembly.GetExecutingAssembly().GetManifestResourceNames().ToList();
             Views = (from asset in asm

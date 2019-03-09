@@ -12,7 +12,7 @@ namespace Probel.Gehova.Business.Mappers
         #region Fields
 
         private IDataReader _reader;
-        private List<DayPickupRoundModel> PickupRounds;
+        private List<DayPickupRoundModel> _pickupRounds;
 
         #endregion Fields
 
@@ -58,7 +58,7 @@ namespace Probel.Gehova.Business.Mappers
 
         private DayPickupRoundModel Get(DayPickupRoundModel day)
         {
-            var found = (from d in PickupRounds
+            var found = (from d in _pickupRounds
                          where d.DayId == day.DayId
                          select d).Single();
             return found;
@@ -90,14 +90,14 @@ namespace Probel.Gehova.Business.Mappers
 
         private void ResetPickupRounds()
         {
-            if (PickupRounds == null) { PickupRounds = new List<DayPickupRoundModel>(); }
-            else { PickupRounds.Clear(); }
+            if (_pickupRounds == null) { _pickupRounds = new List<DayPickupRoundModel>(); }
+            else { _pickupRounds.Clear(); }
 
-            PickupRounds.Add(new DayPickupRoundModel { DayName = Strings.Monday, DayId = 1 });
-            PickupRounds.Add(new DayPickupRoundModel { DayName = Strings.Tuesday, DayId = 2 });
-            PickupRounds.Add(new DayPickupRoundModel { DayName = Strings.Wednesday, DayId = 3 });
-            PickupRounds.Add(new DayPickupRoundModel { DayName = Strings.Thursday, DayId = 4 });
-            PickupRounds.Add(new DayPickupRoundModel { DayName = Strings.Friday, DayId = 5 });
+            _pickupRounds.Add(new DayPickupRoundModel { DayName = Strings.Monday, DayId = 1 });
+            _pickupRounds.Add(new DayPickupRoundModel { DayName = Strings.Tuesday, DayId = 2 });
+            _pickupRounds.Add(new DayPickupRoundModel { DayName = Strings.Wednesday, DayId = 3 });
+            _pickupRounds.Add(new DayPickupRoundModel { DayName = Strings.Thursday, DayId = 4 });
+            _pickupRounds.Add(new DayPickupRoundModel { DayName = Strings.Friday, DayId = 5 });
         }
 
         public IEnumerable<DayPickupRoundModel> Map(IDataReader src)
@@ -124,7 +124,7 @@ namespace Probel.Gehova.Business.Mappers
                     foundDay.PickupRounds.Add(pickup);
                 }
             }
-            return PickupRounds;
+            return _pickupRounds;
         }
 
         #endregion Methods

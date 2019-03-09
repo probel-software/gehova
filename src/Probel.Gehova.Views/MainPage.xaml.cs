@@ -2,6 +2,7 @@
 using Probel.Gehova.ViewModels.Vm;
 using Probel.Gehova.Views.Infrastructure;
 using Probel.Gehova.Views.Views.Administration;
+using Probel.Gehova.Views.Views.AppSettings;
 using Probel.Gehova.Views.Views.Provisioning;
 using Probel.Gehova.Views.Views.Visualisation;
 using System;
@@ -51,7 +52,8 @@ namespace Probel.Gehova.Views
             var nav = Navigator.GetInstance(contentFrame);
             Type destination;
 
-            if (args.IsSettingsSelected) { destination = typeof(SettingsHomeView); }
+            if (args.IsSettingsSelected) { destination = typeof(ApplicationSettingsView); }
+            else if (args.SelectedItem == DataSettingView) { destination = typeof(SettingsHomeView); }
             else if (args.SelectedItem == PlannerView) { destination = typeof(PlannerReceptionView); }
             else if (args.SelectedItem == PickupRoundView) { destination = typeof(PlannerPickupRoundView); }
             else if (args.SelectedItem == ProvisioningView) { destination = typeof(ProvisioningHomeView); }

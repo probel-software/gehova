@@ -1,4 +1,5 @@
 ﻿using Probel.Gehova.ViewModels.Vm;
+using Probel.Gehova.ViewModels.Vm.AppSettings;
 using Probel.Gehova.ViewModels.Vm.Provisioning;
 using Probel.Gehova.ViewModels.Vm.Settings;
 using Probel.Gehova.ViewModels.Vm.Visualisation;
@@ -35,6 +36,7 @@ namespace Probel.Gehova.Views.Infrastructure
         public ProvisioningHomeViewModel ProvisioningHomeViewModel => _container.Resolve<ProvisioningHomeViewModel>();
         public SettingsHomeViewModel SettingsHomeViewModel => _container.Resolve<SettingsHomeViewModel>();
         public PlannerTeamViewModel TeamPlannerViewModel => _container.Resolve<PlannerTeamViewModel>();
+        public ApplicationSettingsViewModel ApplicationSettingsViewModel => _container.Resolve<ApplicationSettingsViewModel>();
 
         #endregion Properties
     }

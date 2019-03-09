@@ -12,7 +12,7 @@ namespace Probel.Gehova.Business.ServicesImpl
     {
         #region Constructors
 
-        public ProvisioningService(IDbLocator dbLocator) : base(dbLocator)
+        public ProvisioningService(IFileLocator dbLocator) : base(dbLocator)
         {
         }
 
@@ -340,6 +340,24 @@ namespace Probel.Gehova.Business.ServicesImpl
             var sql = @"
                     delete from person_category
                     where person_id = @Id";
+            using (var cmd = GetCommand(sql, c))
+            {
+                cmd.AddParameter("Id", person.Id);
+                cmd.ExecuteNonQuery();
+            }
+
+            sql = @"
+                delete from reception_person
+                where person_id = @Id";
+            using (var cmd = GetCommand(sql, c))
+            {
+                cmd.AddParameter("Id", person.Id);
+                cmd.ExecuteNonQuery();
+            }
+
+            sql = @"
+                delete from absence
+                where person_id = @Id";
             using (var cmd = GetCommand(sql, c))
             {
                 cmd.AddParameter("Id", person.Id);

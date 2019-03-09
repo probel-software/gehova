@@ -2,7 +2,7 @@
 
 namespace Probel.Gehova.Business.Db
 {
-    public abstract class BaseDbLocator : IDbLocator
+    public abstract class BaseFileLocator : IFileLocator
     {
         #region Fields
 
@@ -32,6 +32,7 @@ namespace Probel.Gehova.Business.Db
             }
             return BuildDatabasePath();
         }
+
 
         #endregion Methods
     }

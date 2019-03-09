@@ -27,7 +27,7 @@ namespace Probel.Gehova.Business
             c.AddMapper<RawPresenceWeekModel>(e => e.AsPresenceWeekRaw());
         }
 
-        public DbAgent(IDbLocator dbLocator)
+        public DbAgent(IFileLocator dbLocator)
         {
             DbLocator = dbLocator;
         }
@@ -36,7 +36,7 @@ namespace Probel.Gehova.Business
 
         #region Properties
 
-        protected IDbLocator DbLocator { get; private set; }
+        protected IFileLocator DbLocator { get; private set; }
         protected ILogger Log { get; } = LogManager.GetLogger("Service");
 
         #endregion Properties

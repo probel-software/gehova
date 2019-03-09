@@ -1,4 +1,5 @@
 ﻿using Probel.Gehova.ViewModels.Vm;
+using Probel.Gehova.ViewModels.Vm.AppSettings;
 using Probel.Gehova.ViewModels.Vm.Provisioning;
 using Probel.Gehova.ViewModels.Vm.Settings;
 using Probel.Gehova.ViewModels.Vm.Visualisation;
@@ -19,6 +20,7 @@ namespace Probel.Gehova.Views.Infrastructure
         SettingsHomeViewModel SettingsHomeViewModel { get; }
         PlannerPickupRoundViewModel PickupRoundViewModel { get; }
         PlannerTeamViewModel TeamPlannerViewModel { get; }
+        ApplicationSettingsViewModel ApplicationSettingsViewModel { get; }
         #endregion Properties
     }
 }

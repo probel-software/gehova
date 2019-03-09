@@ -14,7 +14,6 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
 {
     public class ProvisioningHomeViewModel : ViewModelBase
     {
-
         #region Fields
 
         private readonly IUserMessenger _messenger;
@@ -226,6 +225,28 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
             UpdateTeams();
         }
 
+        public PersonFullDisplayModel FindById(object selectedItem)
+        {
+            if (selectedItem is PersonFullDisplayModel person)
+            {
+                var res = (from p in People
+                           where p.Id == person.Id
+                           select p).Single();
+                return res;
+            }
+            else { return null; }
+        }
+
+        public IEnumerable<PersonFullDisplayModel> FindByName(string criterion)
+        {
+            criterion = criterion.ToLower();
+            var res = (from p in People
+                       where p.FirstName.ToLower().Contains(criterion)
+                          || p.LastName.ToLower().Contains(criterion)
+                       select p).ToList();
+            return res;
+        }
+
         public void Refresh(string propertyName)
         {
             if (propertyName == nameof(SelectedTeam)) { RefreshPeopleInTeams(); }
@@ -274,6 +295,5 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
         }
 
         #endregion Methods
-
     }
 }

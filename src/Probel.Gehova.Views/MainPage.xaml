@@ -14,6 +14,7 @@
             x:Name="rootNavigation"
             IsBackButtonVisible="Collapsed"
             IsPaneOpen="False"
+            IsSettingsVisible="False"
             SelectionChanged="OnRootNavigation">
             <NavigationView.MenuItems>
                 <NavigationViewItemHeader x:Uid="Menu_Header_Calendar" />
@@ -25,24 +26,24 @@
                     x:Name="PickupRoundView"
                     x:Uid="Menu_Pickup_Round"
                     Icon="  Map" />
-                <NavigationViewItem
-                    x:Name="TeamsView"
-                    x:Uid="Menu_Teams"
-                    Icon="People" />
+                <NavigationViewItem x:Name="TeamsView" x:Uid="Menu_Teams">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE902;" />
+                    </NavigationViewItem.Icon>
+
+                </NavigationViewItem>
                 <NavigationViewItemHeader x:Uid="Menu_Header_Data" />
                 <NavigationViewItem
                     x:Name="ProvisioningView"
                     x:Uid="Menu_Provisioning"
                     Icon="ContactInfo" />
+                <NavigationViewItem
+                    x:Name="DataSettingView"
+                    x:Uid="Menu_DataSetting"
+                    Icon="Manage" />
             </NavigationView.MenuItems>
             <Frame x:Name="contentFrame" />
         </NavigationView>
-        <ContentDialog x:Name="UpdateInProgress" x:Uid="DialogUpdateInProgress">
-            <StackPanel>
-                <TextBlock x:Uid="TbUpdateInProgress" />
-                <ProgressRing />
-            </StackPanel>
-        </ContentDialog>
         <c:InAppNotification
             x:Name="InAppNotification"
             AnimationDuration="00:00:00.1000000"

@@ -174,6 +174,15 @@
   <data name="ButtonRefresh.Content" xml:space="preserve">
     <value>Rafraîchir</value>
   </data>
+  <data name="CbContentIconVisibility.Header" xml:space="preserve">
+    <value>Visibilité des icônes indiquant le rôle d'une personne</value>
+  </data>
+  <data name="CbContentIconVisibility.OffContent" xml:space="preserve">
+    <value>Invisible</value>
+  </data>
+  <data name="CbContentIconVisibility.OnContent" xml:space="preserve">
+    <value>Visible</value>
+  </data>
   <data name="CdpWeelSelector.Header" xml:space="preserve">
     <value>Semaine achichée</value>
   </data>
@@ -251,6 +260,9 @@
   <data name="MasterDetailPeople.NoSelectionContent" xml:space="preserve">
     <value>Sélectionnez une personne.</value>
   </data>
+  <data name="Menu_DataSetting.Content" xml:space="preserve">
+    <value>Gestion de la configuration</value>
+  </data>
   <data name="Menu_Header_Calendar.Content" xml:space="preserve">
     <value>Calendriers</value>
   </data>
@@ -317,8 +329,17 @@
   <data name="Run_AbsenceTo.Text" xml:space="preserve">
     <value>au</value>
   </data>
+  <data name="TbAbsence.Text" xml:space="preserve">
+    <value>Absence de</value>
+  </data>
   <data name="TbCategory.Text" xml:space="preserve">
     <value>Catégories</value>
+  </data>
+  <data name="TbContentHeight.Text" xml:space="preserve">
+    <value>Hauteur des entêtes des groupes</value>
+  </data>
+  <data name="TbContentTextSize.Text" xml:space="preserve">
+    <value>Taille du texte d'affichage des personnes (dans les calendriers)</value>
   </data>
   <data name="TbFirstName.Header" xml:space="preserve">
     <value>Prénom</value>
@@ -356,8 +377,14 @@
   <data name="TbReception.Text" xml:space="preserve">
     <value>Réceptions</value>
   </data>
+  <data name="TbSearchBoxPerson.PlaceholderText" xml:space="preserve">
+    <value>Chercher</value>
+  </data>
   <data name="TbUpdateInProgress.Text" xml:space="preserve">
     <value>Mise à jour de la base de données...</value>
+  </data>
+  <data name="TbVisibility.Text" xml:space="preserve">
+    <value>Configuration de la visibilité des éléments</value>
   </data>
   <data name="Title_PickupRoundPrint.Text" xml:space="preserve">
     <value>Accueils</value>

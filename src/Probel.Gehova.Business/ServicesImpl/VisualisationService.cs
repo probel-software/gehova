@@ -13,7 +13,7 @@ namespace Probel.Gehova.Business.ServicesImpl
     {
         #region Constructors
 
-        public VisualisationService(IDbLocator dbLocator) : base(dbLocator)
+        public VisualisationService(IFileLocator dbLocator) : base(dbLocator)
         {
         }
 
@@ -71,7 +71,8 @@ namespace Probel.Gehova.Business.ServicesImpl
             var sql = @"
                 select *
                 from presence_week_v
-                where team_id is not null";
+                where team_id is not null
+                order by rg_order, r_order, category_key";
             using (var c = NewConnection())
             using (var cmd = GetCommand(sql, c))
             {
@@ -86,7 +87,8 @@ namespace Probel.Gehova.Business.ServicesImpl
             var sql = @"
                 select *
                 from presence_week_v
-                where pickup_round_id is not null";
+                where pickup_round_id is not null
+                order by rg_order, r_order, category_key";
             using (var c = NewConnection())
             using (var cmd = GetCommand(sql, c))
             {
@@ -119,7 +121,8 @@ namespace Probel.Gehova.Business.ServicesImpl
             var sql = @"
                 select *
                 from presence_week_v
-                where team_id is not null";
+                where team_id is not null
+                order by rg_order, r_order";
             using (var c = NewConnection())
             using (var cmd = GetCommand(sql, c))
             {

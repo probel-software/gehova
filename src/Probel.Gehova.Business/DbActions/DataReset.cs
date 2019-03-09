@@ -7,13 +7,13 @@ namespace Probel.Gehova.Business.Helpers
     {
         #region Fields
 
-        private readonly IDbLocator _locator;
+        private readonly IFileLocator _locator;
 
         #endregion Fields
 
         #region Constructors
 
-        public DataReset(IDbLocator locator)
+        public DataReset(IFileLocator locator)
         {
             _locator = locator;
         }

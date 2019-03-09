@@ -9,7 +9,7 @@ namespace Probel.Gehova.Business.ServicesImpl
     {
         #region Constructors
 
-        public DbAdminService(IDbLocator dbLocator) : base(dbLocator)
+        public DbAdminService(IFileLocator dbLocator) : base(dbLocator)
         {
         }
 

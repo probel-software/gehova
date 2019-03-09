@@ -1,5 +1,6 @@
 ﻿using Probel.Gehova.ViewModels.Infrastructure;
 using Probel.Gehova.ViewModels.Vm.Provisioning;
+using Probel.Gehova.Views.Helpers;
 using Probel.Gehova.Views.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -92,6 +93,25 @@ namespace Probel.Gehova.Views.Views.Provisioning
 
                 e.AcceptedOperation = DataPackageOperation.Move;
                 def.Complete();
+            }
+        }
+
+        private void OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            TbSearchBoxPerson.Text = args.SelectedItem?.ToString();
+
+            var res = ViewModel.FindById(args.SelectedItem);
+            LvPeople.SelectedItem = res;
+            ViewModel.SelectedPerson = res;
+            ViewModel.RefreshAbsencesCommand.TryExecute();
+        }
+
+        private void OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                var result = ViewModel.FindByName(TbSearchBoxPerson.Text);
+                sender.ItemsSource = result;
             }
         }
 

@@ -6,11 +6,34 @@ using System.Linq;
 
 namespace Probel.Gehova.Business.Mappers
 {
+    internal static class ReceptionQueries
+    {
+        #region Methods
+
+        public static void Add(this ReceptionModel src, DayModel day, GroupModel toAdd)
+        {
+            var result = (from d in src.Days
+                          where d.DayId == day.DayId
+                          select d).Single();
+            result?.Teams.Add(toAdd);
+        }
+
+        public static void Add(this GroupModel src, PersonDisplayModel toAdd)
+        {
+            var exists = (from p in src.People
+                          where p.Id == toAdd.Id
+                          select p).Count() > 0;
+            if (!exists) { src.People.Add(toAdd); }
+        }
+
+        #endregion Methods
+    }
+
     internal class ToReceptionGroupMapper
     {
         #region Fields
 
-        private readonly List<ReceptionGroupModel> ReceptionGroups = new List<ReceptionGroupModel>();
+        private readonly List<ReceptionGroupModel> _receptionGroups = new List<ReceptionGroupModel>();
         private IDataReader _reader;
 
         #endregion Fields
@@ -27,7 +50,7 @@ namespace Probel.Gehova.Business.Mappers
 
         private ReceptionGroupModel Get(ReceptionGroupModel rg)
         {
-            var res = (from r in ReceptionGroups
+            var res = (from r in _receptionGroups
                        where r.Id == rg.Id
                        select r).Single();
             return res;
@@ -109,7 +132,7 @@ namespace Probel.Gehova.Business.Mappers
 
         private bool Has(ReceptionGroupModel rg)
         {
-            var res = (from r in ReceptionGroups
+            var res = (from r in _receptionGroups
                        where r.Id == rg.Id
                        select r).Count() > 0;
             return res;
@@ -141,12 +164,12 @@ namespace Probel.Gehova.Business.Mappers
                     var foundTeam = Get(team.Id, foundDay);
                     if (!Has(person.Id, foundTeam.People))
                     {
-                        foundTeam.People.Add(person);
+                        foundTeam.Add(person);
                     }
                 }
                 else
                 {
-                    team.People.Add(person);
+                    team.Add(person);
                     foundDay.Teams.Add(team);
                 }
             }
@@ -156,7 +179,7 @@ namespace Probel.Gehova.Business.Mappers
         public IEnumerable<ReceptionGroupModel> Map(IDataReader src)
         {
             _reader = src ?? throw new ArgumentNullException(nameof(src), $"The instance of '{typeof(IDataReader)}' is NULL. Did you forgot to specified a valid DataReader?");
-            ReceptionGroups.Clear();
+            _receptionGroups.Clear();
 
             while (_reader.Read())
             {
@@ -172,7 +195,6 @@ namespace Probel.Gehova.Business.Mappers
                     }
                     else
                     {
-                        team.People.Add(person);
                         day.Teams.Add(team);
                         InsertInDay(person, team, day, reception);
                         foundGroup.Receptions.Add(reception);
@@ -180,13 +202,13 @@ namespace Probel.Gehova.Business.Mappers
                 }
                 else
                 {
-                    team.People.Add(person);
-                    day.Teams.Add(team);
+                    team.Add(person);
+                    reception.Add(day, team);
                     receptionGroup.Receptions.Add(reception);
-                    ReceptionGroups.Add(receptionGroup);
+                    _receptionGroups.Add(receptionGroup);
                 }
             }
-            return ReceptionGroups;
+            return _receptionGroups;
         }
 
         #endregion Methods

@@ -15,7 +15,7 @@ namespace Probel.Gehova.Business.ServiceActions
 
         #region Constructors
 
-        public GetPerson(IDbLocator dbLocator) : base(dbLocator)
+        public GetPerson(IFileLocator dbLocator) : base(dbLocator)
         {
         }
 

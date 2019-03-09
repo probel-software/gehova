@@ -6,6 +6,7 @@ using Probel.Gehova.Business.Services;
 using Probel.Gehova.ViewModels.GuiUtils;
 using Probel.Gehova.ViewModels.Infrastructure;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -253,6 +254,35 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             {
                 _service.CreatePickupRound(team);
                 _messenger?.Say(string.Format(_resources.GetString("Info_TeamCreated"), team.Name));
+            }
+        }
+
+        public PersonFullDisplayViewModel FindById(object selectedItem)
+        {
+            if (selectedItem is PersonFullDisplayViewModel item)
+            {
+                var res = (from p in People
+                           where p.Id == item.Id
+                           select p).Single();
+                return res;
+            }
+            else { return null; }
+        }
+
+        public IEnumerable<PersonFullDisplayViewModel> FindByName(string criterion)
+        {
+            if (string.IsNullOrWhiteSpace(criterion))
+            {
+                return People;
+            }
+            else
+            {
+                criterion = criterion.ToLower();
+                var res = (from p in People
+                           where p.FirstName.ToLower().Contains(criterion)
+                              || p.LastName.ToLower().Contains(criterion)
+                           select p).ToList();
+                return res;
             }
         }
 

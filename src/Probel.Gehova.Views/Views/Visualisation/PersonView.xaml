@@ -15,12 +15,26 @@
         <conv:EducatorToBoldConverter x:Key="EducatorToBoldConverter" />
     </UserControl.Resources>
     <StackPanel Margin="0,5,5,0">
-        <StackPanel Margin="25,0,0,0" Orientation="Horizontal">
-            <SymbolIcon
-                Margin="0,3,15,5"
-                Symbol="{Binding CategoryKey, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource CategoryToGlyphConverter}}"
-                Visibility="{x:Bind ContentIconVisibility}" />
+        <Grid Margin="5,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="35" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <ItemsControl ItemsSource="{Binding CategoryKey, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource CategoryToGlyphConverter}}">
+                <ItemsControl.Resources>
+                    <Style TargetType="FontIcon">
+                        <Setter Property="Margin" Value="0,0,5,0" />
+                        <Setter Property="FontSize" Value="12"/>
+                    </Style>
+                </ItemsControl.Resources>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
             <TextBlock
+                Grid.Column="1"
                 Margin="0,0,5,0"
                 VerticalAlignment="Center"
                 FontSize="{x:Bind ContentTextSize}"
@@ -28,6 +42,6 @@
                 <Run Text="{Binding LastName}" />
                 <Run Text="{Binding FirstName}" />
             </TextBlock>
-        </StackPanel>
+        </Grid>
     </StackPanel>
 </UserControl>

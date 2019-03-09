@@ -17,7 +17,7 @@ namespace Probel.Gehova.Business.Models
 
         #region Methods
 
-        public override string ToString() => $"{base.ToString()} - [{FirstName} {LastName}]";
+        public override string ToString() => $"{FirstName} {LastName}";
 
         #endregion Methods
     }

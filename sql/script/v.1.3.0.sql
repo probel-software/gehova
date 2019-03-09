@@ -45,14 +45,15 @@ create table person_category (
 );
 
 create table reception_group (
-    id   integer primary key,
-    name text   
+    id    integer primary key,
+	o_val integer default 0, -- order value
+    name  text   
 );
 -------------------------------------------------------------------------------
 create table reception (
-    id       integer primary key,
-    name     text,
-    group_nr integer not null default 0,
+    id      integer primary key,
+	o_val integer default 0, -- order value
+    name    text,
     reception_group_id integer,
     foreign key(reception_group_id) references reception_group(id)
 );
@@ -68,13 +69,13 @@ create table reception_person (
 /* Gets old data and insert it into new structure
  * Fill reception groups with default data
  */
-insert into reception_group(id, name) values(1, 'Accueil matin/soir');
-insert into reception_group(id, name) values(2, 'Temps de midi');
+insert into reception_group(id, name, o_val) values(1, 'Accueil matin/soir', 1);
+insert into reception_group(id, name, o_val) values(2, 'Temps de midi', 0);
 
-insert into reception(id, name, reception_group_id) values (1, 'Accueil du matin', 1);
-insert into reception(id, name, reception_group_id) values (2, 'Temps de midi A', 2);
-insert into reception(id, name, reception_group_id) values (3, 'Temps de midi B', 2);
-insert into reception(id, name, reception_group_id) values (4, 'Accueil du soir', 1);
+insert into reception(id, name, reception_group_id, o_val) values (1, 'Accueil du matin', 1, 0);
+insert into reception(id, name, reception_group_id, o_val) values (4, 'Accueil du soir' , 1, 1);
+insert into reception(id, name, reception_group_id, o_val) values (2, 'Temps de midi A' , 2, 0);
+insert into reception(id, name, reception_group_id, o_val) values (3, 'Temps de midi B' , 2, 1);
 
 insert into person_buffer 
     select *

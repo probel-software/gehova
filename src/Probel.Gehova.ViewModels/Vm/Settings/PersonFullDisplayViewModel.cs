@@ -120,7 +120,7 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             get => _receptions;
             set => Set(ref _receptions, value, nameof(Receptions));
         }
-
+        public override string ToString() => $"{FirstName} {LastName}";
         #endregion Properties
     }
 }

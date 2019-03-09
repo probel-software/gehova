@@ -26,13 +26,14 @@ CREATE TABLE settings (
     "value" text
 );
 CREATE TABLE reception_group (
-    id   integer primary key,
-    name text   
+    id    integer primary key,
+	o_val integer default 0, -- order value
+    name  text   
 );
 CREATE TABLE reception (
-    id       integer primary key,
-    name     text,
-    group_nr integer not null default 0,
+    id    integer primary key,
+    name  text,
+	o_val integer default 0, -- order value
     reception_group_id integer,
     foreign key(reception_group_id) references reception_group(id)
 );

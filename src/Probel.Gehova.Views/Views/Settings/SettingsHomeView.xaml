@@ -13,151 +13,175 @@
     <Grid>
         <Pivot x:Uid="Pivot_Admin">
             <PivotItem x:Uid="PivotItem_Person">
-                <c:MasterDetailsView
-                    x:Name="MasterDetailPeople"
-                    x:Uid="MasterDetailPeople"
-                    CompactModeThresholdWidth="720"
-                    ItemsSource="{Binding People, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                    
-                    SelectionChanged="OnSelectionChanged">
-                    <c:MasterDetailsView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Margin="0,8">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <AutoSuggestBox
+                        x:Name="TbSearchBoxPerson"
+                        x:Uid="TbSearchBoxPerson"
+                        Margin="0,5,0,5"
+                        QueryIcon="Find"
+                        SuggestionChosen="OnSuggestionChosen"
+                        TextChanged="OnTextChanged">
+                        <AutoSuggestBox.ItemTemplate>
+                            <DataTemplate>
                                 <TextBlock FontSize="14" FontWeight="Bold">
                                     <Run Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <Run Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </TextBlock>
-                                <TextBlock Text="{Binding CategoryDisplay}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </c:MasterDetailsView.ItemTemplate>
-                    <c:MasterDetailsView.DetailsTemplate>
-                        <DataTemplate>
-                            <ScrollViewer>
-                                <StackPanel Margin="50">
-                                    <TextBlock
-                                        x:Uid="TbPerson"
-                                        Margin="5,10,0,0"
-                                        FontSize="18"
-                                        FontWeight="Bold" />
-                                    <Border
-                                        Height="2"
-                                        Margin="5"
-                                        Background="Gray" />
-                                    <TextBox
-                                        x:Uid="TbPersonEditorFirstName"
-                                        Margin="5"
-                                        Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                    <TextBox
-                                        x:Uid="TbPersonEditorLastName"
-                                        Margin="5"
-                                        Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel>
-                                            <TextBlock
-                                                x:Uid="TbCategory"
-                                                Margin="5,10,0,0"
-                                                FontSize="18"
-                                                FontWeight="Bold" />
-                                            <Border
-                                                Height="2"
-                                                Margin="5"
-                                                Background="Gray" />
-                                            <ItemsControl ItemsSource="{Binding Categories}">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="1">
-                                            <TextBlock
-                                                x:Uid="TbReception"
-                                                Margin="5,10,0,0"
-                                                FontSize="18"
-                                                FontWeight="Bold" />
-                                            <Border
-                                                Height="2"
-                                                Margin="5"
-                                                Background="Gray" />
-                                            <ItemsControl ItemsSource="{Binding Receptions}">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </StackPanel>
-                                    </Grid>
+                            </DataTemplate>
+                        </AutoSuggestBox.ItemTemplate>
+                    </AutoSuggestBox>
+                    <c:MasterDetailsView
+                        x:Name="MasterDetailPeople"
+                        x:Uid="MasterDetailPeople"
+                        Grid.Row="1"
+                        CompactModeThresholdWidth="720"
+                        ItemsSource="{Binding People, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        SelectionChanged="OnSelectionChanged">
+                        <c:MasterDetailsView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,8">
+                                    <TextBlock FontSize="14" FontWeight="Bold">
+                                        <Run Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <Run Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </TextBlock>
+                                    <TextBlock Text="{Binding CategoryDisplay}" />
                                 </StackPanel>
-                            </ScrollViewer>
-                        </DataTemplate>
-                    </c:MasterDetailsView.DetailsTemplate>
-                    <c:MasterDetailsView.NoSelectionContentTemplate>
-                        <DataTemplate>
-                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <SymbolIcon RenderTransformOrigin=".5,.5" Symbol="ContactInfo">
-                                    <SymbolIcon.RenderTransform>
-                                        <CompositeTransform ScaleX="2" ScaleY="2" />
-                                    </SymbolIcon.RenderTransform>
-                                </SymbolIcon>
-                                <TextBlock
-                                    Margin="0,12"
-                                    FontSize="24"
-                                    Text="{Binding}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </c:MasterDetailsView.NoSelectionContentTemplate>
-                    <c:MasterDetailsView.MasterCommandBar>
-                        <CommandBar>
-                            <AppBarButton
-                                x:Uid="AppButtonAdd"
-                                Margin="0,0,0,0"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Click="ClickOnAddPerson"
-                                Icon="Add" />
-                            <AppBarButton
-                                x:Uid="AppButtonRefresh"
-                                Command="{Binding RefreshCommand}"
-                                Icon="Refresh" />
-                        </CommandBar>
-                    </c:MasterDetailsView.MasterCommandBar>
-                    <c:MasterDetailsView.DetailsCommandBar>
-                        <CommandBar>
-                            <AppBarButton
-                                x:Uid="AppButtonSave"
-                                Command="{Binding UpdatePersonCommand}"
-                                CommandParameter="{Binding ElementName=MasterDetailPeople, Path=SelectedItem}"
-                                Icon="Save" />
-                            <AppBarButton x:Uid="AppButtonDelete" Icon="Delete">
-                                <Button.Flyout>
-                                    <Flyout>
-                                        <StackPanel>
-                                            <TextBlock
-                                                x:Uid="FlyoutBtn_AskRemove"
-                                                Margin="0,0,0,12"
-                                                Style="{ThemeResource BaseTextBlockStyle}" />
-                                            <Button
-                                                x:Uid="FlyoutBtn_ConfirmRemove"
-                                                Command="{Binding RemovePersonCommand}"
-                                                CommandParameter="{Binding ElementName=MasterDetailPeople, Path=SelectedItem}" />
-                                        </StackPanel>
-                                    </Flyout>
-                                </Button.Flyout>
-                            </AppBarButton>
-                            <AppBarButton
-                                x:Uid="AppButtonRemove"
-                                Command="{Binding RemovePersonCommand}"
-                                CommandParameter="{Binding ElementName=MasterDetailPeople, Path=SelectedItem}"
-                                Icon="Remove" />
-                        </CommandBar>
-                    </c:MasterDetailsView.DetailsCommandBar>
-                </c:MasterDetailsView>
+                            </DataTemplate>
+                        </c:MasterDetailsView.ItemTemplate>
+                        <c:MasterDetailsView.DetailsTemplate>
+                            <DataTemplate>
+                                <ScrollViewer>
+                                    <StackPanel Margin="50">
+                                        <TextBlock
+                                            x:Uid="TbPerson"
+                                            Margin="5,10,0,0"
+                                            FontSize="18"
+                                            FontWeight="Bold" />
+                                        <Border
+                                            Height="2"
+                                            Margin="5"
+                                            Background="Gray" />
+                                        <TextBox
+                                            x:Uid="TbPersonEditorFirstName"
+                                            Margin="5"
+                                            Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                        <TextBox
+                                            x:Uid="TbPersonEditorLastName"
+                                            Margin="5"
+                                            Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock
+                                                    x:Uid="TbCategory"
+                                                    Margin="5,10,0,0"
+                                                    FontSize="18"
+                                                    FontWeight="Bold" />
+                                                <Border
+                                                    Height="2"
+                                                    Margin="5"
+                                                    Background="Gray" />
+                                                <ItemsControl ItemsSource="{Binding Categories}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock
+                                                    x:Uid="TbReception"
+                                                    Margin="5,10,0,0"
+                                                    FontSize="18"
+                                                    FontWeight="Bold" />
+                                                <Border
+                                                    Height="2"
+                                                    Margin="5"
+                                                    Background="Gray" />
+                                                <ItemsControl ItemsSource="{Binding Receptions}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </Grid>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </DataTemplate>
+                        </c:MasterDetailsView.DetailsTemplate>
+                        <c:MasterDetailsView.NoSelectionContentTemplate>
+                            <DataTemplate>
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <SymbolIcon RenderTransformOrigin=".5,.5" Symbol="ContactInfo">
+                                        <SymbolIcon.RenderTransform>
+                                            <CompositeTransform ScaleX="2" ScaleY="2" />
+                                        </SymbolIcon.RenderTransform>
+                                    </SymbolIcon>
+                                    <TextBlock
+                                        Margin="0,12"
+                                        FontSize="24"
+                                        Text="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </c:MasterDetailsView.NoSelectionContentTemplate>
+                        <c:MasterDetailsView.MasterCommandBar>
+                            <CommandBar>
+                                <AppBarButton
+                                    x:Uid="AppButtonAdd"
+                                    Margin="0,0,0,0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Click="ClickOnAddPerson"
+                                    Icon="Add" />
+                                <AppBarButton
+                                    x:Uid="AppButtonRefresh"
+                                    Command="{Binding RefreshCommand}"
+                                    Icon="Refresh" />
+                                <AppBarButton Background="Transparent" Icon="Find" />
+                            </CommandBar>
+                        </c:MasterDetailsView.MasterCommandBar>
+                        <c:MasterDetailsView.DetailsCommandBar>
+                            <CommandBar>
+                                <AppBarButton
+                                    x:Uid="AppButtonSave"
+                                    Command="{Binding UpdatePersonCommand}"
+                                    CommandParameter="{Binding ElementName=MasterDetailPeople, Path=SelectedItem}"
+                                    Icon="Save" />
+                                <AppBarButton x:Uid="AppButtonDelete" Icon="Delete">
+                                    <Button.Flyout>
+                                        <Flyout>
+                                            <StackPanel>
+                                                <TextBlock
+                                                    x:Uid="FlyoutBtn_AskRemove"
+                                                    Margin="0,0,0,12"
+                                                    Style="{ThemeResource BaseTextBlockStyle}" />
+                                                <Button
+                                                    x:Uid="FlyoutBtn_ConfirmRemove"
+                                                    Command="{Binding RemovePersonCommand}"
+                                                    CommandParameter="{Binding ElementName=MasterDetailPeople, Path=SelectedItem}" />
+                                            </StackPanel>
+                                        </Flyout>
+                                    </Button.Flyout>
+                                </AppBarButton>
+                                <AppBarButton
+                                    x:Uid="AppButtonRemove"
+                                    Command="{Binding RemovePersonCommand}"
+                                    CommandParameter="{Binding ElementName=MasterDetailPeople, Path=SelectedItem}"
+                                    Icon="Remove" />
+                            </CommandBar>
+                        </c:MasterDetailsView.DetailsCommandBar>
+                    </c:MasterDetailsView>
+                </Grid>
             </PivotItem>
             <PivotItem x:Uid="PivotItem_PickupRound">
                 <StackPanel>

@@ -4,6 +4,7 @@ using Probel.Gehova.Business.Helpers;
 using Probel.Gehova.Business.Services;
 using Probel.Gehova.Business.ServicesImpl;
 using Probel.Gehova.ViewModels.Infrastructure;
+using Probel.Gehova.ViewModels.Vm.AppSettings;
 using Probel.Gehova.Views.Helpers;
 using System;
 using Unity;
@@ -40,13 +41,14 @@ namespace Probel.Gehova.Views.Infrastructure
             {
                 _container.RegisterType<IProvisioningService, ProvisioningService>();
                 _container.RegisterType<IVisualisationService, VisualisationService>();
-                _container.RegisterType<IDbLocator, UwpDbLocator>();
+                _container.RegisterType<IFileLocator, UwpDbLocator>();
                 _container.RegisterType<IDataReset, DataReset>();
                 _container.RegisterType<IProvisioningService, ProvisioningService>();
                 _container.RegisterFactory<ILogger>(_ => LogManager.GetCurrentClassLogger());
                 _container.RegisterType<IUpdateService, UpdateService>();
                 //----
                 _container.RegisterType<IUserMessenger, InAppMessenger>();
+                _container.RegisterType<ISettings, AppSettings>();
 
                 _isLoaded = true;
             }

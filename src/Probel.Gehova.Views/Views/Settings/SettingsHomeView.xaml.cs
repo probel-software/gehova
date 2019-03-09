@@ -112,7 +112,25 @@ namespace Probel.Gehova.Views.Views.Administration
         {
             if (e.AddedItems.Count() > 0)
             {
+                if ((e.AddedItems[0]?.ToString() ?? "") != TbSearchBoxPerson.Text) { TbSearchBoxPerson.Text = string.Empty; }
                 ViewModel.RefreshSelectedPerson(e.AddedItems[0]);
+            }
+        }
+
+        private void OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            TbSearchBoxPerson.Text = args.SelectedItem?.ToString();
+
+            var res = ViewModel.FindById(args.SelectedItem);
+            MasterDetailPeople.SelectedItem = res;
+        }
+
+        private void OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                var result = ViewModel.FindByName(TbSearchBoxPerson.Text);
+                sender.ItemsSource = result;
             }
         }
 

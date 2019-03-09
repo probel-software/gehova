@@ -70,7 +70,6 @@ namespace Probel.Gehova.Views.Views.Visualisation
             await _printHelper.ShowPrintUIAsync(Txt.GetString("Title_PrintPickupRounds"));
         }
 
-
         private void OnPrintFailed()
         {
             _printHelper?.Dispose();

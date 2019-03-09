@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Probel.Gehova.Business.Db
 {
-    public class MyDocumentLocator : BaseDbLocator
+    public class MyDocumentLocator : BaseFileLocator
     {
         #region Fields
 

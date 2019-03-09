@@ -13,7 +13,7 @@ namespace Probel.Gehova.Business.ServiceActions
     {
         #region Constructors
 
-        public CreatePerson(IDbLocator dbLocator) : base(dbLocator)
+        public CreatePerson(IFileLocator dbLocator) : base(dbLocator)
         {
         }
 
