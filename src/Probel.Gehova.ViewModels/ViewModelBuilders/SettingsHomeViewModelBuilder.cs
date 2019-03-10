@@ -10,6 +10,7 @@ namespace Probel.Gehova.ViewModels.ViewModelBuilders
         public static AddPersonViewModel HandDown(this SettingsHomeViewModel src, AddPersonViewModel vm)
         {
             vm.Categories = new ObservableCollection<CategoryViewModel>(src.Categories.ToViewModel());
+            vm.Receptions = new ObservableCollection<ReceptionViewModel>(src.Receptions.ToViewModel());
             return vm;
         }
 

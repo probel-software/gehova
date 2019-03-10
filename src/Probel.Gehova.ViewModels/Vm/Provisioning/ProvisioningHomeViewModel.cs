@@ -16,6 +16,7 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
     {
         #region Fields
 
+        private readonly IUserMessenger _messenger;
         private readonly IProvisioningService _service;
         private readonly ResourceLoader Resources = new ResourceLoader("Messages");
         private AbsenceDisplayModel _currentAbsence;
@@ -26,20 +27,21 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
         private ObservableCollection<PersonFullDisplayModel> _peopleNotInAnyPickupRound;
         private ObservableCollection<PersonFullDisplayModel> _peopleNotInAnyTeam;
 
-        private ObservableCollection<PickupRoundDisplayModel> _pickupRounds;
+        private ObservableCollection<GroupDisplayModel> _pickupRounds;
         private RelayCommand _refreshAbsencesCommand;
         private RelayCommand<AbsenceDisplayModel> _removeAbsenceCommand;
         private PersonFullDisplayModel _selectedPerson;
-        private PickupRoundDisplayModel _selectedPickupRound;
-        private TeamDisplayModel _selectedTeam;
-        private ObservableCollection<TeamDisplayModel> _teams;
+        private GroupDisplayModel _selectedPickupRound;
+        private GroupDisplayModel _selectedTeam;
+        private ObservableCollection<GroupDisplayModel> _teams;
 
         #endregion Fields
 
         #region Constructors
 
-        public ProvisioningHomeViewModel(IProvisioningService service)
+        public ProvisioningHomeViewModel(IProvisioningService service, IUserMessenger messenger)
         {
+            _messenger = messenger;
             _service = service;
 
             PropertyChanged += (s, e) => Refresh(e.PropertyName);
@@ -60,8 +62,6 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
             get => _currentPersonAbsences;
             set => Set(ref _currentPersonAbsences, value, nameof(CurrentPersonAbsences));
         }
-
-        public IMessenger Messenger { get; set; }
 
         public ObservableCollection<PersonFullDisplayModel> People
         {
@@ -93,7 +93,7 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
             set => Set(ref _peopleNotInAnyTeam, value, nameof(PeopleNotInAnyTeam));
         }
 
-        public ObservableCollection<PickupRoundDisplayModel> PickupRounds
+        public ObservableCollection<GroupDisplayModel> PickupRounds
         {
             get => _pickupRounds;
             set => Set(ref _pickupRounds, value, nameof(PickupRounds));
@@ -109,19 +109,19 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
             set => Set(ref _selectedPerson, value, nameof(SelectedPerson));
         }
 
-        public PickupRoundDisplayModel SelectedPickupRound
+        public GroupDisplayModel SelectedPickupRound
         {
             get => _selectedPickupRound;
             set => Set(ref _selectedPickupRound, value, nameof(SelectedPickupRound));
         }
 
-        public TeamDisplayModel SelectedTeam
+        public GroupDisplayModel SelectedTeam
         {
             get => _selectedTeam;
             set => Set(ref _selectedTeam, value, nameof(SelectedTeam));
         }
 
-        public ObservableCollection<TeamDisplayModel> Teams
+        public ObservableCollection<GroupDisplayModel> Teams
         {
             get => _teams;
             set => Set(ref _teams, value, nameof(Teams));
@@ -179,7 +179,7 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
         private void RemoveAbsence(AbsenceDisplayModel absence)
         {
             _service.Remove(absence);
-            Messenger?.Say(Resources.GetString("Info_AbsenceRemoved"));
+            _messenger?.Say(Resources.GetString("Info_AbsenceRemoved"));
 
             var todel = (from a in CurrentPersonAbsences
                          where a.Id == absence.Id
@@ -189,21 +189,21 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
 
         private void UpdatePickupRounds()
         {
-            var rnd = new PickupRoundModel(SelectedPickupRound)
+            var rnd = new GroupModel(SelectedPickupRound)
             {
                 People = PeopleInCurrentPickupRound.ToPersonDisplayModel()
             };
-            _service.Update(rnd);
+            _service.UpdatePickupRound(rnd);
             Refresh();
         }
 
         private void UpdateTeams()
         {
-            var rnd = new TeamModel(SelectedTeam)
+            var rnd = new GroupModel(SelectedTeam)
             {
                 People = PeopleInCurrentTeam.ToPersonDisplayModel()
             };
-            _service.Update(rnd);
+            _service.UpdateTeam(rnd);
             Refresh();
         }
 
@@ -225,6 +225,28 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
             UpdateTeams();
         }
 
+        public PersonFullDisplayModel FindById(object selectedItem)
+        {
+            if (selectedItem is PersonFullDisplayModel person)
+            {
+                var res = (from p in People
+                           where p.Id == person.Id
+                           select p).Single();
+                return res;
+            }
+            else { return null; }
+        }
+
+        public IEnumerable<PersonFullDisplayModel> FindByName(string criterion)
+        {
+            criterion = criterion.ToLower();
+            var res = (from p in People
+                       where p.FirstName.ToLower().Contains(criterion)
+                          || p.LastName.ToLower().Contains(criterion)
+                       select p).ToList();
+            return res;
+        }
+
         public void Refresh(string propertyName)
         {
             if (propertyName == nameof(SelectedTeam)) { RefreshPeopleInTeams(); }
@@ -234,10 +256,10 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
         public void Refresh()
         {
             var teams = _service.GetTeams();
-            Teams = new ObservableCollection<TeamDisplayModel>(teams);
+            Teams = new ObservableCollection<GroupDisplayModel>(teams);
 
             var pickups = _service.GetPickupRounds();
-            PickupRounds = new ObservableCollection<PickupRoundDisplayModel>(pickups);
+            PickupRounds = new ObservableCollection<GroupDisplayModel>(pickups);
 
             var people = _service.GetPeople();
             People = new ObservableCollection<PersonFullDisplayModel>(people);

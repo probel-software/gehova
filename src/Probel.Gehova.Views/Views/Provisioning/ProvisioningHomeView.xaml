@@ -14,6 +14,7 @@
     mc:Ignorable="d">
     <Page.Resources>
         <conv:DateToLongDateStringConverter x:Name="DateToLongDateStringConverter" />
+        <conv:NullToVisibilityConverter x:Name="NullToVisibilityConverter" />
         <Style TargetType="ComboBox">
             <Setter Property="Margin" Value="5" />
         </Style>
@@ -91,25 +92,65 @@
                             <ColumnDefinition Width="350" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <ListView
-                            x:Name="LvPeople"
-                            ItemTemplate="{StaticResource PersonTemplate}"
-                            ItemsSource="{x:Bind ViewModel.People}"
-                            SelectedItem="{x:Bind ViewModel.SelectedPerson, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                            <!--  https://stackoverflow.com/questions/31929071/trigger-element-xaml-is-not-supported-in-a-uwp-project  -->
-                            <i:Interaction.Behaviors>
-                                <core:EventTriggerBehavior EventName="SelectionChanged">
-                                    <core:InvokeCommandAction Command="{x:Bind ViewModel.RefreshAbsencesCommand}" />
-                                </core:EventTriggerBehavior>
-                            </i:Interaction.Behaviors>
-                        </ListView>
-                        <ListView
-                            x:Name="LvAbsences"
-                            Grid.Column="1"
-                            ItemContainerStyle="{StaticResource HorizontalSwipe}"
-                            ItemTemplate="{StaticResource AbsenceTemplate}"
-                            ItemsSource="{x:Bind ViewModel.CurrentPersonAbsences, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                            SelectedItem="{x:Bind ViewModel.CurrentAbsence, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <AutoSuggestBox
+                                x:Name="TbSearchBoxPerson"
+                                x:Uid="TbSearchBoxPerson"
+                                Margin="0,5,0,5"
+                                QueryIcon="Find"
+                                SuggestionChosen="OnSuggestionChosen"
+                                TextChanged="OnTextChanged">
+                                <AutoSuggestBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontSize="14" FontWeight="Bold">
+                                            <Run Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <Run Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </AutoSuggestBox.ItemTemplate>
+                            </AutoSuggestBox>
+                            <ListView
+                                x:Name="LvPeople"
+                                Grid.Row="1"
+                                ItemTemplate="{StaticResource PersonTemplate}"
+                                ItemsSource="{x:Bind ViewModel.People}"
+                                SelectedItem="{x:Bind ViewModel.SelectedPerson, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                <!--  https://stackoverflow.com/questions/31929071/trigger-element-xaml-is-not-supported-in-a-uwp-project  -->
+                                <i:Interaction.Behaviors>
+                                    <core:EventTriggerBehavior EventName="SelectionChanged">
+                                        <core:InvokeCommandAction Command="{x:Bind ViewModel.RefreshAbsencesCommand}" />
+                                    </core:EventTriggerBehavior>
+                                </i:Interaction.Behaviors>
+                            </ListView>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                Margin="15,0,10,0"
+                                FontSize="24"
+                                Visibility="{x:Bind ViewModel.SelectedPerson, Converter={StaticResource NullToVisibilityConverter}}">
+                                <Run x:Uid="TbAbsence" />
+                                <Run Text=":" />
+                                <Run Text="{Binding ElementName=LvPeople, Path=SelectedItem.FirstName}" />
+                                <Run Text="{Binding ElementName=LvPeople, Path=SelectedItem.LastName}" />
+                            </TextBlock>
+                            <ScrollViewer Grid.Row="1">
+                                <ListView
+                                    x:Name="LvAbsences"
+                                    Grid.Row="1"
+                                    ItemContainerStyle="{StaticResource HorizontalSwipe}"
+                                    ItemTemplate="{StaticResource AbsenceTemplate}"
+                                    ItemsSource="{x:Bind ViewModel.CurrentPersonAbsences, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                    SelectedItem="{x:Bind ViewModel.CurrentAbsence, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            </ScrollViewer>
+                        </Grid>
                     </Grid>
                 </Grid>
             </PivotItem>
@@ -200,13 +241,5 @@
                 </Grid>
             </PivotItem>
         </Pivot>
-        <c:InAppNotification
-            x:Name="InAppNotification"
-            AnimationDuration="00:00:00.1000000"
-            Content="{Binding Message}"
-            HorizontalOffset="0"
-            ShowDismissButton="True"
-            StackMode="Replace"
-            VerticalOffset="100" />
     </Grid>
 </Page>

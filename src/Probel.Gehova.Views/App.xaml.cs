@@ -3,6 +3,7 @@ using Probel.Gehova.Views.Infrastructure;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -29,7 +30,14 @@ namespace Probel.Gehova.Views
             Suspending += OnSuspending;
         }
 
-        private void OnUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e) => HockeyClient.Current.TrackException(e.Exception);
+        private void OnUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+#if DEBUG
+            var d = new MessageDialog(e.Exception.ToString());
+#else
+            HockeyClient.Current.TrackException(e.Exception);
+#endif
+        }
 
         private void InitializeTelemetry()
         {

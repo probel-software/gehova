@@ -7,11 +7,9 @@ namespace Probel.Gehova.Business.Models
         #region Properties
 
         public IEnumerable<CategoryModel> Categories { get; set; }
-        public bool IsLunchTime { get; set; }
-        public bool IsReceptionEvening { get; set; }
-        public bool IsReceptionMorning { get; set; }
-        public PickupRoundDisplayModel PickupRound { get; set; }
-        public TeamDisplayModel Team { get; set; }
+        public IEnumerable<ReceptionModel> Receptions { get; set; }
+        public GroupDisplayModel PickupRound { get; set; }
+        public GroupDisplayModel Team { get; set; }
 
         #endregion Properties
     }

@@ -2,27 +2,66 @@
     x:Class="Probel.Gehova.Views.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Probel.Gehova.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
-    <NavigationView
-        x:Name="rootNavigation"
-        IsBackButtonVisible="Collapsed"
-        IsPaneOpen="False"
-        SelectionChanged="OnRootNavigation">
-        <NavigationView.MenuItems>
-            <NavigationViewItem
-                x:Name="UserView"
-                x:Uid="Menu_Visualisation"
-                Icon="Calendar" />
-            <NavigationViewItem
-                x:Name="ProvisioningView"
-                x:Uid="Menu_Provisioning"
-                Icon="People" />
-        </NavigationView.MenuItems>
-        <Frame x:Name="contentFrame" />
-    </NavigationView>
+    <Grid>
+        <NavigationView
+            x:Name="rootNavigation"
+            IsBackButtonVisible="Collapsed"
+            IsPaneOpen="False"
+            IsSettingsVisible="False"
+            SelectionChanged="OnRootNavigation">
+            <NavigationView.MenuItems>
+                <NavigationViewItemHeader x:Uid="Menu_Header_Calendar" />
+                <NavigationViewItem
+                    x:Name="PlannerView"
+                    x:Uid="Menu_Visualisation"
+                    Icon="Calendar" />
+                <NavigationViewItem
+                    x:Name="PickupRoundView"
+                    x:Uid="Menu_Pickup_Round"
+                    Icon="  Map" />
+                <NavigationViewItem x:Name="TeamsView" x:Uid="Menu_Teams">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE902;" />
+                    </NavigationViewItem.Icon>
+
+                </NavigationViewItem>
+                <NavigationViewItemHeader x:Uid="Menu_Header_Data" />
+                <NavigationViewItem
+                    x:Name="ProvisioningView"
+                    x:Uid="Menu_Provisioning"
+                    Icon="ContactInfo" />
+                <NavigationViewItem
+                    x:Name="DataSettingView"
+                    x:Uid="Menu_DataSetting"
+                    Icon="Manage" />
+            </NavigationView.MenuItems>
+            <Frame x:Name="contentFrame" />
+        </NavigationView>
+        <c:InAppNotification
+            x:Name="InAppNotification"
+            AnimationDuration="00:00:00.1000000"
+            HorizontalOffset="0"
+            ShowDismissButton="True"
+            StackMode="Replace"
+            VerticalOffset="100">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <FontIcon
+                    Margin="0,0,15,0"
+                    FontFamily="{StaticResource SymbolThemeFontFamily}"
+                    Glyph="{Binding Glyph}" />
+                <TextBlock Grid.Column="1" Text="{Binding Message}" />
+            </Grid>
+        </c:InAppNotification>
+    </Grid>
 </Page>

@@ -10,12 +10,13 @@ namespace Probel.Gehova.Views.Converters
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return value == null
+            var result = value == null
                 ? Visibility.Visible
                 : Visibility.Collapsed;
+            return result;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language) => throw new NotImplementedException();
+        public object ConvertBack(object value, Type targetType, object parameter, string language) => null;
 
         #endregion Methods
     }

@@ -27,13 +27,13 @@ namespace Probel.Gehova.Business
             c.AddMapper<CategoryModel>(e => e.AsCategoryModel());
             c.AddMapper<PersonDisplayModel>(e => e.AsPersonDisplayModel());
             c.AddMapper<PersonFullDisplayModel>(e => e.AsPersonFullDisplayModel());
-            c.AddMapper<PickupRoundDisplayModel>(e => e.AsPickupRoundDisplayModel());
-            c.AddMapper<TeamDisplayModel>(e => e.AsTeamDisplayModel());
             c.AddMapper<SettingModel>(e => e.AsSettingModel());
+            c.AddMapper<ReceptionModel>(e => e.AsReceptionModel());
             c.AddMapper<string>(e => e.AsString());
+            c.AddMapper<RawPresenceWeekModel>(e => e.AsPresenceWeekRaw());
         }
 
-        public DbAgent(IDbLocator dbLocator)
+        public DbAgent(IFileLocator dbLocator)
         {
             DbLocator = dbLocator;
         }
@@ -42,13 +42,13 @@ namespace Probel.Gehova.Business
 
         #region Properties
 
-        protected IDbLocator DbLocator { get; private set; }
+        protected IFileLocator DbLocator { get; private set; }
         protected ILogger Log { get; } = LogManager.GetLogger("Service");
 
         #endregion Properties
 
         #region Methods
-
+        //TODO: this code should be moved into a database manager
         private void CreateDatabase()
         {
             var assetManager = new AssetManager(this);
@@ -57,8 +57,7 @@ namespace Probel.Gehova.Business
                 "Probel.Gehova.Business.Assets.database.sql",
                 "Probel.Gehova.Business.Assets.default_data.sql",
                 "Probel.Gehova.Business.Assets.views_person.sql",
-                "Probel.Gehova.Business.Assets.views_absences.sql",
-                "Probel.Gehova.Business.Assets.views_absence_on_date.sql",
+                "Probel.Gehova.Business.Assets.views_presences.sql",
                 "Probel.Gehova.Business.Assets.views_settings.sql"
             };
             using (var c = new SqliteConnection(GetConnectionString()))

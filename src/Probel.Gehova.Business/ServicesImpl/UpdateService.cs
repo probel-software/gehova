@@ -2,12 +2,14 @@
 using Probel.Gehova.Business.Db;
 using Probel.Gehova.Business.Helpers;
 using Probel.Gehova.Business.Models;
+using Probel.Gehova.Business.ServiceActions;
 using Probel.Gehova.Business.Services;
 using Probel.Lorm;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 
 namespace Probel.Gehova.Business.ServicesImpl
 {
@@ -15,21 +17,26 @@ namespace Probel.Gehova.Business.ServicesImpl
     {
         #region Fields
 
-        private readonly List<string> Scripts;
+        private readonly AssetManager AssetManager;
+        private readonly List<string> Updates;
+        private readonly List<string> Views;
 
         #endregion Fields
 
         #region Constructors
 
-        public UpdateService(IDbLocator dbLocator) : base(dbLocator)
+        public UpdateService(IFileLocator dbLocator) : base(dbLocator)
         {
-            Scripts = new List<string>
-            {
-                "Probel.Gehova.Business.Assets.views_person.sql",
-                "Probel.Gehova.Business.Assets.views_absences.sql",
-                "Probel.Gehova.Business.Assets.views_absence_on_date.sql",
-                "Probel.Gehova.Business.Assets.views_settings.sql"
-            };
+            var asm = Assembly.GetExecutingAssembly().GetManifestResourceNames().ToList();
+            Views = (from asset in asm
+                     where asset.StartsWith("Probel.Gehova.Business.Assets.views_")
+                     select asset).ToList();
+
+            Updates = (from asset in asm
+                       where asset.StartsWith("Probel.Gehova.Business.Assets.Scripts")
+                       orderby asset
+                       select asset).ToList();
+            AssetManager = new AssetManager(this);
         }
 
         #endregion Constructors
@@ -43,6 +50,25 @@ namespace Probel.Gehova.Business.ServicesImpl
             return cs;
         }
 
+        private SettingModel GetVersion(IDbConnection c)
+        {
+            var sql = @"
+                    select id    as Id
+                         , key   as Key
+                         , value as Value
+                    from settings where key = 'db_version'";
+            return c.Query<SettingModel>(sql).FirstOrDefault();
+        }
+
+        private IEnumerable<string> GetViews(IDbConnection c)
+        {
+            var sql = @"
+                select name
+                from sqlite_master
+                where type = 'view'";
+            return c.Query<string>(sql).ToList();
+        }
+
         private void SetVersion(IDbConnection c, Version v)
         {
             var sql = $@"
@@ -53,22 +79,36 @@ namespace Probel.Gehova.Business.ServicesImpl
             c.Execute(sql);
         }
 
+        private void UpdateDbStructure(SqliteConnection c, Version from)
+        {
+            var updater = new DatabaseUpdater(Updates, AssetManager);
+            var scripts = updater.GetSqlScripts(from);
+            foreach (var script in scripts)
+            {
+                c.Execute(script);
+            }
+        }
+
+        private void UpdateViews(SqliteConnection c)
+        {
+            foreach (var script in Views)
+            {
+                var sql = AssetManager.GetScript(script);
+                c.Execute(sql);
+            }
+        }
+
         public bool CheckVersion(Version v)
         {
             using (var c = NewConnection())
             {
-                var sql = @"
-                    select id    as Id
-                         , key   as Key
-                         , value as Value
-                    from settings where key = 'db_version'";
+                string sql;
+                var dbVersion = GetVersion(c);
 
-                var result = c.Query<SettingModel>(sql).FirstOrDefault();
-
-                if (result != null)
+                if (dbVersion != null)
                 {
                     var version = new Version(v.Major, v.Minor, v.Build);
-                    if (Version.TryParse(result.Value, out var cu))
+                    if (Version.TryParse(dbVersion.Value, out var cu))
                     {
                         var r = (version == new Version(cu.Major, cu.Minor, cu.Build));
                         return r;
@@ -86,21 +126,17 @@ namespace Probel.Gehova.Business.ServicesImpl
 
         public void UpdateToVersion(Version version)
         {
-            var assetManager = new AssetManager(this);
             using (var c = new SqliteConnection(GetConnectionString()))
             {
                 c.Open();
                 using (var t = c.BeginTransaction())
                 {
-                    foreach (var script in Scripts)
-                    {
-                        var sql = assetManager.GetScript(script);
-                        c.Execute(sql);
-                    }
+                    UpdateDbStructure(c, GetVersion(c).Value.AsVersion());
+                    UpdateViews(c);
                     SetVersion(c, version);
                     t.Commit();
                 }
-            };
+            }
         }
 
         #endregion Methods

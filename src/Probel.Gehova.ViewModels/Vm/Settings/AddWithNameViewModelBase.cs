@@ -27,8 +27,8 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
 
         protected override void Add()
         {
-            var t = new PickupRoundModel { Name = Name };
-            Service.Create(t);
+            var t = new GroupModel { Name = Name };
+            Service.CreatePickupRound(t);
         }
 
         #endregion Methods
@@ -54,8 +54,8 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
 
         protected override void Add()
         {
-            var pur = new TeamModel { Name = Name };
-            Service.Create(pur);
+            var t = new GroupModel { Name = Name };
+            Service.CreateTeam(t);
         }
 
         #endregion Methods

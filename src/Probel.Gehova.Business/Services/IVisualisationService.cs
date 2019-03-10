@@ -8,21 +8,11 @@ namespace Probel.Gehova.Business.Services
     {
         #region Methods
 
-        IEnumerable<WeekDay> GetGroups();
+        IEnumerable<DayPickupRoundModel> GetPickupRounds();
 
-        IEnumerable<WeekDay> GetLunchtime(DateTime date);
+        IEnumerable<ReceptionGroupModel> GetReceptionGroups();
 
-        IEnumerable<WeekDay> GetLunchtime();
-
-        IEnumerable<WeekDay> GetPickupRounds();
-
-        IEnumerable<WeekDay> GetReceptionEvening(DateTime date);
-
-        IEnumerable<WeekDay> GetReceptionEvening();
-
-        IEnumerable<WeekDay> GetReceptionMorning(DateTime date);
-
-        IEnumerable<WeekDay> GetReceptionMorning();
+        IEnumerable<DayModel> GetAllTeams();
 
         DateTime GetSelectedWeekAsFriday();
 

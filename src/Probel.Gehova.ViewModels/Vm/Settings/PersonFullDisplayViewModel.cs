@@ -12,20 +12,20 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
 
         public static PersonFullDisplayModel ToModel(this PersonFullDisplayViewModel src)
         {
-            var r = new PersonFullDisplayModel
+            var result = new PersonFullDisplayModel
             {
                 Id = src.Id,
                 FirstName = src.FirstName,
                 LastName = src.LastName,
                 Category = src.CategoryDisplay,
-                IsReceptionMorning = src.IsReceptionMorning,
-                IsLunchTime = src.IsLunchTime,
-                IsReceptionEvening = src.IsReceptionEvening,
                 CategoryIds = (from c in src.Categories
                                where c.IsSelected
-                               select c.Id).ToList()
+                               select c.Id).ToList(),
+                ReceptionIds = (from r in src.Receptions
+                                where r.IsSelected
+                                select r.Id).ToList()
             };
-            return r;
+            return result;
         }
 
         public static IEnumerable<PersonFullDisplayModel> ToModel(this IEnumerable<PersonFullDisplayViewModel> srcCollection)
@@ -46,9 +46,6 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
                 Id = src.Id,
                 FirstName = src.FirstName,
                 LastName = src.LastName,
-                IsReceptionMorning = src.IsReceptionMorning,
-                IsLunchTime = src.IsLunchTime,
-                IsReceptionEvening = src.IsReceptionEvening,
                 CategoryDisplay = src.Category,
             };
             if (categories != null)
@@ -80,10 +77,9 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
         private string _categoryDisplay;
         private string _firstName;
         private long _id;
-        private bool _isLunchTime;
-        private bool _isReceptionEvening;
-        private bool _isReceptionMorning;
         private string _lastName;
+
+        private ObservableCollection<ReceptionViewModel> _receptions;
 
         #endregion Fields
 
@@ -113,30 +109,18 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             set => Set(ref _id, value, nameof(Id));
         }
 
-        public bool IsLunchTime
-        {
-            get => _isLunchTime;
-            set => Set(ref _isLunchTime, value, nameof(_isLunchTime));
-        }
-
-        public bool IsReceptionEvening
-        {
-            get => _isReceptionEvening;
-            set => Set(ref _isReceptionEvening, value, nameof(_isReceptionEvening));
-        }
-
-        public bool IsReceptionMorning
-        {
-            get => _isReceptionMorning;
-            set => Set(ref _isReceptionMorning, value, nameof(IsReceptionMorning));
-        }
-
         public string LastName
         {
             get => _lastName;
             set => Set(ref _lastName, value, nameof(LastName));
         }
 
+        public ObservableCollection<ReceptionViewModel> Receptions
+        {
+            get => _receptions;
+            set => Set(ref _receptions, value, nameof(Receptions));
+        }
+        public override string ToString() => $"{FirstName} {LastName}";
         #endregion Properties
     }
 }

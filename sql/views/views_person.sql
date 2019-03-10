@@ -1,15 +1,12 @@
 drop view if exists everyone_v;
 create view everyone_v as
-    select p.id
+    select p.id         as person_id
          , p.first_name as first_name
          , p.last_name  as last_name
          , t.name       as team
          , t.id         as team_id
          , pu.name      as pickup_round
          , pu.id        as pickup_round_id
-         , p.is_lunchtime
-         , p.is_reception_morning
-         , p.is_reception_evening
          , (
          	select group_concat(c."display", ', ')
          	from person_category pc
@@ -26,5 +23,3 @@ create view everyone_v as
     left join team t on t.id = p.team_id
     left join pickup_round pu on pu.id = p.pickup_round_id
     order by category_key, p.last_name;
-/********************************************************************/
-

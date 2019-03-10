@@ -4,7 +4,7 @@ using Windows.Storage;
 
 namespace Probel.Gehova.Views.Helpers
 {
-    public class UwpDbLocator : BaseDbLocator
+    public class UwpDbLocator : BaseFileLocator
     {
         #region Fields
 

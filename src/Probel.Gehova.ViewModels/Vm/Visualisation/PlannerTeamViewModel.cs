@@ -1,0 +1,69 @@
+﻿using Probel.Gehova.Business.Models;
+using Probel.Gehova.Business.Services;
+using Probel.Gehova.ViewModels.Infrastructure;
+using System.Collections.ObjectModel;
+using Windows.ApplicationModel.Resources;
+
+namespace Probel.Gehova.ViewModels.Vm.Visualisation
+{
+    public class PlannerTeamViewModel : AsyncViewModel
+    {
+        #region Fields
+
+        private readonly IUserMessenger _messenger;
+        private readonly IVisualisationService _service;
+
+        private readonly ResourceLoader Resources = new ResourceLoader("Messages");
+
+        private ObservableCollection<DayModel> _days;
+
+        private string _displayedWeekAsText;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public PlannerTeamViewModel(IVisualisationService service, IUserMessenger messenger)
+        {
+            _messenger = messenger;
+            _service = service;
+        }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public ObservableCollection<DayModel> Days
+        {
+            get => _days;
+            set => Set(ref _days, value, nameof(Days));
+        }
+
+        public string DisplayedWeekAsText
+        {
+            get => _displayedWeekAsText;
+            set => Set(ref _displayedWeekAsText, value, nameof(DisplayedWeekAsText));
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        public void Refresh()
+        {
+            Days = null;
+            ExecuteAsync(() =>
+            {
+                return new
+                {
+                    Monday = _service.GetSelectedWeekAsMonday().ToLongDateString(),
+                    Friday = _service.GetSelectedWeekAsFriday().ToLongDateString()
+                };
+            }, r => DisplayedWeekAsText = string.Format(Resources.GetString("Title_SelectedWeek"), r.Monday, r.Friday));
+
+            ExecuteAsync(() => _service.GetAllTeams(), r => Days = new ObservableCollection<DayModel>(r));
+        }
+
+        #endregion Methods
+    }
+}

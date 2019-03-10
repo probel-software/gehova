@@ -9,15 +9,15 @@ namespace Probel.Gehova.Business.Services
 
         void Create(AbsenceDisplayModel absence);
 
-        void Create(TeamDisplayModel team);
-
         void Create(CategoryModel category);
-
-        void Create(PickupRoundDisplayModel pickup);
 
         void Create(PersonModel person);
 
         void Create(PersonFullDisplayModel personFullDisplayModel);
+
+        void CreatePickupRound(GroupDisplayModel pickup);
+
+        void CreateTeam(GroupDisplayModel team);
 
         IEnumerable<AbsenceDisplayModel> GetAbsencesOf(PersonFullDisplayModel person);
 
@@ -29,35 +29,39 @@ namespace Probel.Gehova.Business.Services
 
         PersonDisplayModel GetPerson(long id);
 
-        PickupRoundDisplayModel GetPickupRound(long id);
+        GroupDisplayModel GetPickupRound(long id);
 
-        IEnumerable<PickupRoundDisplayModel> GetPickupRounds();
+        IEnumerable<GroupDisplayModel> GetPickupRounds();
 
-        TeamDisplayModel GetTeam(long id);
+        IEnumerable<ReceptionModel> GetReceptions();
 
-        IEnumerable<TeamDisplayModel> GetTeams();
+        IEnumerable<long> GetReceptionsOf(long id);
+
+        GroupDisplayModel GetTeam(long id);
+
+        IEnumerable<GroupDisplayModel> GetTeams();
 
         void Remove(AbsenceDisplayModel absence);
 
-        void Remove(TeamDisplayModel team);
+        void Remove(GroupDisplayModel team);
 
         void Remove(CategoryModel category);
 
-        void Remove(PickupRoundDisplayModel pickup);
+        void Remove(PersonDisplayModel person);
 
-        void Remove(PersonDisplayModel person);        
-
-        void Update(TeamDisplayModel team);
+        void RemovePickup(GroupDisplayModel pickup);
 
         void Update(CategoryModel category);
 
-        void Update(PickupRoundModel pickup);
-
-        void Update(PickupRoundDisplayModel pickup);
-
         void Update(PersonFullDisplayModel person);
 
-        void Update(TeamModel team);
+        void UpdatePickup(GroupDisplayModel pickup);
+
+        void UpdatePickupRound(GroupModel pickup);
+
+        void UpdateTeam(GroupDisplayModel team);
+
+        void UpdateTeam(GroupModel team);
 
         #endregion Methods
     }

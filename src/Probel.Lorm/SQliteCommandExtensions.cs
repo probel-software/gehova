@@ -111,7 +111,11 @@ namespace Probel.Lorm
             using (var cmd = PrepareQuery(connection, sql, (object)parameters))
             {
                 try { cmd.ExecuteNonQuery(); }
-                catch (Exception ex) { HockeyClient.Current.TrackException(ex); }
+                catch (Exception ex)
+                {
+                    HockeyClient.Current.TrackException(ex);
+                    throw;
+                }
             }
         }
 
@@ -128,7 +132,7 @@ namespace Probel.Lorm
                 catch (Exception ex)
                 {
                     HockeyClient.Current.TrackException(ex);
-                    return new List<TResult>();
+                    throw;
                 }
             }
         }

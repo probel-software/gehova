@@ -1,4 +1,6 @@
-﻿using Probel.Gehova.ViewModels.Vm.Provisioning;
+﻿using Probel.Gehova.ViewModels.Infrastructure;
+using Probel.Gehova.ViewModels.Vm.Provisioning;
+using Probel.Gehova.Views.Helpers;
 using Probel.Gehova.Views.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,7 @@ namespace Probel.Gehova.Views.Views.Provisioning
     {
         #region Fields
 
+        private readonly IUserMessenger _messenger = new InAppMessenger();
         private readonly ResourceLoader _resources = new ResourceLoader("Messages");
 
         #endregion Fields
@@ -29,7 +32,6 @@ namespace Probel.Gehova.Views.Views.Provisioning
         {
             InitializeComponent();
             DataContext = IocFactory.ViewModel.ProvisioningHomeViewModel;
-            ViewModel.Messenger = new InAppMessenger(InAppNotification);
         }
 
         #endregion Constructors
@@ -50,8 +52,8 @@ namespace Probel.Gehova.Views.Views.Provisioning
 
             if (result == ContentDialogResult.Primary)
             {
-                if (dialog.ViewModel.HasBeenAdded) { InAppNotification.Show(_resources.GetString("Info_AbsenceAdded"), InAppMessenger.DEFAULT_DURATION); }
-                else { InAppNotification.Show(_resources.GetString("Info_AbsenceNOTAdded"), InAppMessenger.DEFAULT_DURATION); }
+                if (dialog.ViewModel.HasBeenAdded) { _messenger.Say(_resources.GetString("Info_AbsenceAdded")); }
+                else { _messenger.Say(_resources.GetString("Info_AbsenceNOTAdded")); }
                 ViewModel.Refresh();
             }
         }
@@ -91,6 +93,25 @@ namespace Probel.Gehova.Views.Views.Provisioning
 
                 e.AcceptedOperation = DataPackageOperation.Move;
                 def.Complete();
+            }
+        }
+
+        private void OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            TbSearchBoxPerson.Text = args.SelectedItem?.ToString();
+
+            var res = ViewModel.FindById(args.SelectedItem);
+            LvPeople.SelectedItem = res;
+            ViewModel.SelectedPerson = res;
+            ViewModel.RefreshAbsencesCommand.TryExecute();
+        }
+
+        private void OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                var result = ViewModel.FindByName(TbSearchBoxPerson.Text);
+                sender.ItemsSource = result;
             }
         }
 
