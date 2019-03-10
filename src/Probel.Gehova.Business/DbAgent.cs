@@ -11,6 +11,12 @@ namespace Probel.Gehova.Business
 {
     public abstract class DbAgent
     {
+        #region Fields
+
+        private bool _hasTable = false;
+
+        #endregion Fields
+
         #region Constructors
 
         static DbAgent()
@@ -76,6 +82,24 @@ namespace Probel.Gehova.Business
             return cs;
         }
 
+        private bool HasTable()
+        {
+            if (_hasTable == true) { return true; }
+            else
+            {
+                using (var c = new SqliteConnection(GetConnectionString()))
+                {
+                    var sql = @"
+                        select count(name) as tablecount
+                        from sqlite_master
+                        where type='table';";
+                    var result = c.Scalar<long>(sql);
+                    _hasTable = result > 0;
+                    return _hasTable;
+                }
+            }
+        }
+
         protected static long GetLastId(IDbConnection c)
         {
             var sql = "select last_insert_rowid()";
@@ -124,7 +148,7 @@ namespace Probel.Gehova.Business
             var cs = GetConnectionString();
             Log.Trace($"Creating new connection at '{cs}'");
 
-            if (!DbLocator.CheckDbExist())
+            if (!DbLocator.CheckDbExist() || !HasTable())
             {
                 Log.Info($"Database does not exists. Creation using this connection string '{cs}'");
                 CreateDatabase();
