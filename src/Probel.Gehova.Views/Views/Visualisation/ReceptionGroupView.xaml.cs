@@ -24,7 +24,7 @@ namespace Probel.Gehova.Views.Views.Visualisation
 
         public ReceptionGroupView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         #endregion Constructors

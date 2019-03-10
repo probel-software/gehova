@@ -19,7 +19,7 @@ namespace Probel.Gehova.Views
     {
         #region Fields
 
-        private static MainPage _current;
+        private static MainPage s_current;
         private readonly InAppMessenger _messenger;
 
         #endregion Fields
@@ -31,7 +31,7 @@ namespace Probel.Gehova.Views
             InitializeComponent();
             DataContext = IocFactory.ViewModel.MainViewModel;
 
-            _current = this;
+            s_current = this;
             _messenger = new InAppMessenger();
         }
 
@@ -41,7 +41,7 @@ namespace Probel.Gehova.Views
 
         private MainViewModel ViewModel => DataContext as MainViewModel;
 
-        internal static InAppNotification Messenger => _current.InAppNotification;
+        internal static InAppNotification Messenger => s_current.InAppNotification;
 
         #endregion Properties
 
