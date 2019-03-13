@@ -217,7 +217,7 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             if (pickupRound == null || string.IsNullOrEmpty(pickupRound.Name)) { return; }
             else if (pickupRound.Id > 0)
             {
-                _service.UpdateTeam(pickupRound);
+                _service.UpdatePickupRound(pickupRound);
                 _messenger?.Say(string.Format(_resources.GetString("Info_PickupRoundUpdated"), pickupRound.Name));
             }
             else
@@ -237,7 +237,7 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             }
             else
             {
-                _service.CreatePickupRound(team);
+                _service.CreateTeam(team);
                 _messenger?.Say(string.Format(_resources.GetString("Info_TeamCreated"), team.Name));
             }
         }
