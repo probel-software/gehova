@@ -11,8 +11,8 @@
     PrimaryButtonCommand="{x:Bind ViewModel.AddCommand}"
     mc:Ignorable="d">
     <StackPanel>
-        <TextBox x:Uid="TbFirstName" Text="{x:Bind ViewModel.FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <TextBox x:Uid="TbLastName" Text="{x:Bind ViewModel.LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <TextBox x:Uid="TbFirstName" Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <TextBox x:Uid="TbLastName" Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -31,7 +31,11 @@
                 <ItemsControl ItemsSource="{Binding Categories}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            <CheckBox
+                                Checked="OnChecked"
+                                Content="{Binding Name}"
+                                IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                Unchecked="OnUnchecked" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -49,7 +53,11 @@
                 <ItemsControl ItemsSource="{x:Bind ViewModel.Receptions}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            <CheckBox
+                                Checked="OnChecked"
+                                Content="{Binding Name}"
+                                IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                Unchecked="OnUnchecked" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

@@ -1,11 +1,11 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using Probel.Gehova.Business.Models;
-using Probel.Gehova.Business.Services;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using Probel.Gehova.Business.Models;
+using Probel.Gehova.Business.Services;
 
 namespace Probel.Gehova.ViewModels.Vm.Settings
 {
@@ -91,17 +91,12 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             });
         }
 
-        private IEnumerable<ReceptionModel> GetReceptions()
-        {
-            var result = (from r in Receptions
-                          where r.IsSelected
-                          select r).ToModel();
-            return result;
-        }
-
         private bool CanAddPerson()
         {
-            var canadd = !string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName);
+            var canadd = !string.IsNullOrEmpty(FirstName)
+                      && !string.IsNullOrEmpty(LastName)
+                      && HasSelectedCategories()
+                      && HasReceptions();
             IsAbleToAdd = canadd;
             return canadd;
         }
@@ -113,6 +108,33 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
                           select c).ToModel();
             return result;
         }
+
+        private IEnumerable<ReceptionModel> GetReceptions()
+        {
+            var result = (from r in Receptions
+                          where r.IsSelected
+                          select r).ToModel();
+            return result;
+        }
+
+        private bool HasReceptions()
+        {
+            var coun = (from r in Receptions
+                        where r.IsSelected
+                        select r).Count();
+            return coun > 0;
+        }
+
+        private bool HasSelectedCategories()
+        {
+            var count = (from c
+                         in Categories
+                         where c.IsSelected
+                         select c).Count();
+            return count > 0;
+        }
+
+        public void CheckAdd() => CanAddPerson(); //Hack: this line do not work _addCommand.RaiseCanExecuteChanged();
 
         #endregion Methods
     }

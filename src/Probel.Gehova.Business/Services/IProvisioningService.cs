@@ -55,7 +55,7 @@ namespace Probel.Gehova.Business.Services
 
         void Update(PersonFullDisplayModel person);
 
-        void UpdatePickup(GroupDisplayModel pickup);
+        void UpdatePickupRound(GroupDisplayModel pickup);
 
         void UpdatePickupRound(GroupModel pickup);
 

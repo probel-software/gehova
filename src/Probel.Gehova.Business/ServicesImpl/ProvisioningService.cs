@@ -561,7 +561,7 @@ namespace Probel.Gehova.Business.ServicesImpl
                 .Execute();
         }
 
-        public void UpdatePickup(GroupDisplayModel pickup)
+        public void UpdatePickupRound(GroupDisplayModel pickup)
         {
             using (var c = NewConnection())
             {

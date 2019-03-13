@@ -17,9 +17,9 @@ namespace Probel.Gehova.Business.ServicesImpl
     {
         #region Fields
 
-        private readonly AssetManager AssetManager;
-        private readonly List<string> Updates;
-        private readonly List<string> Views;
+        private readonly AssetManager _assetManager;
+        private readonly List<string> _updates;
+        private readonly List<string> _views;
 
         #endregion Fields
 
@@ -28,15 +28,15 @@ namespace Probel.Gehova.Business.ServicesImpl
         public UpdateService(IFileLocator dbLocator) : base(dbLocator)
         {
             var asm = Assembly.GetExecutingAssembly().GetManifestResourceNames().ToList();
-            Views = (from asset in asm
+            _views = (from asset in asm
                      where asset.StartsWith("Probel.Gehova.Business.Assets.views_")
                      select asset).ToList();
 
-            Updates = (from asset in asm
+            _updates = (from asset in asm
                        where asset.StartsWith("Probel.Gehova.Business.Assets.Scripts")
                        orderby asset
                        select asset).ToList();
-            AssetManager = new AssetManager(this);
+            _assetManager = new AssetManager(this);
         }
 
         #endregion Constructors
@@ -81,7 +81,7 @@ namespace Probel.Gehova.Business.ServicesImpl
 
         private void UpdateDbStructure(SqliteConnection c, Version from)
         {
-            var updater = new DatabaseUpdater(Updates, AssetManager);
+            var updater = new DatabaseUpdater(_updates, _assetManager);
             var scripts = updater.GetSqlScripts(from);
             foreach (var script in scripts)
             {
@@ -91,9 +91,9 @@ namespace Probel.Gehova.Business.ServicesImpl
 
         private void UpdateViews(SqliteConnection c)
         {
-            foreach (var script in Views)
+            foreach (var script in _views)
             {
-                var sql = AssetManager.GetScript(script);
+                var sql = _assetManager.GetScript(script);
                 c.Execute(sql);
             }
         }

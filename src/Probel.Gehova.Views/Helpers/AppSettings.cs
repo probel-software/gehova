@@ -7,11 +7,11 @@ namespace Probel.Gehova.Views.Helpers
     {
         #region Fields
 
-        private const string s_ContentHeight = "ContentHeight";
-        private const string s_ContentIconVisibility = "contentIconVisibility";
-        private const string s_contentTextSize = "contentTextSize";
+        private const string HeaderContentHeight = "ContentHeight";
+        private const string HeaderContentIconVisibility = "contentIconVisibility";
+        private const string HeaderContentTextSize = "contentTextSize";
 
-        private readonly ApplicationDataContainer ls = ApplicationData.Current.LocalSettings;
+        private readonly ApplicationDataContainer _ls = ApplicationData.Current.LocalSettings;
 
         #endregion Fields
 
@@ -21,30 +21,30 @@ namespace Probel.Gehova.Views.Helpers
         {
             get
             {
-                var contentHeight = ls.Values[s_ContentHeight];
+                var contentHeight = _ls.Values[HeaderContentHeight];
                 return (contentHeight == null) ? 20 : (double)contentHeight;
             }
-            set => ls.Values[s_ContentHeight] = value;
+            set => _ls.Values[HeaderContentHeight] = value;
         }
 
         public bool ContentIconVisibility
         {
             get
             {
-                var contentIconVisibility = ls.Values[s_ContentIconVisibility];
+                var contentIconVisibility = _ls.Values[HeaderContentIconVisibility];
                 return (contentIconVisibility == null) ? true : (bool)contentIconVisibility;
             }
-            set => ls.Values[s_contentTextSize] = value;
+            set => _ls.Values[HeaderContentTextSize] = value;
         }
 
         public double ContentTextSize
         {
             get
             {
-                var contentTextSize = ls.Values[s_contentTextSize];
+                var contentTextSize = _ls.Values[HeaderContentTextSize];
                 return (contentTextSize == null) ? 12 : (double)contentTextSize;
             }
-            set => ls.Values[s_ContentIconVisibility] = value;
+            set => _ls.Values[HeaderContentIconVisibility] = value;
         }
 
         #endregion Properties

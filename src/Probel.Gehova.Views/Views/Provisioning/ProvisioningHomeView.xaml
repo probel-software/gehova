@@ -117,8 +117,8 @@
                                 x:Name="LvPeople"
                                 Grid.Row="1"
                                 ItemTemplate="{StaticResource PersonTemplate}"
-                                ItemsSource="{x:Bind ViewModel.People}"
-                                SelectedItem="{x:Bind ViewModel.SelectedPerson, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                ItemsSource="{Binding People}"
+                                SelectedItem="{Binding ViewModeling, UpdateSourceTrigger=PropertyChanged}">
                                 <!--  https://stackoverflow.com/questions/31929071/trigger-element-xaml-is-not-supported-in-a-uwp-project  -->
                                 <i:Interaction.Behaviors>
                                     <core:EventTriggerBehavior EventName="SelectionChanged">

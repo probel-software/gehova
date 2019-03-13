@@ -21,7 +21,6 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
         private readonly IDataReset _dataReset;
         private readonly ResourceLoader _resources = new ResourceLoader("Messages");
         private readonly IProvisioningService _service;
-        private RelayCommand _addPerson;
         private IUserMessenger _messenger;
         private ObservableCollection<PersonFullDisplayViewModel> _people = new ObservableCollection<PersonFullDisplayViewModel>();
         private ObservableCollection<GroupDisplayModel> _pickupRounds = new ObservableCollection<GroupDisplayModel>();
@@ -53,8 +52,6 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
         #endregion Constructors
 
         #region Properties
-
-        public ICommand AddPersonCommand => _addPerson ?? (_addPerson = new RelayCommand(AddPerson));
 
         public ObservableCollection<CategoryModel> Categories
         {
@@ -133,18 +130,6 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
         #endregion Properties
 
         #region Methods
-
-        [Obsolete]
-        private void AddPerson()
-        {
-            People.Add(new PersonFullDisplayViewModel
-            {
-                FirstName = _resources.GetString("Label_New"),
-                LastName = _resources.GetString("Label_Person"),
-                Categories = new ObservableCollection<CategoryViewModel>(Categories.ToViewModel())
-            });
-            _messenger.Say(_resources.GetString("Info_PleaseUpdateToSave"));
-        }
 
         private bool CanRemovePerson() => SelectedPerson != null && SelectedPerson.Id > 0;
 
@@ -232,7 +217,7 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             if (pickupRound == null || string.IsNullOrEmpty(pickupRound.Name)) { return; }
             else if (pickupRound.Id > 0)
             {
-                _service.UpdateTeam(pickupRound);
+                _service.UpdatePickupRound(pickupRound);
                 _messenger?.Say(string.Format(_resources.GetString("Info_PickupRoundUpdated"), pickupRound.Name));
             }
             else
@@ -252,7 +237,7 @@ namespace Probel.Gehova.ViewModels.Vm.Settings
             }
             else
             {
-                _service.CreatePickupRound(team);
+                _service.CreateTeam(team);
                 _messenger?.Say(string.Format(_resources.GetString("Info_TeamCreated"), team.Name));
             }
         }
