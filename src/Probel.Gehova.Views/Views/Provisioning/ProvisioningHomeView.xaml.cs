@@ -1,12 +1,12 @@
-﻿using Probel.Gehova.ViewModels.Infrastructure;
-using Probel.Gehova.ViewModels.Vm.Provisioning;
-using Probel.Gehova.Views.Helpers;
-using Probel.Gehova.Views.Infrastructure;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Probel.Gehova.ViewModels.Infrastructure;
+using Probel.Gehova.ViewModels.Vm.Provisioning;
+using Probel.Gehova.Views.Helpers;
+using Probel.Gehova.Views.Infrastructure;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
@@ -130,5 +130,15 @@ namespace Probel.Gehova.Views.Views.Provisioning
         }
 
         #endregion Methods
+
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var person = (e.AddedItems.Count > 0) ? e.AddedItems[0] : null;
+
+            if (ViewModel.RefreshAbsencesCommand.CanExecute(person))
+            {
+                ViewModel.RefreshAbsencesCommand.Execute(person);
+            }
+        }
     }
 }
