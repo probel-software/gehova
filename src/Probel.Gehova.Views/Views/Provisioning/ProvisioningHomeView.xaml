@@ -118,13 +118,8 @@
                                 Grid.Row="1"
                                 ItemTemplate="{StaticResource PersonTemplate}"
                                 ItemsSource="{Binding People}"
-                                SelectedItem="{Binding ViewModeling, UpdateSourceTrigger=PropertyChanged}">
-                                <!--  https://stackoverflow.com/questions/31929071/trigger-element-xaml-is-not-supported-in-a-uwp-project  -->
-                                <i:Interaction.Behaviors>
-                                    <core:EventTriggerBehavior EventName="SelectionChanged">
-                                        <core:InvokeCommandAction Command="{x:Bind ViewModel.RefreshAbsencesCommand}" />
-                                    </core:EventTriggerBehavior>
-                                </i:Interaction.Behaviors>
+                                SelectedItem="{Binding SelectedPerson, UpdateSourceTrigger=PropertyChanged}"
+                                SelectionChanged="OnSelectionChanged">
                             </ListView>
                         </Grid>
                         <Grid Grid.Column="1">
