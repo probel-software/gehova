@@ -37,7 +37,6 @@ namespace Probel.Gehova.Views.Infrastructure
         public SettingsHomeViewModel SettingsHomeViewModel => _container.Resolve<SettingsHomeViewModel>();
         public PlannerTeamViewModel TeamPlannerViewModel => _container.Resolve<PlannerTeamViewModel>();
         public ApplicationSettingsViewModel ApplicationSettingsViewModel => _container.Resolve<ApplicationSettingsViewModel>();
-
         #endregion Properties
     }
 }

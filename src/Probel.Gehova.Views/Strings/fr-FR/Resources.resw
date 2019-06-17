@@ -341,6 +341,9 @@
   <data name="TbContentTextSize.Text" xml:space="preserve">
     <value>Taille du texte d'affichage des personnes (dans les calendriers)</value>
   </data>
+  <data name="TbDayFontSize.Text" xml:space="preserve">
+    <value>Taille du texte d'affichage des jours (dans les calendriers)</value>
+  </data>
   <data name="TbFirstName.Header" xml:space="preserve">
     <value>Prénom</value>
   </data>
@@ -380,11 +383,17 @@
   <data name="TbSearchBoxPerson.PlaceholderText" xml:space="preserve">
     <value>Chercher</value>
   </data>
+  <data name="TbTeamMinWidth.Text" xml:space="preserve">
+    <value>Largeur minimum d'affichage des groupes</value>
+  </data>
   <data name="TbUpdateInProgress.Text" xml:space="preserve">
     <value>Mise à jour de la base de données...</value>
   </data>
   <data name="TbVisibility.Text" xml:space="preserve">
     <value>Configuration de la visibilité des éléments</value>
+  </data>
+  <data name="Title_AppSettings.Text" xml:space="preserve">
+    <value>Configuration</value>
   </data>
   <data name="Title_PickupRoundPrint.Text" xml:space="preserve">
     <value>Accueils</value>

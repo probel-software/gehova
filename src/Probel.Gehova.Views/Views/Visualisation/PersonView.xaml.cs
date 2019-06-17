@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml;
+﻿using Probel.Gehova.Views.Infrastructure;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
@@ -25,7 +26,14 @@ namespace Probel.Gehova.Views.Views.Visualisation
 
         #region Constructors
 
-        public PersonView() => InitializeComponent();
+        public PersonView()
+        {
+            InitializeComponent();
+
+            var s = IocFactory.Settings;
+            ContentTextSize = s.ContentTextSize;
+            ContentIconVisibility = new GridLength(s.ContentIconVisibility ? 35 : 0);
+        }
 
         #endregion Constructors
 
@@ -37,9 +45,9 @@ namespace Probel.Gehova.Views.Views.Visualisation
             set => SetValue(ContentTextSizeProperty, value);
         }
 
-        public Visibility ContentIconVisibility
+        public GridLength ContentIconVisibility
         {
-            get => (Visibility)GetValue(ContentIconVisibilityProperty);
+            get => (GridLength)GetValue(ContentIconVisibilityProperty);
             set => SetValue(ContentIconVisibilityProperty, value);
         }
 

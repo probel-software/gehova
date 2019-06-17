@@ -17,7 +17,15 @@ namespace Probel.Gehova.ViewModels.Vm.AppSettings
         #endregion Constructors
 
         #region Properties
-
+        public double TeamMinWidth
+        {
+            get => _settings.TeamMinWidth;
+            set
+            {
+                _settings.TeamMinWidth = value;
+                RaisePropertyChanged(nameof(TeamMinWidth));
+            }
+        }
         public double ContentHeight
         {
             get => _settings.ContentHeight;
@@ -47,7 +55,17 @@ namespace Probel.Gehova.ViewModels.Vm.AppSettings
                 RaisePropertyChanged(nameof(ContentTextSize));
             }
 
-            #endregion Properties
         }
+
+        public double DayFontSize
+        {
+            get => _settings.DayFontSize;
+            set
+            {
+                _settings.DayFontSize = value;
+                RaisePropertyChanged(nameof(DayFontSize));
+            }
+        }
+        #endregion Properties
     }
 }

@@ -21,7 +21,7 @@ namespace Probel.Gehova.Views.Views.PrintDocument
             null);
 
         public static DependencyProperty WeekAsTextProperty = DependencyProperty.Register(
-                    "WeekAsText",
+            "WeekAsText",
             typeof(string),
             typeof(TeamPrint),
             null);
