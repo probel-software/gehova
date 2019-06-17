@@ -17,14 +17,14 @@
     <StackPanel Margin="0,5,5,0">
         <Grid Margin="5,0,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="35" />
+                <ColumnDefinition Width="{x:Bind ContentIconVisibility}" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <ItemsControl ItemsSource="{Binding CategoryKey, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource CategoryToGlyphConverter}}">
                 <ItemsControl.Resources>
                     <Style TargetType="FontIcon">
                         <Setter Property="Margin" Value="0,0,5,0" />
-                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="FontSize" Value="12" />
                     </Style>
                 </ItemsControl.Resources>
                 <ItemsControl.ItemsPanel>

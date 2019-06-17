@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:Probel.Gehova.Business.Models"
     d:DesignHeight="300"
-    d:DesignWidth="400"
+    d:DesignWidth="400"    
     mc:Ignorable="d">
     <UserControl.Resources>
         <DataTemplate x:Name="TeamTemplate" x:DataType="model:PersonDisplayModel">

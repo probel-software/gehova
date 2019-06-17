@@ -6,6 +6,7 @@ using Probel.Gehova.Views.Views.PrintDocument;
 using System;
 using Windows.ApplicationModel.Resources;
 using Windows.Graphics.Printing;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -46,11 +47,12 @@ namespace Probel.Gehova.Views.Views.Visualisation
 
         #region Methods
 
-        private async void OnPrint(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void OnPrint(object sender, RoutedEventArgs e)
         {
             var opt = new PrintHelperOptions
             {
-                Orientation = PrintOrientation.Landscape
+                Orientation = PrintOrientation.Landscape,
+                Bordering = PrintBordering.Borderless,
             };
 
             _printHelper = new PrintHelper(PrintCanvas, opt);

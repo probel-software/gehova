@@ -20,22 +20,44 @@
                 <Setter Property="Margin" Value="30,0,0,0" />
             </Style>
         </StackPanel.Resources>
-        <TextBlock x:Uid="TbContentHeight" />
+        <TextBlock
+            x:Uid="Title_AppSettings"
+            Margin="10,20,0,20"
+            Style="{StaticResource SubtitleTextBlockStyle}" />
+        <!--  ===============================================================================  -->
+        <TextBlock x:Uid="TbDayFontSize" Margin="5,15,0,15" />
+        <Slider
+            Maximum="40"
+            Minimum="15"
+            TickFrequency="1"
+            TickPlacement="Outside"
+            Value="{Binding DayFontSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <!--  ===============================================================================  -->
+        <TextBlock x:Uid="TbContentHeight" Margin="5,15,0,15" />
         <Slider
             Maximum="20"
             Minimum="5"
             TickFrequency="1"
             TickPlacement="Outside"
-            Value="{Binding ContentHeight, UpdateSourceTrigger=PropertyChanged}" />
-        <TextBlock x:Uid="TbContentTextSize" />
+            Value="{Binding ContentHeight, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <!--  ===============================================================================  -->
+        <TextBlock x:Uid="TbContentTextSize" Margin="5,15,0,15" />
         <Slider
             Maximum="20"
             Minimum="5"
             TickFrequency="1"
             TickPlacement="Outside"
-            Value="{Binding ContentTextSize, UpdateSourceTrigger=PropertyChanged}" />
-        <TextBlock x:Uid="TbVisibility" />
-        <ToggleSwitch x:Uid="CbContentIconVisibility" IsOn="{Binding ContentIconVisibility, UpdateSourceTrigger=PropertyChanged}" />
-
+            Value="{Binding ContentTextSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <!--  ===============================================================================  -->
+        <TextBlock x:Uid="TbVisibility" Margin="5,15,0,15" />
+        <ToggleSwitch x:Uid="CbContentIconVisibility" IsOn="{Binding ContentIconVisibility, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <!--  ===============================================================================  -->
+        <TextBlock x:Uid="TbTeamMinWidth" Margin="5,15,0,15" />
+        <Slider
+            Maximum="200"
+            Minimum="50"
+            TickFrequency="10"
+            TickPlacement="Outside"
+            Value="{Binding TeamMinWidth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
     </StackPanel>
 </Page>

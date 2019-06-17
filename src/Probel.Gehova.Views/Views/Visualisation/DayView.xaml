@@ -6,7 +6,7 @@
     xmlns:local="using:Probel.Gehova.Views.Views.Visualisation"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:Probel.Gehova.Business.Models"
-    MinWidth="200"
+    MinWidth="{x:Bind TeamMinWidth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
     d:DesignHeight="300"
     mc:Ignorable="d">
     <UserControl.Resources>
@@ -17,6 +17,7 @@
     <StackPanel Margin="5,0,5,0">
         <TextBlock
             Margin="0,15,0,0"
+            FontSize="{x:Bind DayFontSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
             Foreground="{StaticResource SystemAccentColor}"
             Style="{StaticResource TitleTextBlockStyle}"
             Text="{Binding DayName}" />

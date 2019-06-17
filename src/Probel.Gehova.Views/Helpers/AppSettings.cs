@@ -10,6 +10,8 @@ namespace Probel.Gehova.Views.Helpers
         private const string HeaderContentHeight = "ContentHeight";
         private const string HeaderContentIconVisibility = "contentIconVisibility";
         private const string HeaderContentTextSize = "contentTextSize";
+        private const string HeaderDayFontSize = "dayFontSize";
+        private const string HeaderTeamMinWidth = "teamMinWidth";
 
         private readonly ApplicationDataContainer _ls = ApplicationData.Current.LocalSettings;
 
@@ -34,7 +36,7 @@ namespace Probel.Gehova.Views.Helpers
                 var contentIconVisibility = _ls.Values[HeaderContentIconVisibility];
                 return (contentIconVisibility == null) ? true : (bool)contentIconVisibility;
             }
-            set => _ls.Values[HeaderContentTextSize] = value;
+            set => _ls.Values[HeaderContentIconVisibility] = value;
         }
 
         public double ContentTextSize
@@ -44,7 +46,27 @@ namespace Probel.Gehova.Views.Helpers
                 var contentTextSize = _ls.Values[HeaderContentTextSize];
                 return (contentTextSize == null) ? 12 : (double)contentTextSize;
             }
-            set => _ls.Values[HeaderContentIconVisibility] = value;
+            set => _ls.Values[HeaderContentTextSize] = value;
+        }
+
+        public double DayFontSize
+        {
+            get
+            {
+                var dayFontSize = _ls.Values[HeaderDayFontSize];
+                return (dayFontSize == null) ? 15 : (double)dayFontSize;
+            }
+            set => _ls.Values[HeaderDayFontSize] = value;
+        }
+
+        public double TeamMinWidth
+        {
+            get
+            {
+                var teamMinWidth = _ls.Values[HeaderTeamMinWidth];
+                return (double)(teamMinWidth ?? 200d);
+            }
+            set => _ls.Values[HeaderTeamMinWidth] = value;
         }
 
         #endregion Properties

@@ -1,5 +1,6 @@
-﻿using Probel.Gehova.Business.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Probel.Gehova.Business.Models;
+using Probel.Gehova.Views.Infrastructure;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -17,24 +18,36 @@ namespace Probel.Gehova.Views.Views.Visualisation
             typeof(TeamView),
             null);
 
+        public static DependencyProperty ContentHeightProperty = DependencyProperty.Register(
+            "ContentHeight",
+            typeof(double),
+            typeof(TeamView),
+            new PropertyMetadata(35d));
+
+        public static DependencyProperty ContentIconVisibilityProperty = DependencyProperty.Register(
+            "ContentIconVisibility",
+            typeof(double),
+            typeof(TeamView),
+            new PropertyMetadata(true));
+
         public static DependencyProperty ContentTextSizeProperty = DependencyProperty.Register(
             "ContentTextSize",
             typeof(double),
             typeof(TeamView),
             new PropertyMetadata(18d));
 
-        public static DependencyProperty ContentHeightProperty = DependencyProperty.Register(
-            "ContentHeight",
-            typeof(double),
-            typeof(TeamView),
-            new PropertyMetadata(35d));
         #endregion Fields
 
         #region Constructors
 
         public TeamView()
         {
-            InitializeComponent();            
+            InitializeComponent();
+
+            var s = IocFactory.Settings;
+            ContentHeight = s.ContentHeight;
+            ContentTextSize = s.ContentTextSize;
+            ContentIconVisibility = s.ContentIconVisibility;
         }
 
         #endregion Constructors
@@ -46,6 +59,13 @@ namespace Probel.Gehova.Views.Views.Visualisation
             get => (double)GetValue(ContentHeightProperty);
             set => SetValue(ContentHeightProperty, value);
         }
+
+        public bool ContentIconVisibility
+        {
+            get => (bool)GetValue(ContentIconVisibilityProperty);
+            set => SetValue(ContentIconVisibilityProperty, value);
+        }
+
         public double ContentTextSize
         {
             get => (double)GetValue(ContentTextSizeProperty);

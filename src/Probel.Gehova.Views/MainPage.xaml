@@ -14,7 +14,7 @@
             x:Name="rootNavigation"
             IsBackButtonVisible="Collapsed"
             IsPaneOpen="False"
-            IsSettingsVisible="False"
+            IsSettingsVisible="True"
             SelectionChanged="OnRootNavigation">
             <NavigationView.MenuItems>
                 <NavigationViewItemHeader x:Uid="Menu_Header_Calendar" />
