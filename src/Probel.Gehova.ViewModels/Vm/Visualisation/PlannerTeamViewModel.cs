@@ -1,7 +1,10 @@
-﻿using Probel.Gehova.Business.Models;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+using GalaSoft.MvvmLight.Command;
+using Probel.Gehova.Business.Models;
 using Probel.Gehova.Business.Services;
 using Probel.Gehova.ViewModels.Infrastructure;
-using System.Collections.ObjectModel;
 using Windows.ApplicationModel.Resources;
 
 namespace Probel.Gehova.ViewModels.Vm.Visualisation
@@ -18,6 +21,8 @@ namespace Probel.Gehova.ViewModels.Vm.Visualisation
         private ObservableCollection<DayModel> _days;
 
         private string _displayedWeekAsText;
+
+        private RelayCommand<DateTimeOffset> _updateWeekCommand;
 
         #endregion Fields
 
@@ -45,9 +50,19 @@ namespace Probel.Gehova.ViewModels.Vm.Visualisation
             set => Set(ref _displayedWeekAsText, value, nameof(DisplayedWeekAsText));
         }
 
+        public ICommand UpdateWeekCommand => _updateWeekCommand ?? (_updateWeekCommand = new RelayCommand<DateTimeOffset>(UpdateWeek));
+
         #endregion Properties
 
         #region Methods
+
+        private void UpdateWeek(DateTimeOffset dtOffset)
+        {
+            var date = new DateTime(dtOffset.Ticks);
+            _service.SetSelectedWeek(date);
+            Refresh();
+            _messenger?.Say(Resources.GetString("Info_WeekUpdated"));
+        }
 
         public void Refresh()
         {
