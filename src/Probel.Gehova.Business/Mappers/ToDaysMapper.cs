@@ -89,6 +89,7 @@ namespace Probel.Gehova.Business.Mappers
                     foundDay.Teams.Add(team);
                 }
             }
+            Days.Reorder();
             return Days;
         }
 

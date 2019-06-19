@@ -208,6 +208,8 @@ namespace Probel.Gehova.Business.Mappers
                     _receptionGroups.Add(receptionGroup);
                 }
             }
+
+            _receptionGroups.Reorder();
             return _receptionGroups;
         }
 

@@ -81,7 +81,7 @@ namespace Probel.Gehova.ViewModels.Vm.Provisioning
         private bool CanAddAbsence()
         {
             var result = PersonId > 0
-                      && From < To;
+                      && (From.Date <= To.Date);
             return result;
         }
 

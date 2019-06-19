@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Probel.Gehova.Business.Models
 {
@@ -20,5 +21,25 @@ namespace Probel.Gehova.Business.Models
         public IList<GroupModel> PickupRounds { get; set; }
 
         #endregion Properties
+    }
+
+    public static class DayPickupRoundModelExtensions
+    {
+        public static void Reorder(this DayPickupRoundModel src)
+        {
+            foreach (var pickup in src.PickupRounds)
+            {
+                var ordered = (from p in pickup.People
+                               orderby p.CategoryKey ascending
+                                     , p.LastName ascending
+                                     , p.FirstName ascending
+                               select p).ToList();
+                pickup.People = ordered;
+            }
+        }
+        public static void Reorder(this IEnumerable<DayPickupRoundModel> src)
+        {
+            foreach (var pickup in src) { pickup.Reorder(); }
+        }
     }
 }
