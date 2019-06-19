@@ -124,6 +124,8 @@ namespace Probel.Gehova.Business.Mappers
                     foundDay.PickupRounds.Add(pickup);
                 }
             }
+
+            _pickupRounds.Reorder();
             return _pickupRounds;
         }
 

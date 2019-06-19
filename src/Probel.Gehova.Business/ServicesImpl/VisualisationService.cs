@@ -72,7 +72,12 @@ namespace Probel.Gehova.Business.ServicesImpl
                 select *
                 from presence_week_v
                 where team_id is not null
-                order by rg_order, r_order, category_key";
+                order by rg_order
+                       , r_order
+                       , category_key
+                       , last_name
+                       , first_name";
+
             using (var c = NewConnection())
             using (var cmd = GetCommand(sql, c))
             {
