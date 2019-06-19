@@ -31,6 +31,11 @@ namespace Probel.Gehova.Business.Models
     {
         public static void Reorder(this DayModel src)
         {
+            var orderedT = (from t in src.Teams
+                            orderby t.Name
+                            select t).ToList();
+            src.Teams = orderedT;
+
             foreach (var team in src.Teams)
             {
                 var ordered = (from p in team.People

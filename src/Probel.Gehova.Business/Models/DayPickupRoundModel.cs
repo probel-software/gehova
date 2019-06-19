@@ -27,6 +27,11 @@ namespace Probel.Gehova.Business.Models
     {
         public static void Reorder(this DayPickupRoundModel src)
         {
+            var orderedP = (from p in src.PickupRounds
+                            orderby p.Name
+                            select p).ToList();
+            src.PickupRounds = orderedP;
+
             foreach (var pickup in src.PickupRounds)
             {
                 var ordered = (from p in pickup.People

@@ -34,14 +34,19 @@ namespace Probel.Gehova.Business.Models
             {
                 foreach (var day in reception.Days)
                 {
+                    var orderedT = (from t in day.Teams
+                                    orderby t.Name
+                                    select t).ToList();
+                    day.Teams = orderedT;
+
                     foreach (var team in day.Teams)
                     {
-                        var ordered = (from p in team.People
-                                       orderby p.CategoryKey ascending
-                                             , p.LastName ascending
-                                             , p.FirstName ascending
-                                       select p).ToList();
-                        team.People = ordered;
+                        var orderedP = (from p in team.People
+                                        orderby p.CategoryKey ascending
+                                              , p.LastName ascending
+                                              , p.FirstName ascending
+                                        select p).ToList();
+                        team.People = orderedP;
                     }
 
                 }
